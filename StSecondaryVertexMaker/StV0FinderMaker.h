@@ -30,9 +30,9 @@ class StV0FinderMaker : public StMaker {
   virtual void   Clear(Option_t *option="") { prepared = kFALSE; }
   virtual void   UseExistingV0s(Bool_t opt=kTRUE) { useExistingV0s = opt; }
   virtual void   DontZapV0s(Bool_t opt=kTRUE) { dontZapV0s = opt; }
-  virtual void   UseITTFTracks(Bool_t opt=kFALSE) { useITTFTracks = opt; }
+  virtual void   UseITTFTracks(Int_t opt=0) { useITTFTracks = opt; }
   virtual Bool_t UseV0() { return kFALSE; }
-  virtual Bool_t UsingITTFTracks() {return useITTFTracks;}
+  virtual Int_t UsingITTFTracks() {return useITTFTracks;}
   virtual void   Trim();
 
   virtual const char *GetCVS() const
@@ -53,9 +53,10 @@ class StV0FinderMaker : public StMaker {
   Bool_t prepared;
   Bool_t useExistingV0s;
   Bool_t dontZapV0s;
-  Bool_t useITTFTracks;
+  Int_t useITTFTracks;
   int det_id_v0;
-
+  int ITTFflag;
+  
   int maxtracks;
   StTrack** trk;                   //!
   unsigned short* ntrk;            //!
