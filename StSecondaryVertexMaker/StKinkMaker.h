@@ -66,10 +66,7 @@ public:
   protected:
   
   void FillEvent(StTrackGeometry *myDaughterGeometry1, 
-                 StTrackGeometry *myParentGeometry11,
-                 StTrack *mDaughterTrackCandidate,
-                 const StThreeVectorD &mParentMomentum,
-                 const StThreeVectorD &mDaughterMomentum);
+                 StTrackGeometry *myParentGeometry11);
   
   bool acceptTrack(StTrack *tr, int mITTFflag, Int_t mUseTracker);
  
