@@ -39,6 +39,8 @@ class StGenericVertexFinder {
   virtual ~StGenericVertexFinder(){};                         // virtual destructor
   virtual bool           fit(StEvent*)=0;                     // fit the vertex
   virtual int            NCtbMatches()=0;                     // returns the number of CTB match
+  virtual void           UseVertexConstraint(double, double, double, double, double)=0;
+  virtual void           printInfo(ostream& = cout) const=0;
 
   // General (default)
   virtual StThreeVectorD result() const {return mFitError;};  // result of fit
@@ -85,6 +87,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.3  2004/07/23 00:58:19  jeromel
+// Base class method+data member (was duplicated in implementation)
+//
 // Revision 1.2  2004/04/06 02:43:43  lbarnby
 // Fixed identification of bad seeds (no z~0 problem now). Better flagging. Message manager used.
 //

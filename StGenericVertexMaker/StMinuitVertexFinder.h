@@ -92,11 +92,11 @@ public:
     virtual         ~StMinuitVertexFinder();
     bool            fit(StEvent*);       
     int             NCtbMatches();
+    void            printInfo(ostream& = cout) const;
+    void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
 
     // Added, not part of base-class
     void            setPrintLevel(int = 0);
-    void            printInfo(ostream& = cout) const;
-    void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
 
 private:
     bool accept(StTrack*) const;   // track filter
@@ -133,6 +133,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2004/07/23 00:59:36  jeromel
+ * Removed methods (moved in base class) + doxygenized
+ *
  * Revision 1.4  2004/04/06 02:43:43  lbarnby
  * Fixed identification of bad seeds (no z~0 problem now). Better flagging. Message manager used.
  *

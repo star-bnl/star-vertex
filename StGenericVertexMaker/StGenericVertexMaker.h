@@ -39,7 +39,7 @@ class StGenericVertexMaker : public StMaker
 
   StEvent *mEvent;
   StPrimaryVertex* primV;
-  StMinuitVertexFinder *theFinder;
+  StGenericVertexFinder *theFinder;
 
   Bool_t DoFit(); ///Find and fit the primary vertex
   void const FillStEvent();

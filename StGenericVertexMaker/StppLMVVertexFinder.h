@@ -32,8 +32,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder {
     virtual         ~StppLMVVertexFinder();
     bool            fit(StEvent*);         
     int             NCtbMatches();
-
-    // Added, not part of the base-class
     void            printInfo(ostream& = cout) const;
     void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
 
@@ -100,6 +98,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2004/07/23 01:00:52  jeromel
+ * Removed methods/data members (moved in base class) + doxygenized
+ *
  * Revision 1.1  2004/07/21 01:53:18  balewski
  * first
  *
