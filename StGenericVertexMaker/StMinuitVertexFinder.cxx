@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.7  2004/03/23 16:15:04  lbarnby
+ * Extra protection for non-finite track length. User function to not use ITTF tracks
+ *
  * Revision 1.6  2003/10/09 16:40:12  perev
  * delete helix object added
  *
@@ -364,7 +367,7 @@ StMinuitVertexFinder::accept(StTrack* track) const
 	    track->flag() >= 0 &&
 	    track->fitTraits().numberOfFitPoints() >= mMinNumberOfFitPointsOnTrack &&
 	    !track->topologyMap().trackFtpc() &&
-            isfinite(track->length()) ); //LSB another temporary check
+            finite(track->length()) ); //LSB another temporary check
 }
 
 void
