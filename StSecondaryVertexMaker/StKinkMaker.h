@@ -28,7 +28,7 @@ class StKinkVertex;
 class StTrack;
 class pairD;
 
-/* enum TrackerUsage{ //See StV0FinderMaker.h */
+/* enum TrackerUsage{ See StV0FinderMaker.h */
 /*  kTrackerUseTPT  = 0, */
 /*  kTrackerUseITTF = 1, */
 /*  kTrackerUseBOTH = 2 */
