@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.12  2004/08/04 21:57:56  balewski
+ * toward smarter ppLMV5
+ *
  * Revision 1.11  2004/07/23 01:28:55  jeromel
  * Typo corrected
  *
@@ -86,6 +89,9 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
      delete mBeamHelix;mBeamHelix=0;
      gMessMgr->Warning() << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
    //delete mMinuit;
+    mHelices.clear();
+    mSigma.clear();
+    mCTB.clear();
  }
 
 bool
