@@ -15,9 +15,6 @@
 
 #include "StMaker.h"
 #include "StThreeVectorD.hh"
-#include "TMath.h"
-#include "StTrackGeometry.h"
-#include "StV0FinderMaker.h"
 
 class StKinkLocalTrack;
 class St_tkf_tkfpar;
@@ -27,6 +24,7 @@ class StEvent;
 class StKinkVertex;
 class StTrack;
 class pairD;
+class StTrackGeometry;
 
 // enum TrackerUsage{ //See StV0FinderMaker.h */
 //  kTrackerUseTPT  = 0, 

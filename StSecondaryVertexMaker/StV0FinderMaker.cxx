@@ -285,7 +285,8 @@ Int_t StV0FinderMaker::Prepare() {
   // Find which global tracks to use
   trks=0;
   for (i=0; i<nNodes; i++) {
-    for (j=0; j<theNodes[i]->entries(global); j++) {
+    int nj = theNodes[i]->entries(global);
+    for (j=0; j<nj; j++) {
 
       StTrack* tri = theNodes[i]->track(global,j);
       ///Begin Betty
@@ -446,7 +447,8 @@ Int_t StV0FinderMaker::Make() {
   // Loop over track pairs to find V0s
 
   //i track is positive
-  for (ii=0; ii<ptrk.size(); ii++) {
+    int nii = ptrk.size();
+    for (ii=0; ii<nii; ii++) {
     i = ptrk[ii];
 
     xci.Set(heli[i].xcenter(),heli[i].ycenter());
@@ -455,7 +457,8 @@ Int_t StV0FinderMaker::Make() {
     rad_i = ri.Mod();
 
     //j track is negative
-    for (jj=0; jj<ntrk.size(); jj++) {
+    int njj = ntrk.size();
+    for (jj=0; jj<njj; jj++) {
       j = ntrk[jj];
 
       if (GetTrackerUsage() == kTrackerUseBOTH)
@@ -843,6 +846,9 @@ void StV0FinderMaker::ExpandVectors(unsigned short size) {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.26  2004/08/27 05:37:28  genevb
+// Slightly modify parameters of vector memory control
+//
 // Revision 1.25  2004/08/26 03:00:46  genevb
 // Improved vector size management
 //
