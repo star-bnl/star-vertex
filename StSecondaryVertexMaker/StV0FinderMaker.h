@@ -221,6 +221,10 @@ class StV0FinderMaker : public StMaker {
 
  private:
   static StV0FinderMaker* mInstance;      //!
+  int trkcnt;
+  int trkmax;
+  float trkNodeRatio;
+  float trkNodeRatioCnt;
 
   ClassDef(StV0FinderMaker,0)
 
@@ -231,6 +235,9 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.9  2004/08/11 21:26:38  genevb
+// Trade static arrays for vectors
+//
 // Revision 1.8  2004/04/02 08:56:22  faivre
 // Use actual TPT flag rather than "not ITTF" for TPT tracks.
 //
