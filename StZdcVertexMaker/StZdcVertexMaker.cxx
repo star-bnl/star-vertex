@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.6  2004/03/02 15:52:16  lbarnby
+ * Completely updated to use StTriggerData from StEvent
+ *
  * Revision 1.5  2004/01/14 22:57:29  fisyak
  * Add declaration of InitRun
  *
@@ -142,6 +145,10 @@ Int_t StZdcVertexMaker::Make()
     //  Get trigger data
     //
     StTriggerData *td=event->triggerData();
+    if (!td) {
+      gMessMgr->Error() << "StZdcVertexMaker::Make() : unable to get StTriggerData." << endm;
+      return kStOK;
+    }
 
     // If change to getting StTriggerData before StEvent created then
     // everything in Make() function above here should be changed but 
