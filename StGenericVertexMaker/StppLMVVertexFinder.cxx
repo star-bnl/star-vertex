@@ -334,10 +334,11 @@ bool StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
   float spathL=fabs(spath); // reduce advantage of SVT matched tracks
 
   if(mMode ==1){
+    // This is mode 1 (ppLMV5)
     if (pmomM >4 ) pmomM=4; //inhibit domination of high pT tracks
     if( spathL<40) spathL=40;
   } else {
-    // tHis is really mode 1
+    // This is mode 0 (ppLMV4)
     // ignore SVT contribution , ~aproximately
     if( spathL<60) spathL=60;
   } 
@@ -597,6 +598,11 @@ void  StppLMVVertexFinder::changeCuts(){
 
 /*
  * $Log$
+ * Revision 1.12  2004/09/03 00:09:08  jeromel
+ * Modified code to Implement Init() and SetMode() and allow passing a switch
+ * to chose the vertex finder from within the same code implementation. Was
+ * needed for ppLMV (one implementation, two algorithm)
+ *
  * Revision 1.11  2004/09/01 18:45:01  balewski
  * ppLMV5/4 switch added
  *
