@@ -48,6 +48,7 @@ class StGenericVertexMaker : public StMaker
   Int_t nEvTotal,nEvGood;
 
  protected:
+  int m_Mode2; // auxiliary flags 
 
  public: 
   StGenericVertexMaker(const char *name="GenericVertex");
@@ -56,7 +57,8 @@ class StGenericVertexMaker : public StMaker
   virtual Int_t InitRun  (int runumber);
   virtual Int_t Finish();
   virtual Int_t  Make();
-
+  void SetMode2(int x) {m_Mode2=x;}
+  int GetMode2() { return m_Mode2; }
   inline StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
 
   inline void UseBeamLine(){usebeamline = kTRUE;};

@@ -44,6 +44,7 @@ private:
     float  mMatchCtbMax_phi;
     float  mDVtxMax;
     uint    mMinMatchTr; // minimal # of tracks matched to CTB for valid vertex
+    float mMaxZrange;// for tracks used by the vertex finder.
     int    mBLequivNtr;
     int n1,n2,n3,n4,n5,n6;
     float mBfield;// magnetic field
@@ -51,6 +52,7 @@ private:
     int eveID;
     int NCtbMatches();
     int NCtbSlats();
+    void   changeCuts();
 
     /*!
      * \struct
@@ -66,6 +68,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2004/08/04 21:57:56  balewski
+ * toward smarter ppLMV5
+ *
  * Revision 1.4  2004/07/24 02:57:40  balewski
  * clean up of ppLMV, CTB-util separated
  *
