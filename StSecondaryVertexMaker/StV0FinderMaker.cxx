@@ -59,6 +59,18 @@ ClassImp(StV0FinderMaker)
          useXiLanguage(kXiLanguageUseCppOnCppV0),useLanguage(kLanguageUseRun),
          useLikesign(kLikesignUseStandard),useRotating(kRotatingUseStandard)
 {
+  // Initializes everything that wasn't yet :
+  ptV0sq = 0.;
+  Bfield = 0.;
+  trks = 0;
+  ptrks = 0;
+  ntrks = 0;
+  det_id_v0 = 0;
+  ITTFflag = 0;
+  mainv.setX(0.);
+  mainv.setY(0.);
+  mainv.setZ(0.);
+  
   // Assign pointers for static arrays
   maxtracks = MAXTRACKS;
   trk = STATtrk;
@@ -735,6 +747,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.12  2003/09/07 03:49:04  perev
+// gcc 3.2 + WarnOff
+//
 // Revision 1.11  2003/09/02 17:58:59  perev
 // gcc 3.2 updates + WarnOff
 //

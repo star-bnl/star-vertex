@@ -22,7 +22,7 @@ ClassImp(StXiFinderMaker)
 
 //_____________________________________________________________________________
 StXiFinderMaker::StXiFinderMaker(const char *name):StV0FinderMaker(name),
-exipar(0),parsXi(0),xiVertex(0)
+exipar(0),parsXi(0),xiVertex(0),det_id_xi(0)
 {
 }
 
@@ -738,6 +738,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.12  2003/09/02 17:58:59  perev
+// gcc 3.2 updates + WarnOff
+//
 // Revision 1.11  2003/08/22 17:47:14  caines
 // Get sign AND magnitude of mag field correctly for Xi and V0 finder
 //
