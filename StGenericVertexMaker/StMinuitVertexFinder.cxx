@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2003/10/06 04:37:58  perev
+ * delete helix
+ *
  * Revision 1.4  2003/09/02 17:58:19  perev
  * gcc 3.2 updates + WarnOff
  *
@@ -412,6 +415,7 @@ void StMinuitVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz
     double py   = p0*mdydz;
     double pz   = p0; // approximation: nx,ny<<0
     StThreeVectorD MomFstPt(px*GeV, py*GeV, pz*GeV);
+    delete mBeamHelix;
     mBeamHelix = new StPhysicalHelixD(MomFstPt,origin,0.5*tesla,1.);
 
     //re-initilize minuit for 1D fitting
