@@ -296,8 +296,8 @@ Bool_t StXiFinderMaker::UseV0() {
 
   for (k=0; k<trks; k++)
      {if (UsingITTFTracks() == kUseBOTH)
-						   {if ((v0Vtx->dcaDaughters() <= 0) && (trk[k]->encodedMethod() != ITTFflag)) continue;
-									 if ((v0Vtx->dcaDaughters() >= 0) && (trk[k]->encodedMethod() == ITTFflag)) continue;
+						   {if ((v0Vtx->dcaDaughters() <= 0) && (trk[k]->fittingMethod() != ITTFflag)) continue;
+									 if ((v0Vtx->dcaDaughters() >= 0) && (trk[k]->fittingMethod() == ITTFflag)) continue;
 									 }
 					 StTrackGeometry* bachGeom=trk[k]->geometry();/////Added Julien.
       if (bachGeom == NULL) {printf("CAUTION : pointer bachGeom is null.\n");return usedV0;}
@@ -666,6 +666,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.3  2003/04/30 20:38:22  perev
+// Warnings cleanup. Modified lines marked VP
+//
 // Revision 1.2  2003/04/30 19:16:04  faivre
 // Fix storage part. ITTF vs TPT Xis.
 //
