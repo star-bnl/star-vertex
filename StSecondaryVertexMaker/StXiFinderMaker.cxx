@@ -666,8 +666,7 @@ Bool_t StXiFinderMaker::UseV0() {
               StThreeVectorD p1 = globHelix->at(globHelix->pathLength(xPvx));
               StThreeVectorD p2(p1.x()-globHelix->xcenter(),p1.y()-globHelix->ycenter(),0);
               StThreeVectorD p3(xPvx.x()-globHelix->xcenter(),xPvx.y()-globHelix->ycenter(),0);
-              if (p3.mag2() > p2.mag2()) dca=(-::sqrt(dca));
-                 else dca=::sqrt(dca);
+              if (p3.mag2() > p2.mag2()) bxi=-bxi;
               delete globHelix;
               globHelix=0;
               /*bBach=trk[k]->impactParameter();
@@ -677,7 +676,7 @@ Bool_t StXiFinderMaker::UseV0() {
               xiVertex->addDaughter(trk[k]);
               xiVertex->setDcaBachelorToPrimaryVertex(trk[k]->impactParameter());
               xiVertex->setMomentumOfBachelor(xOrig);
-              xiVertex->setDcaDaughters(dca);
+              xiVertex->setDcaDaughters(::sqrt(dca));
               xiVertex->setDcaParentToPrimaryVertex(bxi);
               xiVertex->setV0Vertex(v0Vertex);
               
@@ -712,6 +711,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.17  2004/02/04 14:24:58  faivre
+// Add sign of dcaXiDaughters, slightly move cuts, small cleanup.
+//
 // Revision 1.16  2004/02/03 14:29:36  faivre
 // Spring-cleaning 2 months early ;-)  Algo strictly equivalent to previous one although huge reshaping.
 //
