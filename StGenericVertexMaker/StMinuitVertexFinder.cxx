@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.1  2002/12/05 23:42:46  hardtke
+ * Initial Version for development and integration
+ *
  **************************************************************************/
 #include "StMinuitVertexFinder.h"
 #include "StEventTypes.h"
@@ -18,6 +21,7 @@
 #include "StGlobals.hh"
 #include "SystemOfUnits.h"
 #include "StCtbMatcher.h"
+#include "StMessMgr.h"
 #include <cmath>
 
 vector<StPhysicalHelixD> StMinuitVertexFinder::mHelices;
@@ -46,7 +50,8 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
 
 StMinuitVertexFinder::~StMinuitVertexFinder()
 {
-  delete mMinuit;
+  cout << "***Skipping delete Minuit ***" << endl;
+  //delete mMinuit;
 }
 
 bool
@@ -57,7 +62,7 @@ StMinuitVertexFinder::fit(StEvent* event)
     //
     //  Reset vertex
     //
-    mFitResult = StThreeVectorD(0,0,0);
+    mFitError = mFitResult = StThreeVectorD(0,0,0);
 
     // get CTB info
     StCtbTriggerDetector* ctbDet = 0;
@@ -104,7 +109,15 @@ StMinuitVertexFinder::fit(StEvent* event)
     StSPtrVecTrackNode& nodes = event->trackNodes();
     for (unsigned int k=0; k<nodes.size(); k++) {
 	StTrack* g = nodes[k]->track(global);
-	if (accept(g)&&((use_ITTF&&g->fittingMethod()==kITKalmanFitId)||(!use_ITTF&&g->encodedMethod()!=kITKalmanFitId))) {
+	if (accept(g)&&
+	    ((use_ITTF&&g->fittingMethod()==kITKalmanFitId)||
+	     (!use_ITTF&&g->fittingMethod()!=kITKalmanFitId))) 
+	  {
+	    ///LSB This should not be necessary and could be removed in future
+	    if (isinf(g->geometry()->helix().curvature()) ){
+	      gMessMgr->Warning() << "INFINITE curvature in track !!" << endm;
+	      continue;
+	    }
 	    mHelices.push_back(g->geometry()->helix());
 	    // sigma = 0.45+0.0093*sqrt(g->length())/abs(g->geometry()->momentum()); HIJING + TRS
 	    sigma = 0.6+0.0086*sqrt(g->length())/abs(g->geometry()->momentum());
@@ -123,7 +136,7 @@ StMinuitVertexFinder::fit(StEvent* event)
 	mStatus = -1;
 	return false;
     }
-
+    cout << "StMinuitVertexFinder::fit size of helix vector: " << mHelices.size() << endl;
 
 
     //
@@ -179,7 +192,9 @@ StMinuitVertexFinder::fit(StEvent* event)
 	arglist[3] = 200;
 	mWidthScale = 2;
         if (mRequireCTB) requireCTB = true;
+	cout << "StMinuitVertexFinder::fit : Starting initial SCAN (no external z seed)" << endl;
 	mMinuit->mnexcm("SCAn", arglist, 4, mStatus);
+	cout << "StMinuitVertexFinder::fit : Done with initial SCAN (no external z seed)" << endl;
     }
 
     //
@@ -195,6 +210,16 @@ StMinuitVertexFinder::fit(StEvent* event)
      mMinuit->GetParameter(0, z, foo); 
     }
     cout << "Vertex seed = " << z << endl;
+
+    ///Give up when bad seed
+    ///LSB again, this a temporary protection which could be removed in future 
+    ///since it rejects vertices very close to zero in z
+    if(fabs(z)<1E-10){
+      cout << "Vertex seed not found ?? (very close to zero)" << endl;
+      mStatus=-1;
+      return false;
+    }
+
       if (!mVertexConstrain){ 
 	arglist[0] = 3;
       }
@@ -206,7 +231,9 @@ StMinuitVertexFinder::fit(StEvent* event)
     arglist[3] = z+5;
     mWidthScale = 1;
     if (mRequireCTB) requireCTB = true;
+    cout << "StMinuitVertexFinder::fit : Starting second SCAN" << endl;
     mMinuit->mnexcm("SCAn", arglist, 4, mStatus);
+    cout << "StMinuitVertexFinder::fit : Done with second SCAN" << endl;
 
     //
     //  Reset the flag which tells us about external
@@ -219,7 +246,9 @@ StMinuitVertexFinder::fit(StEvent* event)
     //
     mWidthScale = 1;
     requireCTB = false;
+    cout << "StMinuitVertexFinder::fit : Starting minimization" << endl;
     mMinuit->mnexcm("MINImize", 0, 0, mStatus);
+    cout << "StMinuitVertexFinder::fit : Done minimization" << endl;
     if (mStatus) {
 	cout << "StMinuitVertexFinder::fit: error in Minuit::mnexcm(), check status flag." << endl;
 	return false;
@@ -231,14 +260,20 @@ StMinuitVertexFinder::fit(StEvent* event)
     double val, verr;
     mMinuit->mnstat(mFmin, mFedm, mErrdef, mNpari, mNparx, mStatus);
     if (!mVertexConstrain) {
-     mMinuit->GetParameter(0, val, verr); mFitResult.setX(val);
-     mMinuit->GetParameter(1, val, verr); mFitResult.setY(val);
-     mMinuit->GetParameter(2, val, verr); mFitResult.setZ(val);
+      mMinuit->GetParameter(0, val, verr); 
+      mFitResult.setX(val); mFitError.setX(verr);
+      mMinuit->GetParameter(1, val, verr);
+      mFitResult.setY(val); mFitError.setY(verr);
+      mMinuit->GetParameter(2, val, verr);
+      mFitResult.setZ(val); mFitError.setZ(verr);
     }
     else {
-     mMinuit->GetParameter(0, val, verr); mFitResult.setZ(val);
-     mFitResult.setX(beamX(val));
-     mFitResult.setY(beamY(val));
+     mMinuit->GetParameter(0, val, verr); 
+     mFitResult.setZ(val); mFitError.setZ(verr);
+     // LSB Really error in x and y should come from error on constraint
+     // At least this way it is clear that those were fixed paramters
+     mFitResult.setX(beamX(val)); mFitError.setX(0);
+     mFitResult.setY(beamY(val)); mFitError.setY(0);
     }
     delete ctbHits;
     ctbHits = 0;
@@ -247,7 +282,6 @@ StMinuitVertexFinder::fit(StEvent* event)
 
 void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par, int iflag)
 {
-    int ntrack = 0;
     nCTBHits = 0;
     f = 0;
     double e, s;
@@ -258,7 +292,6 @@ void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par,
     StThreeVectorD vtx(x,y,z);
     for (unsigned int i=0; i<mHelices.size(); i++) {
       if (!requireCTB||mCTB[i]) {
-        ntrack++;
 	s = mWidthScale*mSigma[i];
 	e = mHelices[i].distance(vtx);
 	f -= exp(-(e*e)/(2*s*s));  // robust potential
@@ -271,31 +304,33 @@ void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par,
 //          }
       }
     }
-    //    cout << "Number of tracks this pass = " << ntrack << endl;
 }
 
 void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, int iflag)
 {
-    f = 0;
-    double e, s;
-    StThreeVectorD vtx(par);
-    for (unsigned int i=0; i<mHelices.size(); i++) {
-      if (!requireCTB||mCTB[i]) {
-	s = mWidthScale*mSigma[i];
-	e = mHelices[i].distance(vtx);
-	f -= exp(-(e*e)/(2*s*s));  // robust potential
-//          if (abs(s)>0.01) {
-//    	f -= exp(-(e*e)/(2*s*s));  // robust potential
-//          }
-//          else {
-//  	  f += (e*e)/(2*s*s);
-//          }
-      }
+  f = 0;
+  double e, s;
+  StThreeVectorD vtx(par);
+  for (unsigned int i=0; i<mHelices.size(); i++) {
+    if (!requireCTB||mCTB[i]) {
+      s = mWidthScale*mSigma[i];
+      e = mHelices[i].distance(vtx);
+      f -= exp(-(e*e)/(2*s*s));  // robust potential
+      //          if (abs(s)>0.01) {
+      //    	f -= exp(-(e*e)/(2*s*s));  // robust potential
+      //          }
+      //          else {
+      //  	  f += (e*e)/(2*s*s);
+      //          }
     }
+  }
 }
 
 StThreeVectorD
 StMinuitVertexFinder::result() const {return mFitResult;}
+
+StThreeVectorD
+StMinuitVertexFinder::error() const {return mFitError;}
 
 int
 StMinuitVertexFinder::status() const {return mStatus;}
@@ -328,6 +363,7 @@ StMinuitVertexFinder::printInfo(ostream& os) const
 {
     os << "StMinuitVertexFinder - Fit Statistics:" << endl;
     os << "fitted vertex ........................ " << mFitResult << endl;
+    os << "position errors ...................... " << mFitError << endl;
     os << "# of used tracks ..................... " << mHelices.size() << endl;
     os << "minimum found (FMIN) ................. " << mFmin << endl;
     os << "estimated distance to minimum (FEDM) . " << mFedm << endl;
@@ -356,7 +392,7 @@ void StMinuitVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz
   double pt  = 88889999;   
   double nxy=sqrt(mdxdz*mdxdz +  mdydz*mdydz);
     if(nxy<1.e-5){ // beam line _MUST_ be tilted
-      cout << "StMinuitVertexFinder:: Beam line must be titled!" << endl;
+      cout << "StMinuitVertexFinder:: Beam line must be tilted!" << endl;
       nxy=mdxdz=1.e-5; 
     }
     double p0=pt/nxy;  
