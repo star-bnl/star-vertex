@@ -55,6 +55,7 @@ class StGenericVertexMaker : public StMaker
   virtual       ~StGenericVertexMaker();
   virtual Int_t Init();
   virtual Int_t InitRun  (int runumber);
+  virtual void  Clear(const char* opt="");
   virtual Int_t Finish();
   virtual Int_t  Make();
   void SetMode2(int x) {m_Mode2=x;}

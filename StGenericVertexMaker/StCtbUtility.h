@@ -38,6 +38,7 @@ class StCtbUtility {
     void ctb_get_slat_from_data(int slat, int tray, float & phiRad, float &eta);
     void collectCTBhitsMC(St_DataSet *gds);
     void collectCTBhitsData(StTriggerData *trgD);
+    void printCtb();
     int NCtbMatches();
 };
 #endif
@@ -45,5 +46,8 @@ class StCtbUtility {
 
 /*
  * $Log$
+ * Revision 1.1  2004/07/24 02:57:40  balewski
+ * clean up of ppLMV, CTB-util separated
+ *
  *
  *********************************************************************/

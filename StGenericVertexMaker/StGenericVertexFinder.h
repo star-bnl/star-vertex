@@ -48,6 +48,9 @@ class StGenericVertexFinder {
   // General (default)
   virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
   virtual void           Init(){ /* noop */;}
+  virtual void           InitRun  (int runumber){ /* noop */;}
+  virtual void           Clear(const char* opt=""){ /* noop */;}
+
 
   virtual StThreeVectorD result() const {return mFitResult;}  // result of fit
   virtual StThreeVectorD error()  const {return  mFitError;}  // error on fit result
@@ -97,6 +100,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.10  2004/12/13 20:39:58  fisyak
+// Add initaition of StGenericVertexFinder variables, replace mDumMaker by StMaker::GetChain() method
+//
 // Revision 1.9  2004/09/13 15:41:30  balewski
 // fix bug in ppLMV4/5 switch
 //
