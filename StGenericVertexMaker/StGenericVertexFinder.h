@@ -39,31 +39,37 @@ class StGenericVertexFinder {
   // virtual and '=0' ; those MUST be implemented
   virtual ~StGenericVertexFinder(){};                         // virtual destructor
   virtual bool           fit(StEvent*)=0;                     // fit the vertex
-  virtual int            NCtbMatches()=0;                     // returns the number of tracks matched to CTB and used by the vertex finder
-  virtual int            NCtbSlats()=0;                     // returns the number of CTB slats above threshold
+  virtual int            NCtbMatches()=0;                     // returns the number of tracks matched to CTB 
+                                                              // and used by the vertex finder
+  virtual int            NCtbSlats()=0;                       // returns the number of CTB slats above threshold
   virtual void           UseVertexConstraint(double, double, double, double, double)=0;
   virtual void           printInfo(ostream& = cout) const=0;
 
+
   // General (default)
-  virtual StThreeVectorD result() const {return mFitResult;};  // result of fit
-  virtual StThreeVectorD error()  const {return  mFitError;}; // error on fit result
-  virtual int            status() const {return mStatus;};    // status flag
+  virtual void           SetMode(Int_t mode=0 ) {mMode = 0;}
+  virtual void           Init(){ /* noop */;}
+
+  virtual StThreeVectorD result() const {return mFitResult;}  // result of fit
+  virtual StThreeVectorD error()  const {return  mFitError;}  // error on fit result
+  virtual int            status() const {return mStatus;}     // status flag
 
   void                   FillStEvent(StEvent*) const;
   void                   CTBforSeed(){   mRequireCTB = true;}
   void                   NoCTBforSeed(){ mRequireCTB = false;}
 
-  void                   DoUseITTF(){    mUseITTF=kTRUE; };
-  void                   DoNotUseITTF(){ mUseITTF=kFALSE;};
+  void                   DoUseITTF(){    mUseITTF=kTRUE; }
+  void                   DoNotUseITTF(){ mUseITTF=kFALSE;}
   void                   setFlagBase();
+
 
   void                   setExternalSeed(const StThreeVectorD&);
   void                   NoVertexConstraint();
-  void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;};
-
+  void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
 
   
  protected: //................................
+
   StGenericVertexFinder();
   StMaker *mDumMaker;
 
@@ -83,6 +89,7 @@ class StGenericVertexFinder {
   StThreeVectorD         mFitResult;        // fit result
   StThreeVectorD         mFitError;         // fit errors
   int                    mStatus;           // status flag 
+  int                    mMode;             // as a maker mode, used for any Finder behavior change
 
   unsigned int           mMinNumberOfFitPointsOnTrack;
 
@@ -92,6 +99,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.7  2004/08/04 21:57:56  balewski
+// toward smarter ppLMV5
+//
 // Revision 1.6  2004/07/24 19:40:38  balewski
 // fix swap of vert & errVert
 //

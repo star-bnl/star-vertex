@@ -25,35 +25,34 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     bool            fit(StEvent*);         
     void            printInfo(ostream& = cout) const;
     void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
-    void forceppLMV4(); // force ppLMV4  cuts & algo 
 
-private:
+    // over-written method
+    virtual void    Init();
+
+ private:
     // double                   mWidthScale;
-    double                   mX0  ; // starting point of beam parameterization
-    double                   mY0  ; // starting point of beam parameterization
-    double                   mdxdz; // beam slope
-    double                   mdydz; // beam slope
+    double          mX0  ;     // starting point of beam parameterization
+    double          mY0  ;     // starting point of beam parameterization
+    double          mdxdz;     // beam slope
+    double          mdydz;     // beam slope
 
     //jan--------------------
- private:
-
-    bool ppLMV4swith; 
-    bool matchTrack2CTB (StTrack* rTrack, float & sigma);
-    bool ppLMV5();
+    bool   matchTrack2CTB (StTrack* rTrack, float & sigma);
+    bool   ppLMV5();
     double mMaxTrkDcaRxy;    //DCA to nominal beam line for each track
     double mMinTrkPt;        //~ pT=0.16(GeV/c) == R=2 (m )in 2001
     float  mMatchCtbMax_eta;
     float  mMatchCtbMax_phi;
     float  mDVtxMax;
-    uint    mMinMatchTr; // minimal # of tracks matched to CTB for valid vertex
-    float mMaxZrange;// for tracks used by the vertex finder.
+    uint   mMinMatchTr; // minimal # of tracks matched to CTB for valid vertex
+    float  mMaxZrange;// for tracks used by the vertex finder.
     int    mBLequivNtr;
-    int n1,n2,n3,n4,n5,n6;
-    float mBfield;// magnetic field
-    int mTotEve;
-    int eveID;
-    int NCtbMatches();
-    int NCtbSlats();
+    int    n1,n2,n3,n4,n5,n6;
+    float  mBfield;// magnetic field
+    int    mTotEve;
+    int    eveID;
+    int    NCtbMatches();
+    int    NCtbSlats();
     void   changeCuts();
 
     /*!
@@ -70,6 +69,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.7  2004/09/01 18:45:01  balewski
+ * ppLMV5/4 switch added
+ *
  * Revision 1.6  2004/08/05 22:08:04  balewski
  * toward working point
  *
