@@ -420,7 +420,7 @@ Bool_t StXiFinderMaker::UseV0() {
           ///"heli" and "trk" : cf StRoot/St_dst_Maker/StV0FinderMaker.cxx (STAT).
           
           //Determine detector id of pair for parsXi
-          det_id_xi=TMath::Min(det_id_v0,detId[k]);
+          det_id_xi=TMath::Max(det_id_v0,detId[k]);
           //Xi cut parameters
           parsXi=exipar->GetTable(det_id_xi-1);
           
@@ -765,6 +765,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.8  2003/06/24 16:20:11  faivre
+// Uses SVT tracks. Fixed bool calculations. Exits when bad param. Reshaping.
+//
 // Revision 1.7  2003/05/14 19:15:36  faivre
 // Fancy choices Fortran/C++ V0's and Xi's. Xi rotating and like-sign.
 //

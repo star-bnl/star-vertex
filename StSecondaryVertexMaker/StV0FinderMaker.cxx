@@ -411,7 +411,7 @@ Int_t StV0FinderMaker::Make() {
           }
 
       // Determine detector id of V0 for pars
-      det_id_v0 = TMath::Min(detId[i],detId[j]);
+      det_id_v0 = TMath::Max(detId[i],detId[j]);
 
       // Primary   V0 cut parameters
       pars  = ev0par2->GetTable(det_id_v0+2);
@@ -740,6 +740,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.6  2003/06/24 16:20:01  faivre
+// Uses SVT tracks. Fixed bool calculations. Exits when bad param. Reshaping.
+//
 // Revision 1.5  2003/05/14 19:15:03  faivre
 // Fancy choices Fortran/C++ V0's and Xi's. SVT tracks.
 //
