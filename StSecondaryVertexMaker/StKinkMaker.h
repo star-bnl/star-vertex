@@ -28,11 +28,11 @@ class StKinkVertex;
 class StTrack;
 class pairD;
 
-/* enum TrackerUsage{ See StV0FinderMaker.h */
-/*  kTrackerUseTPT  = 0, */
-/*  kTrackerUseITTF = 1, */
-/*  kTrackerUseBOTH = 2 */
-/* }; */
+// enum TrackerUsage{ //See StV0FinderMaker.h */
+//  kTrackerUseTPT  = 0, 
+//  kTrackerUseITTF = 1, 
+//  kTrackerUseBOTH = 2 
+// }; 
 
 class StKinkMaker : public StMaker {
 public: 
@@ -77,7 +77,7 @@ public:
   StKinkVertex* kinkVertex;
 
   int mUseTracker;
-  ClassDef(StKinkMaker, 2)  
+ClassDef(StKinkMaker,0)  
 };
     
 #endif
