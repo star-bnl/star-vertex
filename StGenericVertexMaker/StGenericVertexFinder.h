@@ -47,7 +47,7 @@ class StGenericVertexFinder {
 
 
   // General (default)
-  virtual void           SetMode(Int_t mode=0 ) {mMode = 0;}
+  virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
   virtual void           Init(){ /* noop */;}
 
   virtual StThreeVectorD result() const {return mFitResult;}  // result of fit
@@ -99,6 +99,11 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.8  2004/09/03 00:09:08  jeromel
+// Modified code to Implement Init() and SetMode() and allow passing a switch
+// to chose the vertex finder from within the same code implementation. Was
+// needed for ppLMV (one implementation, two algorithm)
+//
 // Revision 1.7  2004/08/04 21:57:56  balewski
 // toward smarter ppLMV5
 //
