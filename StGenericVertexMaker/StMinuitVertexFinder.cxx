@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.10  2004/07/23 00:59:10  jeromel
+ * Removed methods (moved in base class). Changed setFlagBase().
+ *
  * Revision 1.9  2004/04/06 02:43:43  lbarnby
  * Fixed identification of bad seeds (no z~0 problem now). Better flagging. Message manager used.
  *
@@ -60,7 +63,7 @@ bool                     StMinuitVertexFinder::requireCTB;
 int                      StMinuitVertexFinder::nCTBHits;
 
 StMinuitVertexFinder::StMinuitVertexFinder() {
-  gMessMgr->Info() << "StppLMVVertexFinder::StMinuitVertexFinder is in use." << endm;
+  gMessMgr->Info() << "StMinuitVertexFinder::StMinuitVertexFinder is in use." << endm;
   mBeamHelix =0;
   mStatus    = 0;
   mMinNumberOfFitPointsOnTrack = 10; 
