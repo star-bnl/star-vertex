@@ -56,7 +56,7 @@ ClassImp(StV0FinderMaker)
   StV0FinderMaker::StV0FinderMaker(const char *name):StMaker(name),
          ev0par2(0),pars(0),pars2(0),event(0),v0Vertex(0),
          prepared(kFALSE),useExistingV0s(kFALSE),dontZapV0s(kFALSE),
-         useTracker(kTrackerUseBOTH),useSVT(kUseSVT),useEventModel(kUseStEvent),
+         useTracker(kTrackerUseBOTH),useSVT(kNoSVT),useEventModel(kUseStEvent),
          useV0Language(kV0LanguageUseCpp),useXiLanguage(kXiLanguageUseCppOnCppV0),
          useLanguage(kLanguageUseRun),useLikesign(kLikesignUseStandard),
          useRotating(kRotatingUseStandard)
@@ -813,6 +813,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.19  2004/04/02 08:57:23  faivre
+// Use actual TPT flag rather than "not ITTF" for TPT tracks. Minor changes.
+//
 // Revision 1.18  2004/03/04 18:31:03  faivre
 // Add cut number of hits for Xi's bachelors.
 //
