@@ -92,6 +92,7 @@ public:
     virtual         ~StMinuitVertexFinder();
     bool            fit(StEvent*);       
     int             NCtbMatches();
+    int            NCtbSlats();
     void            printInfo(ostream& = cout) const;
     void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
 
@@ -133,6 +134,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.6  2004/07/23 02:24:39  jeromel
+ * Oops ... Worng swithc (had twice Minuit). Now corrected.
+ *
  * Revision 1.5  2004/07/23 00:59:36  jeromel
  * Removed methods (moved in base class) + doxygenized
  *

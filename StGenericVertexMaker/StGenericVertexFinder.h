@@ -39,7 +39,8 @@ class StGenericVertexFinder {
   // virtual and '=0' ; those MUST be implemented
   virtual ~StGenericVertexFinder(){};                         // virtual destructor
   virtual bool           fit(StEvent*)=0;                     // fit the vertex
-  virtual int            NCtbMatches()=0;                     // returns the number of CTB match
+  virtual int            NCtbMatches()=0;                     // returns the number of tracks matched to CTB and used by the vertex finder
+  virtual int            NCtbSlats()=0;                     // returns the number of CTB slats above threshold
   virtual void           UseVertexConstraint(double, double, double, double, double)=0;
   virtual void           printInfo(ostream& = cout) const=0;
 
@@ -91,6 +92,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.6  2004/07/24 19:40:38  balewski
+// fix swap of vert & errVert
+//
 // Revision 1.5  2004/07/24 02:57:40  balewski
 // clean up of ppLMV, CTB-util separated
 //
