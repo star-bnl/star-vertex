@@ -356,6 +356,9 @@ Int_t StV0FinderMaker::Prepare() {
       hits[trks] = map.numberOfHits(kTpcId) +
 	map.numberOfHits(kSvtId) +
 	map.numberOfHits(kSsdId);
+      //Cut: number of hits
+      pars2 = ev0par2->GetTable(detId[trks]-1);
+      if (hits[trks] < pars2->n_point) continue;
       
       if (!trks)
 	{StThreeVectorD p1 = triGeom->momentum();
@@ -462,8 +465,9 @@ Int_t StV0FinderMaker::Make() {
       pars2 = ev0par2->GetTable(det_id_v0-1);
 
       //Cut: number of hits
-      if ((hits[i] < pars2->n_point) ||
-          (hits[j] < pars2->n_point)) continue;
+      //Now cut directly when filling the table of tracks in Prepare().
+      /*if ((hits[i] < pars2->n_point) ||
+          (hits[j] < pars2->n_point)) continue;*/
 
       //Cut: Initial cut on dca of tracks to primary vertex
       // (perform as early as possible)
@@ -808,6 +812,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.17  2004/02/16 16:18:39  betya
+// added a check on (!triGeom) in V0Finder::Prepare()
+//
 // Revision 1.16  2004/02/03 09:52:45  faivre
 // Update user-friendliness ; default options now use SVT and ITTF+TPT ; remove warning.
 //
