@@ -28,11 +28,11 @@ class StKinkVertex;
 class StTrack;
 class pairD;
 
-//enum TrackerUsage{ See StV0FinderMaker.h
-//  kTrackerUseTPT  = 0,
-//  kTrackerUseITTF = 1,
-//  kTrackerUseBOTH = 2
-//};
+/* enum TrackerUsage{ //See StV0FinderMaker.h */
+/*  kTrackerUseTPT  = 0, */
+/*  kTrackerUseITTF = 1, */
+/*  kTrackerUseBOTH = 2 */
+/* }; */
 
 class StKinkMaker : public StMaker {
 public: 
@@ -55,7 +55,8 @@ public:
   StKinkLocalTrack *mTrack2;   //!    
   StTrack *mParentTrackCandidate;              //! 
   StTrack *mDaughterTrackCandidate;              //!
-         
+  StTrackGeometry *mDaughterTrackUnic;//! transition track; passes all daugther Track + it's the only one          
+
   StThreeVectorD   mEventVertex;       //position of primary vertex
   StThreeVectorD   mParentMoment, mDaughterMoment;
   StThreeVectorD   mKinkVertex;
