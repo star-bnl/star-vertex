@@ -12,9 +12,10 @@
 #include "StMaker.h"
 
 
-StGenericVertexFinder::StGenericVertexFinder() {
-    mDumMaker = new StMaker();
-}
+StGenericVertexFinder::StGenericVertexFinder() : 
+  mUseITTF(false), mFlagBase(0), mBeamHelix(0), mVertexConstrain(false), mWeight(0),
+  mRequireCTB(false),  mExternalSeedPresent(false), mStatus(0), mMode(0), 
+  mMinNumberOfFitPointsOnTrack(0) {}
 
 /*!
   Adds the vertex to StEvent (currently as a primary)
@@ -73,6 +74,11 @@ void StGenericVertexFinder::setFlagBase()
 
 
 // $Log$
+// Revision 1.5  2004/07/30 22:59:00  calderon
+// Setting the primary vertex flag to 1 for the moment, as per
+// dst_vertex.idl.  This was causing the FTPC code to reject the
+// primary vertex used as their seed.
+//
 // Revision 1.4  2004/07/24 02:57:40  balewski
 // clean up of ppLMV, CTB-util separated
 //

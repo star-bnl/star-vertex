@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.13  2004/08/17 20:41:18  perev
+ * LeakOff
+ *
  * Revision 1.12  2004/08/04 21:57:56  balewski
  * toward smarter ppLMV5
  *
@@ -55,7 +58,7 @@
 #include "SystemOfUnits.h"
 #include "StCtbMatcher.h"
 #include "StMessMgr.h"
-#include <cmath>
+#include <math.h>
 
 vector<StPhysicalHelixD> StMinuitVertexFinder::mHelices;
 vector<double>           StMinuitVertexFinder::mSigma;
@@ -156,10 +159,12 @@ StMinuitVertexFinder::fit(StEvent* event)
 	     (!mUseITTF&&g->fittingMethod()!=kITKalmanFitId))) 
 	  {
 	    ///LSB This should not be necessary and could be removed in future
+#ifndef __alpha__
 	    if (!finite(g->geometry()->helix().curvature()) ){
 	      gMessMgr->Warning() << "NON-FINITE curvature in track !!" << endm;
 	      continue;
 	    }
+#endif
 	    mHelices.push_back(g->geometry()->helix());
 	    // sigma = 0.45+0.0093*::sqrt(g->length())/abs(g->geometry()->momentum()); HIJING + TRS
 	    sigma = 0.6+0.0086*::sqrt(g->length())/abs(g->geometry()->momentum());

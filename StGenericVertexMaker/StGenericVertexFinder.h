@@ -32,7 +32,6 @@
 
 
 class StEvent;
-class StMaker;
 
 class StGenericVertexFinder {
  public:
@@ -71,7 +70,6 @@ class StGenericVertexFinder {
  protected: //................................
 
   StGenericVertexFinder();
-  StMaker *mDumMaker;
 
   bool                   mUseITTF;          // Use only tracks with ITTF encoded method
   UInt_t                 mFlagBase;         // ITTF track flag
@@ -99,6 +97,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.9  2004/09/13 15:41:30  balewski
+// fix bug in ppLMV4/5 switch
+//
 // Revision 1.8  2004/09/03 00:09:08  jeromel
 // Modified code to Implement Init() and SetMode() and allow passing a switch
 // to chose the vertex finder from within the same code implementation. Was
