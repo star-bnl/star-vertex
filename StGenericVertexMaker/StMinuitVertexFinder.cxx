@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.6  2003/10/09 16:40:12  perev
+ * delete helix object added
+ *
  * Revision 1.5  2003/10/06 04:37:58  perev
  * delete helix
  *
@@ -360,7 +363,8 @@ StMinuitVertexFinder::accept(StTrack* track) const
     return (track &&
 	    track->flag() >= 0 &&
 	    track->fitTraits().numberOfFitPoints() >= mMinNumberOfFitPointsOnTrack &&
-	    !track->topologyMap().trackFtpc());
+	    !track->topologyMap().trackFtpc() &&
+            isfinite(track->length()) ); //LSB another temporary check
 }
 
 void

@@ -68,6 +68,7 @@ class StGenericVertexMaker : public StMaker
   inline void DoEval(){eval= kTRUE;};
   inline void SetInternalFind(){externalFindUse=kFALSE;};
   inline void SetUseITTF(){use_ITTF=kTRUE;};
+  inline void SetDoNotUseITTF(){use_ITTF=kFALSE;};
 
   virtual const char *GetCVS() const
     {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
