@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2001/08/31 19:07:36  macross
+ * Modified code to retrieve ADC and TDC pulses from TrgDet table
+ *
  **************************************************************************/
 #include "StZdcVertexMaker.h"
 
@@ -123,16 +126,16 @@ Int_t StZdcVertexMaker::Make()
     //  Get ZDC trigger
     //
 
-    TDataSet *triggerDS = GetDataSet("trg");
-    if (!triggerDS)
-    {
-        gMessMgr->Error() << "StZdcVertexMaker::Make():  GetDataSet() in ZdcVertexMaker did not find Data Set ." << endm;
-        return kStErr;
-    }
+  //TDataSet *triggerDS = GetDataSet("trg");
+  //if (!triggerDS)
+  // {
+  //    gMessMgr->Error() << "StZdcVertexMaker::Make():  GetDataSet() in ZdcVertexMaker did not find Data Set ." << endm;
+  //   return kStErr;
+  // }
 
-    St_DataSetIter triggerI(triggerDS);
-    St_dst_TrgDet *triggertable = (St_dst_TrgDet *) triggerI("TrgDet");         
-    dst_TrgDet_st *tt = triggertable->GetTable();
+    // St_DataSetIter triggerI(triggerDS);
+    St_dst_TrgDet *triggertable = (St_dst_TrgDet *)GetDataSet("TrgDet");         
+    dst_TrgDet_st *tt =(dst_TrgDet_st *) triggertable->GetTable();
 
 /*
     StTriggerDetectorCollection *theTriggers = event->triggerDetectorCollection();
