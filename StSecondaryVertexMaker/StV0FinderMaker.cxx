@@ -318,7 +318,11 @@ Int_t StV0FinderMaker::Prepare() {
       ///End Betty
 
       //Cut: track type
-      if ((tri->fittingMethod() == TPTflag && (GetTrackerUsage() == kTrackerUseITTF)) ||
+      //cout << "i,j" << i << "," << j << " fittingMethod = " << tri->fittingMethod() << endl;
+
+      if (
+	  //(tri->fittingMethod() == TPTflag && (GetTrackerUsage() == kTrackerUseITTF)) ||
+	  (tri->fittingMethod() != ITTFflag && (GetTrackerUsage() == kTrackerUseITTF)) ||
           (tri->fittingMethod() == ITTFflag && (GetTrackerUsage() == kTrackerUseTPT))) continue;
 
       //Cut: track flag
@@ -453,9 +457,12 @@ Int_t StV0FinderMaker::Make() {
       j = ntrk[jj];
 
       if (GetTrackerUsage() == kTrackerUseBOTH)
-         {if ((trk[i]->fittingMethod() == ITTFflag) && (trk[j]->fittingMethod() == TPTflag)) continue;
-          if ((trk[i]->fittingMethod() == TPTflag) && (trk[j]->fittingMethod() == ITTFflag)) continue;
-          }
+         {
+	   //if ((trk[i]->fittingMethod() == ITTFflag) && (trk[j]->fittingMethod() == TPTflag)) continue;
+	   if ((trk[i]->fittingMethod() == ITTFflag) && (trk[j]->fittingMethod() != ITTFflag)) continue;
+	   //if ((trk[i]->fittingMethod() == TPTflag) && (trk[j]->fittingMethod() == ITTFflag)) continue;
+	   if ((trk[i]->fittingMethod() != ITTFflag) && (trk[j]->fittingMethod() == ITTFflag)) continue;
+	 }
 
       // Determine detector id of V0 for pars
       det_id_v0 = TMath::Max(detId[i],detId[j]);
@@ -815,6 +822,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.21  2004/04/13 19:50:38  caines
+// Remove cut on v0 being before hit as thsi hurts vos from xi in svt
+//
 // Revision 1.20  2004/04/06 14:05:16  faivre
 // Change default options to : do not use SVT.
 //
