@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.4  2003/09/02 17:59:21  perev
+ * gcc 3.2 updates + WarnOff
+ *
  * Revision 1.3  2001/10/05 13:39:56  jeromel
  * Changes made by Lee Barnby.
  *
@@ -82,7 +85,9 @@ Int_t StZdcVertexMaker::Finish()
 }
 
 //_________________________________________________
-Int_t StZdcVertexMaker::Init()
+Int_t StZdcVertexMaker::Init() {return StMaker::Init(); }
+//_________________________________________________
+Int_t StZdcVertexMaker::InitRun(int runumber) 
 { 
 
     // Getting Database info
@@ -96,6 +101,11 @@ Int_t StZdcVertexMaker::Init()
     
     St_DataSetIter       dblocal_calibrations(p);
     St_ZdcCalPars * t  = (St_ZdcCalPars *)dblocal_calibrations("ZdcCalPars");
+    if (! t) {
+      gMessMgr->Error() << "StZdcVertexMaker::Init():  in ZdcVertexMaker did not find ZdcCalPars." << endm;
+      return kStErr;
+    }
+   
     ZdcCalPars_st* s = (ZdcCalPars_st*)t->GetArray();
     
     mEAP0 = s[0].EAP0;
@@ -109,7 +119,7 @@ Int_t StZdcVertexMaker::Init()
     mVPAR = s[0].VPAR;
     mOFF = s[0].OFF;
     
-    return StMaker::Init();
+    return kStOK;
 }
 
 //_________________________________________________
