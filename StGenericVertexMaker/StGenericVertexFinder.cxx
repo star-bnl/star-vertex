@@ -32,7 +32,8 @@ void StGenericVertexFinder::FillStEvent(StEvent* event) const{
 
   StPrimaryVertex* primV = new StPrimaryVertex();
   primV->setPosition(this->result());             //requires StThreeVectorF
-  primV->setFlag(mFlagBase+this->status());       //requires unsigned int
+//   primV->setFlag(mFlagBase+this->status());       //requires unsigned int
+  primV->setFlag(1);                              // Should conform to dst_vertex.idl flag definition.
   primV->setCovariantMatrix(cov);                 //requires float[6]
   primV->setChiSquared(xSq);                      //requires float
   primV->setProbChiSquared(probXSq);              //requires float
@@ -72,6 +73,9 @@ void StGenericVertexFinder::setFlagBase()
 
 
 // $Log$
+// Revision 1.4  2004/07/24 02:57:40  balewski
+// clean up of ppLMV, CTB-util separated
+//
 // Revision 1.3  2004/07/23 00:57:43  jeromel
 // Base class method implementation
 //
