@@ -210,6 +210,7 @@ Int_t StV0FinderMaker::InitRun( int RunNumber){
 	  float gufldB[3];
 	  gufld(gufldX,gufldB);
 	  Bfield = gufldB[2]*kilogauss;
+          return 0;
 }
 
 
@@ -734,6 +735,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.11  2003/09/02 17:58:59  perev
+// gcc 3.2 updates + WarnOff
+//
 // Revision 1.10  2003/08/22 17:47:14  caines
 // Get sign AND magnitude of mag field correctly for Xi and V0 finder
 //
