@@ -131,7 +131,7 @@ class StV0FinderMaker : public StMaker {
 
   virtual void   GetPars();
   virtual Int_t  Init();
-  virtual Int_t  InitRun(int RunNumber);
+  //virtual Int_t  InitRun(int RunNumber);
   virtual Int_t  Make();
   virtual void   Clear(Option_t *option="") { prepared = kFALSE; }
   virtual void   UseExistingV0s(Bool_t opt=kTRUE) { useExistingV0s = opt; }
@@ -186,7 +186,7 @@ class StV0FinderMaker : public StMaker {
   unsigned short* ntrk;            //!
   unsigned short* ptrk;            //!
   short* hits;                     //!
-  short* detId;                    //!
+  int* detId;                    //!
   double* pt;                      //!
   double* ptot;                    //!
   unsigned short *trkID;           //!
@@ -202,6 +202,9 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.4  2003/08/22 17:47:14  caines
+// Get sign AND magnitude of mag field correctly for Xi and V0 finder
+//
 // Revision 1.3  2003/05/14 19:14:41  faivre
 // Setting new enum's. Fancy choices Fortran/C++ V0's and Xi's. Xi rotating and like-sign. SVT tracks.
 //
