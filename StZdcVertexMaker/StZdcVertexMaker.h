@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2001/08/31 19:07:36  macross
+ * Modified code to retrieve ADC and TDC pulses from TrgDet table
+ *
  **************************************************************************/
 #ifndef StZdcVertexMaker_hh
 #define StZdcVertexMaker_hh
@@ -42,7 +45,7 @@ private:
     float mOFF;
     
     // the following is a ROOT macro  that is needed in all ROOT accessible code
-    ClassDef(StZdcVertexMaker, 1)
+    ClassDef(StZdcVertexMaker,0)
 };
 #endif
 
