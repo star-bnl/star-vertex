@@ -87,6 +87,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2003/05/09 22:19:51  lbarnby
+ * Now also calculates and reports error on vertex. Corrected filter to use ITTF tracks. Some temporary protections against inf/Nan. Skip delete of TMinuit class since causing seg. fault.
+ *
  * Revision 1.1  2002/12/05 23:42:46  hardtke
  * Initial Version for development and integration
  *
@@ -103,7 +106,7 @@ class TMinuit;
 class StMinuitVertexFinder: public StGenericVertexFinder {
 public:
     StMinuitVertexFinder();
-    ~StMinuitVertexFinder();
+    virtual ~StMinuitVertexFinder();
 
     bool            fit(StEvent*);       // fit the vertex
     StThreeVectorD  result() const;      // result of fit

@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2003/05/09 22:20:00  lbarnby
+ * Now also calculates and reports error on vertex. Corrected filter to use ITTF tracks. Some temporary protections against inf/Nan. Skip delete of TMinuit class since causing seg. fault.
+ *
  * Revision 1.1  2002/12/05 23:42:46  hardtke
  * Initial Version for development and integration
  *
@@ -48,11 +51,12 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
     use_ITTF = false;
 }
 
-StMinuitVertexFinder::~StMinuitVertexFinder()
-{
-  cout << "***Skipping delete Minuit ***" << endl;
-  //delete mMinuit;
-}
+
+ StMinuitVertexFinder::~StMinuitVertexFinder()
+ {
+   gMessMgr->Info() << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
+   //delete mMinuit;
+ }
 
 bool
 StMinuitVertexFinder::fit(StEvent* event)
