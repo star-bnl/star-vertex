@@ -49,8 +49,8 @@ void StppLMVVertexFinder::Init() {
     gMessMgr->Info() << "The  ppLMV4 cuts have been activated" << endm; 
     mMaxTrkDcaRxy    = 3.9;
     mMinTrkPt        = 0.2;
-    mMinNumberOfFitPointsOnTrack = 10;
-    mMaxZrange       = 250;            // for tracks
+    mMinNumberOfFitPointsOnTrack = 15; // a typo (=10) was here before , JB
+    mMaxZrange       = 180;            // for tracksa;  typo (=250) was here before , JB
     mDVtxMax         = 4.0;            // max sigma multipl between tracks and current vertex, used for tracks rejection
     mMinMatchTr      = 1;              // minimal # of tracks matched to CTB 
     mBLequivNtr      = 100;            // equivalent # of tracks for BeamLine
@@ -598,6 +598,9 @@ void  StppLMVVertexFinder::changeCuts(){
 
 /*
  * $Log$
+ * Revision 1.15  2004/12/13 20:39:58  fisyak
+ * Add initaition of StGenericVertexFinder variables, replace mDumMaker by StMaker::GetChain() method
+ *
  * Revision 1.14  2004/09/13 15:41:31  balewski
  * fix bug in ppLMV4/5 switch
  *
