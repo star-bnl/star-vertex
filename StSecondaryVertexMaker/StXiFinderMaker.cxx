@@ -19,15 +19,6 @@
 
 
 
-///Copied from Scratch/BkupXifinder20020522/ancien_XiFinderSL01i_22032002/StRoot/St_dst_Maker/lmv.cc
-#include "StarCallf77.h"
-extern "C" {void type_of_call F77_NAME(gufld,GUFLD)(float *x, float *b);}
-#define gufld F77_NAME(gufld,GUFLD)
-
-
-
-
-
 StSPtrVecXiVertex* vecXi=0;
 
 ClassImp(StXiFinderMaker)
@@ -300,18 +291,11 @@ Bool_t StXiFinderMaker::UseV0() {
   
   int iflag=0,iflag1=0;
   int i, charge, tries;
-  float gufldX[3], gufldB[3];
   double rv;
-  StThreeVectorF xPvx, bfield;
+  StThreeVectorF xPvx;
   xPvx=mainv;
-  gufldX[0]=xPvx.x();
-  gufldX[1]=xPvx.y();
-  gufldX[2]=xPvx.z();
-  gufld(gufldX,gufldB);
   double tesla=0.1; ///To replace...
-  bfield.setX(gufldB[0]*tesla);
-  bfield.setY(gufldB[1]*tesla);
-  bfield.setZ(gufldB[2]*tesla);
+  double kiloGauss=1.e14; ///To replace...
   
   charge=0;
 
@@ -537,7 +521,7 @@ Bool_t StXiFinderMaker::UseV0() {
               xOrig.setX(xOut[i]);
               if (xOut[i] == 0.) xOrig.setX(0.01);
               xOrig.setY(yOut[i]);
-              xOrig.setZ(bachGeom->origin().z()-(bachGeom->charge()*bfield.z()/fabs(bachGeom->charge()*bfield.z()))*dz);
+              xOrig.setZ(bachGeom->origin().z()-(bachGeom->charge()*Bfield*kiloGauss/fabs(bachGeom->charge()*Bfield*kiloGauss))*dz);
               bachGeom2->setOrigin(xOrig);
               bachGeom2->setPsi(bachGeom->psi()+TMath::ASin(arg));
               //End of update_track_param
@@ -612,7 +596,7 @@ Bool_t StXiFinderMaker::UseV0() {
                   xOrig.setX(xOut[i]);
                   if (xOut[i] == 0.) xOrig.setX(0.01);
                   xOrig.setY(yOut[i]);
-                  xOrig.setZ(bachGeom->origin().z()-(bachGeom->charge()*bfield.z()/fabs(bachGeom->charge()*bfield.z()))*dz);
+                  xOrig.setZ(bachGeom->origin().z()-(bachGeom->charge()*Bfield*kiloGauss/fabs(bachGeom->charge()*Bfield*kiloGauss))*dz);
                   bachGeom2->setOrigin(xOrig);
                   bachGeom2->setPsi(bachGeom->psi()+TMath::ASin(arg));
                   //End of update_track_param                  
@@ -675,7 +659,7 @@ Bool_t StXiFinderMaker::UseV0() {
                              {//helixDCA(charge,xpp,pXi,bxi);
                               //helixDCA is defined in exi_c_utils.cc (pams/global/exi/).
                               pt_tmp = sqrt(pXi.x()*pXi.x()+pXi.y()*pXi.y());
-                              bcharge_tmp = charge*bfield.z()/tesla;
+                              bcharge_tmp = charge*Bfield*kiloGauss/tesla;
                               curvature_tmp = TMath::Abs(bcharge_tmp)*C_D_CURVATURE/pt_tmp;
                               dip_tmp = atan(pXi.z()/pt_tmp);
                               h_tmp = ((bcharge_tmp > 0) ? -1 : 1);
@@ -765,6 +749,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.9  2003/07/04 17:52:46  faivre
+// Use SVT cuts if any dg has a SVT hit.
+//
 // Revision 1.8  2003/06/24 16:20:11  faivre
 // Uses SVT tracks. Fixed bool calculations. Exits when bad param. Reshaping.
 //
