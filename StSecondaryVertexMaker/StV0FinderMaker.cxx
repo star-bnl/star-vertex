@@ -353,12 +353,13 @@ Int_t StV0FinderMaker::Prepare() {
       if (!trks)
         {StThreeVectorD p1 = triGeom->momentum();
         StThreeVectorD p2 = heli[trks].momentum(Bfield);
-        if (p2.x() != 0) Bfield *= p1.x()/p2.x();
-        else Bfield *= p1.y()/p2.y();
+        if (p2.x() != 0) Bfield *= p1.x()/(p2.x()+1.e+5);
+        else Bfield *= p1.y()/(p2.y()+1.e+5);
         if (triGeom->charge()*triGeom->helicity() > 0) Bfield = -fabs(Bfield);
                else Bfield = fabs(Bfield);
         }
-      
+        if (fabs(Bfield)<1.e-5) return kStWarn;
+	      
       if (triGeom->charge() > 0) ptrk.push_back(trks);
       else if (triGeom->charge() < 0) ntrk.push_back(trks);
       trks++;
@@ -846,6 +847,9 @@ void StV0FinderMaker::ExpandVectors(unsigned short size) {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.27  2004/09/17 03:14:06  perev
+// LeakOff+cleanup
+//
 // Revision 1.26  2004/08/27 05:37:28  genevb
 // Slightly modify parameters of vector memory control
 //
