@@ -131,6 +131,7 @@ class StV0FinderMaker : public StMaker {
 
   virtual void   GetPars();
   virtual Int_t  Init();
+  virtual Int_t  InitRun(int RunNumber);
   virtual Int_t  Make();
   virtual void   Clear(Option_t *option="") { prepared = kFALSE; }
   virtual void   UseExistingV0s(Bool_t opt=kTRUE) { useExistingV0s = opt; }
@@ -201,6 +202,9 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.3  2003/05/14 19:14:41  faivre
+// Setting new enum's. Fancy choices Fortran/C++ V0's and Xi's. Xi rotating and like-sign. SVT tracks.
+//
 // Revision 1.2  2003/04/30 19:13:52  faivre
 // ITTF vs TPT V0s
 //
