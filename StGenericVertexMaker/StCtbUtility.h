@@ -34,8 +34,9 @@ class StCtbUtility {
     vector<ctbHit> mCtbHits;
 
     // methods
+ public:
    StCtbUtility();
-    void ctb_get_slat_from_data(int slat, int tray, float & phiRad, float &eta);
+    static void ctb_get_slat_from_data(int slat, int tray, float & phiRad, float &eta);
     void collectCTBhitsMC(St_DataSet *gds);
     void collectCTBhitsData(StTriggerData *trgD);
     void printCtb();
@@ -46,6 +47,9 @@ class StCtbUtility {
 
 /*
  * $Log$
+ * Revision 1.2  2005/03/09 19:24:18  balewski
+ * preparation for PPV vertex finder
+ *
  * Revision 1.1  2004/07/24 02:57:40  balewski
  * clean up of ppLMV, CTB-util separated
  *

@@ -48,9 +48,9 @@ class StGenericVertexFinder {
   // General (default)
   virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
   virtual void           Init(){ /* noop */;}
+  virtual void           Finish(){ /* noop */;}
   virtual void           InitRun  (int runumber){ /* noop */;}
   virtual void           Clear(const char* opt=""){ /* noop */;}
-
 
   virtual StThreeVectorD result() const {return mFitResult;}  // result of fit
   virtual StThreeVectorD error()  const {return  mFitError;}  // error on fit result
@@ -100,6 +100,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.11  2005/03/09 19:24:18  balewski
+// preparation for PPV vertex finder
+//
 // Revision 1.10  2004/12/13 20:39:58  fisyak
 // Add initaition of StGenericVertexFinder variables, replace mDumMaker by StMaker::GetChain() method
 //
