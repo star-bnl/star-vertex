@@ -206,6 +206,7 @@ class StV0FinderMaker : public StMaker {
   Int_t useRotating;		   //!
   int det_id_v0;		   //!
   int ITTFflag;		           //!
+  int TPTflag;                     //!
   
   int maxtracks;                   //!
   StTrack** trk;                   //!
@@ -228,6 +229,12 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.7  2004/03/03 01:46:13  cmironov
+// (J.L. commit)
+// Modified doxygen documentation (was not taken before). Indentation
+// for numerous enum{} which would need some //< comments for usage
+// summary ...
+//
 // Revision 1.6  2004/01/27 17:56:06  betya
 //
 // added EventModelUsage so that the V0Finder and XiFinder can no run on
