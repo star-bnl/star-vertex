@@ -61,7 +61,7 @@ public:
   StThreeVectorD   mKinkVertex;
   Float_t          mParentImpact, mDaughterImpact;
   Float_t          mDca, mDecayAngle;
-
+  Int_t            mGlobalTrks;//number of global tracks used
   double mBfield;//mg field 
   protected:
   
