@@ -24,7 +24,12 @@ class StGenericVertexFinder {
   virtual StThreeVectorD error() const=0;
   //virtual ~StGenericVertexFinder();
   void FillStEvent(StEvent*) const;
+ protected:
+  UInt_t mFlagBase;
 };
 
 // $Log$
+// Revision 1.1  2003/05/09 22:22:36  lbarnby
+// Initial revision: a base class for STAR (StEvent-based) vertex finders
+//
 #endif

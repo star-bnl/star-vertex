@@ -87,6 +87,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.3  2003/05/12 21:10:06  lbarnby
+ * Made destructor virtual
+ *
  * Revision 1.2  2003/05/09 22:19:51  lbarnby
  * Now also calculates and reports error on vertex. Corrected filter to use ITTF tracks. Some temporary protections against inf/Nan. Skip delete of TMinuit class since causing seg. fault.
  *
@@ -123,6 +126,8 @@ public:
     int             NCtbMatches();
     void            SetFitPointsCut(int fitpoints);
     inline void DoUseITTF(){use_ITTF=kTRUE;};
+    inline void DoNotUseITTF(){use_ITTF=kFALSE;};
+
 private:
     bool accept(StTrack*) const;   // track filter
     static void fcn(int&, double*, double&, double*, int); // fit function
@@ -141,6 +146,7 @@ private:
     static double                   mdydz; // beam slope
     static double beamX(double z); // beamline parameterization
     static double beamY(double z); // beamline parameterization
+    inline void setFlagBase(UInt_t base){mFlagBase=base;};
 
     
     TMinuit*                 mMinuit;
