@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.4  2003/09/02 17:58:19  perev
+ * gcc 3.2 updates + WarnOff
+ *
  * Revision 1.3  2003/05/12 21:10:06  lbarnby
  * Made destructor virtual
  *
@@ -42,6 +45,7 @@ bool                     StMinuitVertexFinder::requireCTB;
 int                      StMinuitVertexFinder::nCTBHits;
 
 StMinuitVertexFinder::StMinuitVertexFinder() {
+    mBeamHelix=0;
     mStatus = 0;
     mMinNumberOfFitPointsOnTrack = 10; 
     mMinuit = new TMinuit(3);         
@@ -57,7 +61,8 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
 
  StMinuitVertexFinder::~StMinuitVertexFinder()
  {
-   gMessMgr->Info() << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
+     delete mBeamHelix;mBeamHelix=0;
+     gMessMgr->Info() << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
    //delete mMinuit;
  }
 
