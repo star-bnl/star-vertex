@@ -9,8 +9,12 @@
  ***************************************************************************/
 #include "StGenericVertexFinder.h"
 #include "StMessMgr.h"
+#include "StMaker.h"
 
 
+StGenericVertexFinder::StGenericVertexFinder() {
+    mDumMaker = new StMaker();
+}
 
 /*!
   Adds the vertex to StEvent (currently as a primary)
@@ -68,6 +72,9 @@ void StGenericVertexFinder::setFlagBase()
 
 
 // $Log$
+// Revision 1.3  2004/07/23 00:57:43  jeromel
+// Base class method implementation
+//
 // Revision 1.2  2004/04/06 02:43:43  lbarnby
 // Fixed identification of bad seeds (no z~0 problem now). Better flagging. Message manager used.
 //

@@ -32,6 +32,7 @@
 
 
 class StEvent;
+class StMaker;
 
 class StGenericVertexFinder {
  public:
@@ -60,8 +61,11 @@ class StGenericVertexFinder {
   void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;};
 
 
+  
+ protected: //................................
+  StGenericVertexFinder();
+  StMaker *mDumMaker;
 
- protected:
   bool                   mUseITTF;          // Use only tracks with ITTF encoded method
   UInt_t                 mFlagBase;         // ITTF track flag
 
@@ -87,6 +91,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.4  2004/07/23 02:24:38  jeromel
+// Oops ... Worng swithc (had twice Minuit). Now corrected.
+//
 // Revision 1.3  2004/07/23 00:58:19  jeromel
 // Base class method+data member (was duplicated in implementation)
 //
