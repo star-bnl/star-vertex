@@ -567,8 +567,10 @@ Int_t StV0FinderMaker::Make() {
 						
       ///Begin Betty
       //Cut: check if the first point of either track is after v0vertex
-      if ((pi.dot(heli[i].origin() - xi) < 0.0) ||  //if pV0 * r <0, cut
-         (pj.dot(heli[j].origin() - xj) < 0.0)) continue;
+      // Commented out by helen 4/13/04 because it hurts SVT Xis try
+      // to find a more elegant soultion later
+      // if ((pi.dot(heli[i].origin() - xi) < 0.0) ||  //if pV0 * r <0, cut
+      //   (pj.dot(heli[j].origin() - xj) < 0.0)) continue;
       ///End Betty
 
 
@@ -813,6 +815,9 @@ void StV0FinderMaker::Trim() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.20  2004/04/06 14:05:16  faivre
+// Change default options to : do not use SVT.
+//
 // Revision 1.19  2004/04/02 08:57:23  faivre
 // Use actual TPT flag rather than "not ITTF" for TPT tracks. Minor changes.
 //
