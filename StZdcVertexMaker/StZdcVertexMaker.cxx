@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.3  2001/10/05 13:39:56  jeromel
+ * Changes made by Lee Barnby.
+ *
  * Revision 1.2  2001/08/31 19:07:36  macross
  * Modified code to retrieve ADC and TDC pulses from TrgDet table
  *
@@ -158,8 +161,8 @@ Int_t StZdcVertexMaker::Make()
     float tdcE = tt->adcZDC[8];
     float tdcW = tt->adcZDC[9];
     
-    float VertexZ = ((tdcW-(mWAP0+(mWAP1*adcW)+(mWAP2*pow(adcW,2))+(mWAP3*pow(adcW,3))))-
-                     (tdcE-(mEAP0+(mEAP1*adcE)+(mEAP2*pow(adcE,2))+(mEAP3*pow(adcE,3)))))*mVPAR + mOFF;
+    float VertexZ = ((tdcW-(mWAP0+(mWAP1*adcW)+(mWAP2*::pow(adcW,2))+(mWAP3*::pow(adcW,3))))-
+                     (tdcE-(mEAP0+(mEAP1*adcE)+(mEAP2*::pow(adcE,2))+(mEAP3*::pow(adcE,3)))))*mVPAR + mOFF;
 
     //
     //  Store VertexZ 
