@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.9  2004/04/06 02:43:43  lbarnby
+ * Fixed identification of bad seeds (no z~0 problem now). Better flagging. Message manager used.
+ *
  * Revision 1.8  2004/04/04 23:20:13  jeromel
  * isfinite() -> finite()
  *
@@ -57,17 +60,18 @@ bool                     StMinuitVertexFinder::requireCTB;
 int                      StMinuitVertexFinder::nCTBHits;
 
 StMinuitVertexFinder::StMinuitVertexFinder() {
-    mBeamHelix=0;
-    mStatus = 0;
-    mMinNumberOfFitPointsOnTrack = 10; 
-    mMinuit = new TMinuit(3);         
-    mMinuit->SetFCN(&StMinuitVertexFinder::fcn);
-    mMinuit->SetPrintLevel(1);
-    mMinuit->SetMaxIterations(1000);
-    mExternalSeedPresent = false;
-    mVertexConstrain = false;
-    requireCTB = false;
-    use_ITTF = false;
+  gMessMgr->Info() << "StppLMVVertexFinder::StMinuitVertexFinder is in use." << endm;
+  mBeamHelix =0;
+  mStatus    = 0;
+  mMinNumberOfFitPointsOnTrack = 10; 
+  mMinuit = new TMinuit(3);         
+  mMinuit->SetFCN(&StMinuitVertexFinder::fcn);
+  mMinuit->SetPrintLevel(1);
+  mMinuit->SetMaxIterations(1000);
+  mExternalSeedPresent = false;
+  mVertexConstrain = false;
+  requireCTB = false;
+  mUseITTF   = false;
 }
 
 
@@ -88,12 +92,7 @@ StMinuitVertexFinder::fit(StEvent* event)
     //
     mFitError = mFitResult = StThreeVectorD(0,0,0);
 
-    ///Flagging
-    if(use_ITTF){
-      setFlagBase(8000);
-    }else{
-      setFlagBase(1000);
-    }
+    setFlagBase();
 
     // get CTB info
     StCtbTriggerDetector* ctbDet = 0;
@@ -141,8 +140,8 @@ StMinuitVertexFinder::fit(StEvent* event)
     for (unsigned int k=0; k<nodes.size(); k++) {
 	StTrack* g = nodes[k]->track(global);
 	if (accept(g)&&
-	    ((use_ITTF&&g->fittingMethod()==kITKalmanFitId)||
-	     (!use_ITTF&&g->fittingMethod()!=kITKalmanFitId))) 
+	    ((mUseITTF&&g->fittingMethod()==kITKalmanFitId)||
+	     (!mUseITTF&&g->fittingMethod()!=kITKalmanFitId))) 
 	  {
 	    ///LSB This should not be necessary and could be removed in future
 	    if (!finite(g->geometry()->helix().curvature()) ){
@@ -367,14 +366,6 @@ void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, i
   }
 }
 
-StThreeVectorD
-StMinuitVertexFinder::result() const {return mFitResult;}
-
-StThreeVectorD
-StMinuitVertexFinder::error() const {return mFitError;}
-
-int
-StMinuitVertexFinder::status() const {return mStatus;}
 
 bool
 StMinuitVertexFinder::accept(StTrack* track) const
@@ -390,15 +381,13 @@ StMinuitVertexFinder::accept(StTrack* track) const
             finite(track->length()) ); //LSB another temporary check
 }
 
-void
-StMinuitVertexFinder::setExternalSeed(const StThreeVectorD& s)
-{
-    mExternalSeedPresent = true;
-    mExternalSeed = s;
-}
 
+/// Use mMinuit print level 
 void
-StMinuitVertexFinder::setPrintLevel(int level) {mMinuit->SetPrintLevel(level);}
+StMinuitVertexFinder::setPrintLevel(int level) 
+{
+  mMinuit->SetPrintLevel(level);
+}
 
 void
 StMinuitVertexFinder::printInfo(ostream& os) const
@@ -455,7 +444,6 @@ void StMinuitVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz
 
 }
 
-void StMinuitVertexFinder::NoVertexConstraint() {mVertexConstrain = false; gMessMgr->Info() << "StMinuitVertexFinder::No Vertex Constraint" << endm;}
 
 double StMinuitVertexFinder::beamX(double z) {
   float x = mX0 + mdxdz*z;
@@ -467,9 +455,11 @@ double StMinuitVertexFinder::beamY(double z) {
   return y;
 }
 
-void StMinuitVertexFinder::CTBforSeed() { mRequireCTB = true; return; }
-void StMinuitVertexFinder::NoCTBforSeed() { mRequireCTB = false; return; }
-int  StMinuitVertexFinder::NCtbMatches() { return nCTBHits;}
-void StMinuitVertexFinder::SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;return;}
+int  StMinuitVertexFinder::NCtbMatches() { 
+  return nCTBHits;
+}
+
+
+//void StMinuitVertexFinder::SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;return;}
 
 
