@@ -19,11 +19,10 @@
 class StKinkLocalTrack;
 class St_tkf_tkfpar;
 class tkf_tkfpar_st;
-class StPhysicalHelixD;
+#include "StPhysicalHelixD.hh"
 class StEvent;
 class StKinkVertex;
 class StTrack;
-class pairD;
 class StTrackGeometry;
 
 // enum TrackerUsage{ //See StV0FinderMaker.h */
