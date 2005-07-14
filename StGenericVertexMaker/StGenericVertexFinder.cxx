@@ -11,7 +11,7 @@
 #include "StMessMgr.h"
 #include "StMaker.h"
 
-
+  
 StGenericVertexFinder::StGenericVertexFinder() : 
   mVertexConstrain(false), mMode(0){
 }
@@ -53,6 +53,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.7  2005/06/21 02:16:36  balewski
+// multiple prim vertices are stored in StEvent
+//
 // Revision 1.6  2004/12/13 20:39:58  fisyak
 // Add initaition of StGenericVertexFinder variables, replace mDumMaker by StMaker::GetChain() method
 //

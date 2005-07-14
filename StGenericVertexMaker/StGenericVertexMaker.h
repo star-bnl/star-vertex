@@ -9,7 +9,7 @@
  *
  */
 
-
+   
 #ifndef STAR_StGenericVertexMaker
 #define STAR_StGenericVertexMaker
 
