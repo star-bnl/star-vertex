@@ -627,12 +627,14 @@ Bool_t StXiFinderMaker::UseV0() {
               vdotx=pV0.x()*pXi.x()+pV0.y()*pXi.y()+pV0.z()*pXi.z();
               if (bachGeom->charge() > 0)
                  {ppar=bdotx/pXi.mag();
-                  pper=::sqrt(ptot[k]*ptot[k]-ppar*ppar);
-                  }
+                  pper=(ptot[k]*ptot[k]-ppar*ppar);
+                  pper=(pper>0)? ::sqrt(ptot[k]*ptot[k]-ppar*ppar):0;
+                 }
                   else
                  {ppar=vdotx/pXi.mag();
-                  pper=::sqrt(ptot_v02-ppar*ppar);
-                  }
+                  pper=(ptot_v02-ppar*ppar);
+                  pper=(pper>0)? ::sqrt(ptot_v02-ppar*ppar):0;
+                 }
               //Cut: pt-Armanteros
               if (pper > 0.33) continue;
               //Function helixDCA(charge,xpp,pXi,bxi);
@@ -701,6 +703,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.21  2004/04/15 20:15:53  jeromel
+// Forgot one of them
+//
 // Revision 1.20  2004/04/02 08:57:34  faivre
 // Use actual TPT flag rather than "not ITTF" for TPT tracks.
 //
