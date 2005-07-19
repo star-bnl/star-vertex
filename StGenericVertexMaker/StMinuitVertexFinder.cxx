@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.15  2005/06/21 02:16:36  balewski
+ * multiple prim vertices are stored in StEvent
+ *
  * Revision 1.14  2004/12/13 20:39:58  fisyak
  * Add initaition of StGenericVertexFinder variables, replace mDumMaker by StMaker::GetChain() method
  *
@@ -77,7 +80,7 @@ int                      StMinuitVertexFinder::nCTBHits;
 //==========================================================
 //==========================================================
 void StMinuitVertexFinder::Clear(){
-  mClear();
+  StGenericVertexFinder::Clear();
   mStatusMin    = 0;
 }
 
@@ -126,7 +129,7 @@ StMinuitVertexFinder::setFlagBase(){
 }
 
 
-bool
+int
 StMinuitVertexFinder::fit(StEvent* event)
 {
     double arglist[4];
@@ -210,7 +213,7 @@ StMinuitVertexFinder::fit(StEvent* event)
     if (mHelices.empty()) {
 	gMessMgr->Warning() << "StMinuitVertexFinder::fit: no tracks to fit." << endm;
 	mStatusMin = -1;
-	return false;
+	return 0;
     }
     gMessMgr->Info() << "StMinuitVertexFinder::fit size of helix vector: " << mHelices.size() << endm;
 
@@ -303,7 +306,7 @@ StMinuitVertexFinder::fit(StEvent* event)
       if(fmin == 0.0){
 	gMessMgr->Warning() << "Vertex seed not found ?? " << endm;
 	mStatusMin=-1;
-	return false;
+	return 0;
       }
       
       if (!mVertexConstrain){ 
@@ -337,7 +340,7 @@ StMinuitVertexFinder::fit(StEvent* event)
     gMessMgr->Info() << "StMinuitVertexFinder::fit : Done minimization" << endm;
     if (mStatusMin) {
 	gMessMgr->Warning() << "StMinuitVertexFinder::fit: error in Minuit::mnexcm(), check status flag." << endm;
-	return false;
+	return 0;
     }
 
     //
@@ -379,11 +382,11 @@ StMinuitVertexFinder::fit(StEvent* event)
     primV.setRanking(333);
 
     //..... add vertex to the list
-    mVertexList.push_back(primV);
+    addVertex(&primV);
 
     delete ctbHits;
     ctbHits = 0;
-    return true;
+    return 1;
 } 
 
 void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par, int iflag)
@@ -458,8 +461,7 @@ StMinuitVertexFinder::setPrintLevel(int level)
 void
 StMinuitVertexFinder::printInfo(ostream& os) const
 {
-  const StPrimaryVertex* primV =0;
-  if(mVertexList.size()>0) primV =&mVertexList[0];
+  const StPrimaryVertex* primV = getVertex(0);
     os << "StMinuitVertexFinder - Fit Statistics:" << endl;
     if(primV) {
       os << "fitted vertex ........................ " << primV->position() << endl;

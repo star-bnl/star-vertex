@@ -54,22 +54,22 @@ class StGenericVertexMaker : public StMaker
   StGenericVertexMaker(const char *name="GenericVertex");
   virtual       ~StGenericVertexMaker();
   virtual Int_t Init();
-  virtual Int_t InitRun  (int runumber);
+  virtual Int_t InitRun (int runumber);
   virtual void  Clear(const char* opt="");
   virtual Int_t Finish();
-  virtual Int_t  Make();
-  void SetMode2(int x) {m_Mode2=x;}
-  int GetMode2() { return m_Mode2; }
+  virtual Int_t Make();
+  void SetMode2(int x) 	{m_Mode2=x;}
+  int  GetMode2() 	{return m_Mode2; }
   inline StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
 
-  inline void UseBeamLine(){usebeamline = kTRUE;};
-  inline void DoNotUseBeamLine(){usebeamline = kFALSE;};
-  inline void UseCTB(){useCTB = kTRUE;};
-  inline void DoNotUseCTB(){useCTB = kFALSE;};
-  inline void DoEval(){eval= kTRUE;};
-  inline void SetInternalFind(){externalFindUse=kFALSE;};
-  inline void SetUseITTF(){use_ITTF=kTRUE;};
-  inline void SetDoNotUseITTF(){use_ITTF=kFALSE;};
+  inline void UseBeamLine()		{usebeamline    = kTRUE; }
+  inline void DoNotUseBeamLine()	{usebeamline    = kFALSE;}
+  inline void UseCTB()			{useCTB         = kTRUE; }
+  inline void DoNotUseCTB()		{useCTB         = kFALSE;}
+  inline void DoEval()			{eval           = kTRUE; }
+  inline void SetInternalFind()		{externalFindUse= kFALSE;}
+  inline void SetUseITTF()		{use_ITTF       = kTRUE; }
+  inline void SetDoNotUseITTF()		{use_ITTF       = kFALSE;}
 
   virtual const char *GetCVS() const
     {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}

@@ -90,7 +90,7 @@ public:
 
     // mandatory implementations
     virtual         ~StMinuitVertexFinder();
-    bool            fit(StEvent*);       
+    int             fit(StEvent*);       
     void            printInfo(ostream& = cout) const;
     void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
     void           Clear();
@@ -153,6 +153,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.8  2005/06/21 02:16:36  balewski
+ * multiple prim vertices are stored in StEvent
+ *
  * Revision 1.7  2004/08/04 21:57:56  balewski
  * toward smarter ppLMV5
  *

@@ -84,7 +84,7 @@ public:
 
   // mandatory implementations
   virtual         ~StPPVertexFinder();
-  bool            fit(StEvent*);        
+  int             fit(StEvent*);        
   void            printInfo(ostream& = cout) const;
   void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
   //int    NCtbMatches() {return -1;}; //dumm
@@ -99,6 +99,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.1  2005/07/11 20:38:12  balewski
+ * PPV added for real
+ *
  *
  *
  **************************************************************************/
