@@ -78,7 +78,8 @@ public:
   void Finish();
 
   TH1F *hA[mxH];
-  TH1D *hL; // likelyhood distribution
+  TH1D *hL ; // likelyhood distribution
+  TH1D *hM, *hW ; // cumulative track mult & weight distribution, for better errZ calculation
   TObjArray * HList;
   StPPVertexFinder();
 
@@ -97,6 +98,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.3  2005/07/20 05:34:16  balewski
+ * cleanup
+ *
  * Revision 1.2  2005/07/19 22:01:59  perev
  * MultiVertex
  *
