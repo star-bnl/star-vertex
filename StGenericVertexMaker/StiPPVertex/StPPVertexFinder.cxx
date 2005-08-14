@@ -74,7 +74,7 @@ StPPVertexFinder::StPPVertexFinder() {
   mTestMode=0; // expert only flag
 
   // special histogram for finding the vertex, not to be saved
-  int nb=2000;
+  int nb=4000;
   float zRange=200;// (cm)
   hL=new TH1D("ppvL","Vertex likelyhood; Z /cm",nb,-zRange,zRange);
   // needed only for  better errZ calculation
@@ -581,7 +581,7 @@ StPPVertexFinder::findVertex(VertexData &V) {
   float sigZ= (zHigh-zLow)/2/kSig;
   printf("  Z low/max/high=%f %f %f, kSig=%f, sig=%f\n",zLow,z0,zHigh,kSig,sigZ);
   printf(" found  PPVertex(ID=%d,neve=%d) z0 =%.2f +/- %.2f\n",V.id,mTotEve,z0,sigZ);
-
+  if(sigZ<0.1) sigZ=0.1; // tmp, make it not smaller than the bin size
 
   // take x,y from beam line equation, TMP
   float x=mX0+z0*mdxdz;
@@ -1046,6 +1046,11 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.10  2005/08/12 18:35:27  balewski
+ * more accurate calculation of Z-vertex error
+ * by accounting for average weight of tracks contributing to the likelihood,
+ *  Now errZ is of 0.5-1.5 mm, was ~2x smaller
+ *
  * Revision 1.9  2005/07/28 20:57:14  balewski
  * extand zMax range to 200cm, call it PPV-2
  *
