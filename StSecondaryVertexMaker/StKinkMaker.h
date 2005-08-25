@@ -40,6 +40,7 @@ public:
   virtual  Int_t  Make();
   virtual void    SetTrackerUsage(Int_t opt=0);
   virtual Int_t   GetTrackerUsage(){return mUseTracker;}
+  virtual void Crop();// used to trim the kinks in which on daughter shares two parents
 
   virtual const char *GetCVS() const
   {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
@@ -69,7 +70,8 @@ public:
   bool acceptTrack(StTrack *);
  
 
-  St_tkf_tkfpar* m_tkfpar;
+  St_tkf_tkfpar* m_tkfpar; // table of parameters
+
   StEvent* event;
   StKinkVertex* kinkVertex;
 
