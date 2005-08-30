@@ -20,13 +20,16 @@ class VertexData {
   
   // methods
   VertexData();
-  void print(ostream& os);
+  void print(ostream& os) const;
 };
 #endif
 
 
 /*
  * $Log$
+ * Revision 1.1  2005/07/11 20:38:13  balewski
+ * PPV added for real
+ *
 
  *
  *

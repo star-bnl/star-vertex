@@ -30,8 +30,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void matchTrack2EEMC(const StiKalmanTrack*, TrackData &t, float z);
   void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t, float rxy);
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &t);
-  vector<TrackData> *mTrackData;
-  vector<VertexData> *mVertexData;
+  vector<TrackData>  mTrackData;
+  vector<VertexData> mVertexData;
   bool buildLikelihood();
   bool findVertex(VertexData &);
   bool evalVertex(VertexData &);
@@ -98,6 +98,11 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.4  2005/08/12 18:35:28  balewski
+ * more accurate calculation of Z-vertex error
+ * by accounting for average weight of tracks contributing to the likelihood,
+ *  Now errZ is of 0.5-1.5 mm, was ~2x smaller
+ *
  * Revision 1.3  2005/07/20 05:34:16  balewski
  * cleanup
  *
