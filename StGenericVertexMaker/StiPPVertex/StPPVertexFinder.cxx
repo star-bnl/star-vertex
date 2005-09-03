@@ -242,7 +242,7 @@ StPPVertexFinder::printInfo(ostream& os) const
 {
   os << "StPPVertexFinder ver=1 - Fit Statistics:" << endl;
   
-  os << "StPPVertexFinder::result "<<mVertexData.size()<<" vertices found\n" << endm;
+  os << "StPPVertexFinder::result "<<mVertexData.size()<<" vertices found\n" << endl;
 
   int nTpcM=0, nTpcV=0;
   uint i;
@@ -1046,6 +1046,9 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.14  2005/08/30 22:08:43  balewski
+ * drop '*' from declaration of   mTrackData &  mVertexData
+ *
  * Revision 1.13  2005/08/17 15:07:39  balewski
  * cleanup, irrelevant for pp200 production
  *
