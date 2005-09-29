@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.16  2005/07/19 21:52:45  perev
+ * MultiVertex
+ *
  * Revision 1.15  2005/06/21 02:16:36  balewski
  * multiple prim vertices are stored in StEvent
  *
@@ -303,7 +306,7 @@ StMinuitVertexFinder::fit(StEvent* event)
       Int_t npari,nparx,istat; // more dummies
       Double_t fmin; // Used for the test - function value chi-sq.
       mMinuit->mnstat(fmin,fedm,errdef,npari,nparx,istat);
-      if(fmin == 0.0){
+      if(fmin > -1e-5){
 	gMessMgr->Warning() << "Vertex seed not found ?? " << endm;
 	mStatusMin=-1;
 	return 0;
