@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.17  2005/09/29 22:17:30  fisyak
+ * more strict cut for failed vertex
+ *
  * Revision 1.16  2005/07/19 21:52:45  perev
  * MultiVertex
  *
@@ -106,6 +109,7 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
   mMinuit->SetMaxIterations(1000);
   mExternalSeedPresent = false;
   mVertexConstrain = false;
+  mRequireCTB = false;
   requireCTB = false;
   mUseITTF   = false;
 }
