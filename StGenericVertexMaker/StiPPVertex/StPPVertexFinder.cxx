@@ -170,11 +170,19 @@ StPPVertexFinder::InitRun(int runnumber){
 
   if(isMC) assert(runnumber <1000000); // probably embeding job ,crash it, JB
   assert(runnumber<7000000); // real BTOW HV not known for 2006+,crash it, JB
+  if(isMC) {
+    int dateY=eeDb->GetDateTime().GetYear();
+    gMessMgr->Info() << "PPV InitRun() M-C, Db_date="<<eeDb->GetDateTime().AsString()<<endm;
+    if(dateY!=2005)  gMessMgr->Warning() <<
+     "PPV InitRun() , M-C time stamp differs from 2005,\n BTOW status tables questionable,\n PPV results qauestionable, \n\n  F I X    B T O W    S T A T U S     T A B L E S     B E F O R E     U S E  !!!  \n \n chain will continue taking whatever is loaded in to DB\n  Jan Balewski, January 2006\n"<<endm; 
+  }
+
+ //aa  mMappB = new StEmcDecoder(GetDate(),GetTime(), mTowerMapBug);
 
   if(mTestMode==3)  ctbList->initRun(1.5); //expert only
   else  ctbList->initRun(); // defult
 
-  bemcList->initRun(isMC);
+  bemcList->initRun();
   eemcList->initRun();
 
 }
@@ -1046,6 +1054,9 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.15  2005/09/03 16:41:53  balewski
+ * bug fix: <<endm replaced with <<endl
+ *
  * Revision 1.14  2005/08/30 22:08:43  balewski
  * drop '*' from declaration of   mTrackData &  mVertexData
  *
