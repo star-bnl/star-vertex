@@ -33,7 +33,6 @@ class StGenericVertexMaker : public StMaker
   Bool_t  useCTB;
   Bool_t  eval;
   Bool_t  externalFindUse; /// Finder will by called externally (by StiMaker)
-  Float_t EtaCut;          /// Tracks with larger eta not considered
 
   TNtuple *mEvalNtuple;    /// Ntuple for evaluation purposes
 
