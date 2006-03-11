@@ -40,7 +40,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void saveHisto(TString fname);
   int  mTotEve;
   int  eveID;
-  int mTestMode; // internal  param to play with cuts
+  int  mTestMode; // internal  param to play with cuts
 
   // params
   double mMinTrkPt;       //~ pT=0.16(GeV/c) == R=2 (m )in 2001
@@ -51,7 +51,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMinAdcBemc; // BEMC towers with MIP response
   float  mMinAdcEemc; // EEMC towers with MIP response
   float  mMinFitPfrac; // nFit/nPossible
-  bool isMC; // flag minor differences between Data & M-C
+  bool   isMC; // flag minor differences between Data & M-C
+  bool   mUseCtb; // disable CTB from matching/vetoing of tracks
 
   // beam line
   double          mX0  ;     // starting point of beam parameterization
@@ -75,6 +76,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   
 public:
   void setMC(bool x=true){isMC=x;}
+  void useCTB(bool x=true){mUseCtb=x;}
   void Finish();
 
   TH1F *hA[mxH];
@@ -98,6 +100,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2005/08/30 22:08:43  balewski
+ * drop '*' from declaration of   mTrackData &  mVertexData
+ *
  * Revision 1.4  2005/08/12 18:35:28  balewski
  * more accurate calculation of Z-vertex error
  * by accounting for average weight of tracks contributing to the likelihood,
