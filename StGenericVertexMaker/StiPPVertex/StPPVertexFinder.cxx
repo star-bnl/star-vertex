@@ -111,7 +111,7 @@ StPPVertexFinder::Init() {
     mMinAdcBemc =7; //ideal BTOW gain 60 GeV ET @ 3500 ADC
   }
 
- // ... play with cuts, expert only
+  // ... play with cuts, expert only
   switch(mTestMode){
   case 0: break; //use  default
   case 1: mMaxZradius =5; break;
@@ -168,7 +168,7 @@ StPPVertexFinder::InitRun(int runnumber){
   if(dateY<2006) {
     mMinAdcBemc   = 15;   // BTOW used calibration of maxt Et @ ~27Gev 
   } else {
-    mMinAdcBemc   = 8;   // BTOW used calibration of maxt Et @ ~60Gev 
+    mMinAdcBemc   = 8;    // BTOW used calibration of maxt Et @ ~60Gev 
   }
     
   if(mTestMode==3)  ctbList->initRun(1.5); //expert only
@@ -685,8 +685,10 @@ StPPVertexFinder::exportVertices(){
     StPrimaryVertex primV;
     primV.setPosition(r);
     primV.setCovariantMatrix(cov); 
+
     if(mUseCtb)  primV.setVertexFinderId(ppvVertexFinder);
-    else primV.setVertexFinderId(StVertexFinderId(ppvVertexFinder+10)); // Jerome, change it to new enum, Jan
+    else         primV.setVertexFinderId(ppvNoCtbVertexFinder); 
+
     primV.setNumTracksUsedInFinder(V->nUsedTrack);
     primV.setNumMatchesWithCTB(V->nCtb);
     primV.setNumMatchesWithBEMC(V->nBemc);
@@ -1061,6 +1063,16 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.18  2006/03/11 04:12:49  balewski
+ * 2 changes in preparation for 2006 data processing:
+ * - CTB matching  ON/OFF switch activated by m_Mode 0x8 or 0x10
+ * - vertex enum extension depending on CTB usage - hack in the moment, 
+ *   Jerome needs to provide actual new enum
+ * - BTOW calibration wil change for 2006+ from maxt eT of ~27 --> 60 GeV
+ * NOTE : this new code was NOT executed - it is late, I want to get it in CVS
+ * Tomorrow I'll do some tests
+ * Jan
+ *
  * Revision 1.17  2006/01/24 17:53:39  balewski
  * small fix
  *
