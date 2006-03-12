@@ -80,7 +80,7 @@ StPPVertexFinder::StPPVertexFinder() {
   hL=new TH1D("ppvL","Vertex likelyhood; Z /cm",nb,-zRange,zRange);
   // needed only for  better errZ calculation
   hM=new TH1D("ppvM","cumulative track multiplicity; Z /cm",nb,-zRange,zRange);
-  hW=new TH1D("ppvM","cumulative track weight; Z /cm",nb,-zRange,zRange);
+  hW=new TH1D("ppvW","cumulative track weight; Z /cm",nb,-zRange,zRange);
 
   FILE *fd=fopen("ppvMode.dat","r");
   if(fd) {
@@ -187,8 +187,8 @@ StPPVertexFinder::InitRun(int runnumber){
     <<"\n MaxZradius (cm) for prim tracks &Likelihood  ="<< mMaxZradius
     <<"\n MinAdcBemc for MIP ="<<mMinAdcBemc
     <<"\n MinAdcEemc for MIP ="<<mMinAdcEemc
-    <<"\n flag isMC ="<<isMC
-    <<"\n flag useCtb ="<<mUseCtb
+    <<"\n bool   isMC ="<<isMC
+    <<"\n bool useCtb ="<<mUseCtb
     //			    <<"\n  ="<<
     <<endm; 
 
@@ -1063,6 +1063,9 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.19  2006/03/12 17:01:01  jeromel
+ * Minor change + use ppvNoCtbVertexFinder
+ *
  * Revision 1.18  2006/03/11 04:12:49  balewski
  * 2 changes in preparation for 2006 data processing:
  * - CTB matching  ON/OFF switch activated by m_Mode 0x8 or 0x10
