@@ -35,6 +35,7 @@ class StGenericVertexFinder {
   // General (default)
   virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
   virtual int            GetMode() const 	{return mMode;}
+          void           SetDebugLevel(Int_t level) {mDebugLevel=level;}
   virtual void           Init(){ /* noop */;}
   virtual void           Finish(){ /* noop */;}
   virtual void           InitRun  (int runumber){ /* noop */;}
@@ -52,12 +53,16 @@ class StGenericVertexFinder {
 
   bool                   mVertexConstrain;  // Use vertex constraint from db
   int                    mMode;             // used for any Finder behavior change
+  int                    mDebugLevel;
 
 };
 
 
 
 // $Log$
+// Revision 1.14  2005/07/19 21:45:53  perev
+// MultiVertex
+//
 // Revision 1.13  2005/06/21 02:16:36  balewski
 // multiple prim vertices are stored in StEvent
 //

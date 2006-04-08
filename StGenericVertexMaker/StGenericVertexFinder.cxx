@@ -13,7 +13,7 @@
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
-  mVertexConstrain(false), mMode(0)
+  mVertexConstrain(false), mMode(0), mDebugLevel(0)
 {
 }
 //______________________________________________________________________________
@@ -56,7 +56,6 @@ StPrimaryVertex* StGenericVertexFinder::getVertex(int idx) const
 void
 StGenericVertexFinder::Clear()
 {
-  printf(" StGenericVertexFinder::Clear()\n"); 
   mVertexList.clear();
 }
 
@@ -71,6 +70,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.9  2005/07/19 21:45:07  perev
+// MultiVertex
+//
 // Revision 1.8  2005/07/14 15:39:22  balewski
 // nothing, to force recompilation of this code by Autobuild
 //
