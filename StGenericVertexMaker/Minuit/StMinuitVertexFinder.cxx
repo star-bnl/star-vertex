@@ -10,6 +10,14 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2006/04/08 19:06:29  mvl
+ * Update for multiple vertex finding and rank calculation for identifying the
+ * triggered vertex. Ranks are based on mean dip angle of tracks, BEMC matches
+ * and tracks crossing the central membrane and optimised for Cu+Cu.
+ * The track cuts are now bit tighter (dca<2 in transverse direction and
+ * nfitpoints > 15) to suppress 'fake' vertices.
+ * In addition, a lower multiplicity cut of 5 tracks is implemented.
+ *
  * Revision 1.18  2005/12/08 16:54:13  fisyak
  * Fix mRequireCTB, one more non initialized variable
  *
@@ -216,6 +224,7 @@ void StMinuitVertexFinder::fillBemcHits(StEmcDetector *bemcDet){
 	mBemcHit[m][e][s]=0;
 
   int n_emc_hit=0;
+  if (bemcDet) {
   for (int iMod=0; iMod < nMod; iMod++) {
     if (!bemcDet->module(iMod)) 
       continue;
@@ -228,6 +237,7 @@ void StMinuitVertexFinder::fillBemcHits(StEmcDetector *bemcDet){
 	n_emc_hit++; 
       }
     }
+  }
   }
   if (mDebugLevel) 
     cout << "Found " << n_emc_hit << " emc hits" << endl;
