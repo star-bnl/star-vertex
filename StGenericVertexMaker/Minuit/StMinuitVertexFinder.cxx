@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.3  2006/04/08 23:21:15  fisyak
+ * Add protection for  bemcDet==0
+ *
  * Revision 1.2  2006/04/08 19:06:29  mvl
  * Update for multiple vertex finding and rank calculation for identifying the
  * triggered vertex. Ranks are based on mean dip angle of tracks, BEMC matches
@@ -154,24 +157,24 @@ StMinuitVertexFinder::setFlagBase(){
   }
 }
 
-int StMinuitVertexFinder::findSeeds(int n_step, float min_z, float max_z) {
+int StMinuitVertexFinder::findSeeds() {
   mNSeed = 0;
 
-  int zImpactArr[200]; // simple array to 'histogram' zImpacts
-  for (int i=0; i < 200; i++)
+  int zImpactArr[400]; // simple array to 'histogram' zImpacts
+  for (int i=0; i < 400; i++)
     zImpactArr[i]=0;
 
   Int_t nTrk = mZImpact.size();
   for (int iTrk=0; iTrk < nTrk; iTrk++) {
-    if (fabs(mZImpact[iTrk]) < 100)
-      zImpactArr[int(mZImpact[iTrk]+100)]++;
+    if (fabs(mZImpact[iTrk]) < 200)
+      zImpactArr[int(mZImpact[iTrk]+200)]++;
   }
 
   // Search for maxima using sliding 3-bin window
   Int_t nOldBin = 0;
   int slope = 0;
   int nBinZ = 3;
-  for (int iBin=0; iBin < 200 - nBinZ; iBin++) {
+  for (int iBin=0; iBin < 400 - nBinZ; iBin++) {
     int nTrkBin = 0;
     for (int iBin2=0; iBin2 < nBinZ; iBin2++) {
       nTrkBin += zImpactArr[iBin + iBin2];
@@ -181,7 +184,7 @@ int StMinuitVertexFinder::findSeeds(int n_step, float min_z, float max_z) {
     else if (nTrkBin < nOldBin) {
       if (slope == 1) {
 	if (mNSeed < maxSeed) {
-	  float seed_z = -100 + iBin + (Float_t)nBinZ / 2 - 1;
+	  float seed_z = -200 + iBin + (Float_t)nBinZ / 2 - 1;
 	  Double_t meanZ = 0;
 	  int nTrkZ = 0;
 	  for (int iTrk = 0; iTrk < nTrk; iTrk ++ ) {
@@ -541,7 +544,7 @@ StMinuitVertexFinder::fit(StEvent* event)
       else {
         arglist[0]=1;
       }
-      findSeeds(200,-100,100);
+      findSeeds();
     }
     else {
       mNSeed = 1;

@@ -119,7 +119,7 @@ private:
     int   matchTrack2BEMC(const StTrack *);
     int   checkCrossMembrane(const StTrack *);
     void  calculateRanks();
-    int   findSeeds(int, float, float);
+    int   findSeeds();
 
     static void fcn(int&, double*, double&, double*, int); // fit function
     static void fcn1D(int&, double*, double&, double*, int); // fit function
@@ -170,6 +170,14 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2006/04/08 19:06:29  mvl
+ * Update for multiple vertex finding and rank calculation for identifying the
+ * triggered vertex. Ranks are based on mean dip angle of tracks, BEMC matches
+ * and tracks crossing the central membrane and optimised for Cu+Cu.
+ * The track cuts are now bit tighter (dca<2 in transverse direction and
+ * nfitpoints > 15) to suppress 'fake' vertices.
+ * In addition, a lower multiplicity cut of 5 tracks is implemented.
+ *
  * Revision 1.9  2005/07/19 21:53:27  perev
  * MultiVertex
  *
