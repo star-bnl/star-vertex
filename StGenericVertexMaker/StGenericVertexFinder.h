@@ -49,10 +49,11 @@ class StGenericVertexFinder {
   StGenericVertexFinder();
  private:
   vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
- protected: //................................
 
-  bool                   mVertexConstrain;  // Use vertex constraint from db
-  int                    mMode;             // used for any Finder behavior change
+ protected: //................................
+  StPrimaryVertexOrder   mVertexOrderMethod; // will default to 0 i.e. orderByNumberOfDaughters
+  bool                   mVertexConstrain;   // Use vertex constraint from db
+  int                    mMode;              // used for any Finder behavior change
   int                    mDebugLevel;
 
 };
@@ -60,6 +61,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.15  2006/04/08 00:18:10  mvl
+// Added member for debuglevel
+//
 // Revision 1.14  2005/07/19 21:45:53  perev
 // MultiVertex
 //

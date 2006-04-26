@@ -15,6 +15,7 @@
 StGenericVertexFinder::StGenericVertexFinder() : 
   mVertexConstrain(false), mMode(0), mDebugLevel(0)
 {
+  mVertexOrderMethod = orderByNumberOfDaughters;
 }
 //______________________________________________________________________________
 StGenericVertexFinder::~StGenericVertexFinder()
@@ -33,8 +34,9 @@ StGenericVertexFinder::FillStEvent(StEvent* event) const{
   for(UInt_t i=0;i<mVertexList.size(); i++) {
     //allocates new memory for each vertex
     StPrimaryVertex* primV = new StPrimaryVertex(mVertexList[i]); 
-    event->addPrimaryVertex(primV);
-    gMessMgr->Info() << "StGenericVertexFinder::FillStEvent: Added "<<i+1<<" primary vertex" << endm;
+    event->addPrimaryVertex(primV,mVertexOrderMethod);
+    gMessMgr->Info() << "StGenericVertexFinder::FillStEvent: Added " <<i+1 
+		     <<" primary vertex (" << mVertexOrderMethod << ")" << endm;
   }
 }
 //______________________________________________________________________________
@@ -70,6 +72,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.10  2006/04/08 00:18:09  mvl
+// Added member for debuglevel
+//
 // Revision 1.9  2005/07/19 21:45:07  perev
 // MultiVertex
 //

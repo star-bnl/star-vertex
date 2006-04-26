@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.4  2006/04/25 13:06:44  mvl
+ * Seed-finding range extended to -200<vtx_z<200
+ *
  * Revision 1.3  2006/04/08 23:21:15  fisyak
  * Add protection for  bemcDet==0
  *
@@ -133,6 +136,8 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
   mRequireCTB = false;
   requireCTB = false;
   mUseITTF   = false;
+
+  mVertexOrderMethod = orderByRanking; // change ordering by ranking
 }
  
 
