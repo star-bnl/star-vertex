@@ -23,12 +23,6 @@
 #include "StppLMVVertexFinder.h"
 #include "StGenericVertexMaker.h"
 
-#if 1
-#include "StarCallf77.h"
-extern "C" {void type_of_call F77_NAME(gufld,GUFLD)(float *x, float *b);}
-#define gufld F77_NAME(gufld,GUFLD)
-#endif
-
 //==========================================================
 //==========================================================
 StppLMVVertexFinder::StppLMVVertexFinder() {
@@ -116,15 +110,9 @@ StppLMVVertexFinder::fit(StEvent* event) {
   mTotEve++;
   eveID=event->id();
 
-  // Get BField from gufld(,) 
-  float x[3] = {0,0,0};
-  float b[3];
-  gufld(x,b);
-  mBfield=  0.1*b[2]; //This is now Tesla.
+  mBfield = event->runInfo()->magneticField(); 
+  LOG_INFO << Form("ppLMV5:: mBfield[Tesla]=%e ",mBfield)<<endm;
   
-  //printf("mBfield=%f tesla=%e b2=%f\n",mBfield,tesla,b[2]);
-  gMessMgr->Info() << "ppLMV5:: mBfield/Tesla=" << mBfield << " b2=" << b[2] << endm;
- 
   //changeCuts();
 
   gMessMgr->Message("","I") << "ppLMV5::cuts"
@@ -633,6 +621,9 @@ StppLMVVertexFinder::changeCuts(){
 
 /*
  * $Log$
+ * Revision 1.20  2005/07/19 21:56:58  perev
+ * MultiVertex
+ *
  * Revision 1.19  2005/06/21 02:16:36  balewski
  * multiple prim vertices are stored in StEvent
  *
