@@ -35,7 +35,7 @@ StGenericVertexFinder::FillStEvent(StEvent* event) const{
     //allocates new memory for each vertex
     StPrimaryVertex* primV = new StPrimaryVertex(mVertexList[i]); 
     event->addPrimaryVertex(primV,mVertexOrderMethod);
-    gMessMgr->Info() << "StGenericVertexFinder::FillStEvent: Added " <<i+1 
+    LOG_INFO << "StGenericVertexFinder::FillStEvent: Added " <<i+1 
 		     <<" primary vertex (" << mVertexOrderMethod << ")" << endm;
   }
 }
@@ -67,11 +67,14 @@ StGenericVertexFinder::Clear()
 void StGenericVertexFinder::NoVertexConstraint() 
 {
   mVertexConstrain = false; 
-  gMessMgr->Info() << "StGenericVertexFinder::No Vertex Constraint" << endm;
+  LOG_INFO << "StGenericVertexFinder::No Vertex Constraint" << endm;
 }
 
 
 // $Log$
+// Revision 1.11  2006/04/26 15:37:03  jeromel
+// mVertexOrderMethod (To be tested)
+//
 // Revision 1.10  2006/04/08 00:18:09  mvl
 // Added member for debuglevel
 //
