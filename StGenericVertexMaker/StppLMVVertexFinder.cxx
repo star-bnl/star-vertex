@@ -551,7 +551,18 @@ StppLMVVertexFinder::ppLMV5() {
 
   //..... add vertex to the list
   addVertex(&primV);
- if(eveID%2) addFakeVerex(XVertex.z()+20);
+
+#if 0
+  /*
+    The fake vertex will never take precedence over the real one in 
+    the muDst analysi since its rank is lower (if default ranking is used).
+    But may pick a random match if luminosity (i.e. pileup is high).
+    Unless the true vertex is not found. Then we would have a fake 
+    vertex w/o prim tracks.
+   Jan B.
+  */
+  if(eveID%2) addFakeVerex(XVertex.z()+20);
+#endif
 
 #if 0  ///old
   mFitResult=XVertex;
@@ -621,6 +632,9 @@ StppLMVVertexFinder::changeCuts(){
 
 /*
  * $Log$
+ * Revision 1.22  2006/05/04 20:01:30  jeromel
+ * Switched to logger
+ *
  * Revision 1.21  2006/05/02 13:49:21  balewski
  * replace gufld() with  mBfield = event->runInfo()->magneticField();
  *
