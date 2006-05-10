@@ -1,6 +1,6 @@
 /*!
  * \class StGenericVertexMaker
- * \author  David Hardtke, based on Jan Balewskis template
+ * \author David Hardtke, based on Jan Balewskis template
  *
  * Maker for minuit based vertex finder
  * Lee Barnby - modification, becomes StGenericVertexMaker
