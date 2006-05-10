@@ -5,6 +5,19 @@
  *
  *  $Id$
  *
+ *  Modified J.Lauret for MC vertex
+ *
+ *  This vertex finder has two purposes
+ *  - The first mode of operation, turned on by the VFFV chain option,
+ *    allows to always set a vertex at a fixed position
+ *  - The second mode of operation is turned on by the VFMCE chain option
+ *    and allows instead to get the vertex from StMcEvent and not use a
+ *    a fixed vertex
+ *
+ *  Within this "finder" (or faker really), the rank is set to -5 and
+ *  the vertex finder Id is either respectively undefinedVertexFinder
+ *  and mcEventVertexFFinder. Covariant matrix parameters are all set
+ *  to zero for the lack of a better choice.
  */
 
 #ifndef STAR_StFixedVertexFinder
@@ -35,6 +48,9 @@ private:
 /***************************************************************************
 *
 * $Log$
+* Revision 1.1  2006/05/03 22:11:10  lbarnby
+* Initial version of fixed position vertex finder and option in maker to switch it on
+*
 *
 **************************************************************************/
 #endif
