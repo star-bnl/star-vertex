@@ -36,18 +36,29 @@ public:
     // mandatory implementations
     int fit(StEvent*);
     void printInfo(ostream& = cout)const;
+    /**
+     * Vertex constraint not useful for this VF but is part of base class so implementation just
+     * displays warning to this effect
+     */
     void UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
+
+    
+    // member not from base class
+    void SetVertexPosition(double x, double y, double z);
     
 private:
-    Double_t mFixedX;
-    Double_t mFixedY;
-    Double_t mFixedZ;
+    Double_t mFixedX; //!< X co-ordinate of vertex
+    Double_t mFixedY; //!< Y co-ordinate of vertex
+    Double_t mFixedZ; //!< Z co-ordinate of vertex
 
 };
 
 /***************************************************************************
 *
 * $Log$
+* Revision 1.2  2006/05/10 14:35:00  jeromel
+* Changed VertexId to new enum, added doxygen doc
+*
 * Revision 1.1  2006/05/03 22:11:10  lbarnby
 * Initial version of fixed position vertex finder and option in maker to switch it on
 *
