@@ -101,7 +101,7 @@
 class StEvent;
 class StTrack;
 class TMinuit;
-
+class StDcaGeometry;
 class StMinuitVertexFinder: public StGenericVertexFinder {
 public:
     StMinuitVertexFinder();
@@ -129,7 +129,7 @@ public:
     void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
 
 private:
-    enum {kFlagDcaz = 1, kFlagCTBMatch = 2, kFlagBEMCMatch = 4, kFlagCrossMembrane = 8};
+    enum  {kFlagDcaz = 1, kFlagCTBMatch = 2, kFlagBEMCMatch = 4, kFlagCrossMembrane = 8};
 
     bool accept(StTrack*) const;   // track filter
     void  fillBemcHits(StEvent *);
@@ -140,8 +140,10 @@ private:
 
     static void fcn(int&, double*, double&, double*, int); // fit function
     static void fcn1D(int&, double*, double&, double*, int); // fit function
+    static Double_t Chi2atVertex(StThreeVectorD &vtx);
     
     bool                   mUseITTF;          // Use only tracks with ITTF encoded method
+    static bool            mUseDCA;           // Use DCA track paramters
     UInt_t                 mFlagBase;         // ITTF track flag
     bool                   mRequireCTB;       // Set maker to use CTB
     unsigned int           mMinNumberOfFitPointsOnTrack;
@@ -156,6 +158,7 @@ private:
     Int_t                  mNSeed;
     Float_t                mSeedZ[maxSeed];
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
+    static vector<StDcaGeometry*>   mDCAs;
     static vector<StPhysicalHelixD> mHelices;
     static vector<unsigned short>   mHelixFlags;
     static vector<double>           mSigma;
@@ -187,6 +190,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2006/05/10 17:16:21  mvl
+ * Added some comments to describe changes for multiple veretx finding (most importantly: ranking system)
+ *
  * Revision 1.4  2006/05/09 17:51:05  mvl
  * Added protection against event->emcCollection()==0
  *
