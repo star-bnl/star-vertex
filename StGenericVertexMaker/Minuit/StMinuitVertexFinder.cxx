@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.8  2006/05/31 04:09:52  fisyak
+ * Use dca track parameters for primary vertex fit
+ *
  * Revision 1.7  2006/05/09 17:51:05  mvl
  * Added protection against event->emcCollection()==0
  *
@@ -512,7 +515,7 @@ StMinuitVertexFinder::fit(StEvent* event)
 	  mWidthScale = 0.1;// 1./TMath::Sqrt(5.);
 	  StDcaGeometry* gDCA = g->dcaGeometry();
 	  if (! gDCA) continue;
-	  if (gDCA->impact() >  mRImpactMax) continue;
+	  if (TMath::Abs(gDCA->impact()) >  mRImpactMax) continue;
 	  mDCAs.push_back(gDCA);
 // 	  StPhysicalHelixD helix = gDCA->helix(); 
 // 	  mHelices.push_back(helix);
