@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.9  2006/06/26 13:25:15  fisyak
+ * gDCA->impact() has the sign, thanks Marco for finding this
+ *
  * Revision 1.8  2006/05/31 04:09:52  fisyak
  * Use dca track parameters for primary vertex fit
  *
@@ -370,7 +373,7 @@ void StMinuitVertexFinder::calculateRanks() {
     if (nVtxTrackTot) 
       n_bemc_expected = (1-0.25*(1-(float)primV->numTracksUsedInFinder()/nVtxTrackTot))*nBemcMatchTot; 
 
-    float n_cross_expected = abs(primV->position().z())*0.0020*primV->numTracksUsedInFinder(); // old coeff 0.0016 with dca 3 and 10 points on track
+    float n_cross_expected = fabs(primV->position().z())*0.0020*primV->numTracksUsedInFinder(); // old coeff 0.0016 with dca 3 and 10 points on track
 
     if (mDebugLevel)
       cout << "vertex z " << primV->position().z() << " dip expected " << avg_dip_expected << " bemc " << n_bemc_expected << " cross " << n_cross_expected << endl;
