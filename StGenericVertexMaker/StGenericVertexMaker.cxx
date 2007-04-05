@@ -22,15 +22,13 @@
 #include "StMessMgr.h"
 
 #include "StGenericVertexFinder.h"
+#include "StMinuitVertexFinder.h"
 #include "StppLMVVertexFinder.h"
 #include "StFixedVertexFinder.h"
 
+#include "StGenericVertexMaker/StiPPVertex/StPPVertexFinder.h"
+
 #include "StTreeMaker/StTreeMaker.h"
-
-// Vertex finder implemtations
-#include "Minuit/StMinuitVertexFinder.h"
-#include "StiPPVertex/StPPVertexFinder.h"
-
 
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
 #include "tables/St_vertexSeed_Table.h" //
@@ -81,7 +79,7 @@ StGenericVertexMaker::~StGenericVertexMaker()
   m_Mode = 0x10    PPV without CTB matching
   m_Mode = 0x20    Fixed vertex finder
   m_Mode = 0x40    Fixed vertex finder, read from MC event
- 
+
   Default          Minuit  (to preserver backward compatibility)
 
   All VertexFinder-s need to have the same methods (like DoUseITTF()
@@ -93,45 +91,44 @@ StGenericVertexMaker::~StGenericVertexMaker()
 Int_t StGenericVertexMaker::Init()
 {
   // setup params
+  EtaCut=1.4; // Sensible default cut
 
-  LOG_INFO << "StGenericVertexMaker::Init: m_Mode=" <<  m_Mode <<" m_Mode2=" <<  m_Mode2 <<  endm;
+  gMessMgr->Info() << "StGenericVertexMaker::Init: m_Mode=" <<  m_Mode <<" m_Mode2=" <<  m_Mode2 <<  endm;
+  
   bool isMinuit=false;
-
   if ( m_Mode & 0x1){
     theFinder= new StMinuitVertexFinder();
     isMinuit=true;
-
   } else if ( m_Mode & 0x2){
     theFinder= new StppLMVVertexFinder();
     theFinder->SetMode(0);                 // this mode is an internal to ppLMV option switch
-
   } else if ( m_Mode & 0x4){
     theFinder= new StppLMVVertexFinder();
     theFinder->SetMode(1);                 // this mode is an internal to ppLMV option switch
 
-  } else if ( m_Mode & 0x8 ||  m_Mode & 0x10){ // 2 version of PPV w/ & w/o CTB
-    LOG_INFO << "StGenericVertexMaker::Init: uses PPVertex finder"<<  endm;
+  } else if ( m_Mode & 0x8 || m_Mode & 0x10 ){ // 2 version of PPV w/ & w/o CTB
+    gMessMgr->Info() << "StGenericVertexMaker::Init: uses PPVertex finder"<<  endm;
     theFinder= new StPPVertexFinder();
-    if ( m_Mode & 0x10) ((StPPVertexFinder*) theFinder)->useCTB(false);	
+    // if (m_Mode & 0x10 ) ((StPPVertexFinder*) theFinder)->useCTB(false);
+    if (m_Mode & 0x10 ) gMessMgr->Info() << "WARNING - Vertex Option NOT IMPLEMENTED - Reverted to useCTB" << endm;
+     
     if(GetMaker("emcY2")) {//very dirty, but detects if it is M-C or real data
       ((StPPVertexFinder*) theFinder)->setMC(true);
     }
-
   } else if ( m_Mode & 0x20 || m_Mode & 0x40) {
-      theFinder = new StFixedVertexFinder();
-      if (m_Mode & 0x40){
-	LOG_INFO << "StGenericVertexMaker::Init: fixed vertex using MC vertex" << endm;
+     theFinder = new StFixedVertexFinder();
+     if ( m_Mode & 0x40){
+	gMessMgr->Info() << "StGenericVertexMaker::Init: fixed vertex using MC vertex" << endm;
 	theFinder->SetMode(1);
-      } else {
-	LOG_INFO << "StGenericVertexMaker::Init: fixed vertex 'finder' selected" << endm;
-      }
-
+     } else {
+	gMessMgr->Info() << "StGenericVertexMaker::Init: fixed vertex 'finder' selected" << endm;
+     }
+   
   } else {
     // Later, this would NEVER make multiple possible vertex
     // finder unlike for option 0x1 .
     theFinder= new StMinuitVertexFinder();
     isMinuit=true;
-
   }
   
   if(isMinuit) { // this is ugly, one should abort at 'else' above, Jan
@@ -177,11 +174,11 @@ Int_t StGenericVertexMaker::InitRun(int runnumber){
      dydz = vSeed->dydz;
      }
      else {
-       LOG_INFO << "StGenericVertexMaker -- No Database for beamline" << endm;
+       gMessMgr->Info() << "StGenericVertexMaker -- No Database for beamline" << endm;
      }
-     LOG_INFO << "BeamLine Constraint: " << endm;
-     LOG_INFO << "x(z) = " << x0 << " + " << dxdz << " * z" << endm;
-     LOG_INFO << "y(z) = " << y0 << " + " << dydz << " * z" << endm;
+     gMessMgr->Info() << "BeamLine Constraint: " << endm;
+     gMessMgr->Info() << "x(z) = " << x0 << " + " << dxdz << " * z" << endm;
+     gMessMgr->Info() << "y(z) = " << y0 << " + " << dydz << " * z" << endm;
      theFinder->UseVertexConstraint(x0,y0,dxdz,dydz,0.0001);
   }
   return StMaker::InitRun(runnumber);
@@ -191,10 +188,10 @@ Int_t StGenericVertexMaker::InitRun(int runnumber){
 //_____________________________________________________________________________
 Int_t StGenericVertexMaker::Finish()
 {
-
-  LOG_INFO << "StGenericVertexMaker::Finish " <<GetName() <<endm;
-  LOG_INFO << " Total events: " << nEvTotal << endm;
-  LOG_INFO << " Good events:  " << nEvGood  << endm;
+  //LSB TODO change over to using message manager
+  gMessMgr->Info() << "StGenericVertexMaker::Finish " <<GetName() <<endm;
+  gMessMgr->Info() << " Total events: " << nEvTotal << endm;
+  gMessMgr->Info() << " Good events:  " << nEvGood  << endm;
 
 
   //LSB TODO Leave this for now. Should really be using STAR/ROOT I/O scheme?
@@ -204,7 +201,7 @@ Int_t StGenericVertexMaker::Finish()
    out.Close();
   }
   
-  if(theFinder) theFinder->Finish();  
+  theFinder->Finish();  
   return  kStOK;
 }
 
@@ -220,7 +217,7 @@ Bool_t StGenericVertexMaker::DoFit(){
   if (theFinder->fit(event)) {
     theFinder->printInfo();
   }  else {
-    LOG_ERROR << "StGenericVertexMaker::DoFit: vertex fit failed, no vertex." << endm;
+    gMessMgr->Error() << "StGenericVertexMaker::DoFit: vertex fit failed, no vertex." << endm;
     return kFALSE;
   }
 
@@ -239,8 +236,8 @@ Int_t StGenericVertexMaker::Make()
   primV  = NULL;
   mEvent = NULL;
   mEvent = (StEvent *)GetInputDS("StEvent");
-  LOG_DEBUG << "StGenericVertexMaker::Make: StEvent pointer " << mEvent << endm;
-  LOG_DEBUG << "StGenericVertexMaker::Make: external find use " << externalFindUse << endm;
+  gMessMgr->Debug() << "StGenericVertexMaker::Make: StEvent pointer " << mEvent << endm;
+  gMessMgr->Debug() << "StGenericVertexMaker::Make: external find use " << externalFindUse << endm;
 
   if(!externalFindUse){
     DoFit();
@@ -311,3 +308,33 @@ void StGenericVertexMaker::MakeEvalNtuple(){ // only for Minuit vertex finder
 }
 
 //____________________________________________________________________________
+// LSB Commented out since moved to finder
+// void const StGenericVertexMaker::FillStEvent(){
+//   //Adds the vertex to StEvent (currently as a primary)
+//   // Here we invent our own flag and other data to put in
+//   // In real life we have to get it from somewhere (as done for position)
+//   UInt_t minuitFlag=1000;
+//   Float_t cov[6] = {0.1,0.2,0.3,0.4,0.5,0.6};
+//   Float_t xSq = 5.43;
+//   Float_t probXSq = 0.2468;
+
+//   StPrimaryVertex* primV = new StPrimaryVertex();
+//   primV->setPosition(theFinder->result());    //requires StThreeVectorF
+//   primV->setFlag(minuitFlag+theFinder->status());       //requires unsigned int
+//   primV->setCovariantMatrix(cov);      //requires float[6]
+//   primV->setChiSquared(xSq);           //requires float
+//   primV->setProbChiSquared(probXSq);       //requires float
+//   //primV->setParent();  //requires StTrack* but we won't use this, also
+//   //addDaughter(StTrack*) and removeDaughter(StTrack*) not used here
+//   //addDaughter would be used when filling primary tracks in later maker
+
+//   mEvent->addPrimaryVertex(primV);
+//   gMessMgr->Debug()
+//     << "StGenericVertexMaker::FillStEvent: Added new primary vertex" << endm;
+
+// }
+
+//------------  N O T   U S E D   -------------------------------
+
+
+
