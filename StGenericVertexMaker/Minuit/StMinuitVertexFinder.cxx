@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.10  2007/01/05 19:55:20  jeromel
+ * abs() is wrong, should have been fabs()
+ *
  * Revision 1.9  2006/06/26 13:25:15  fisyak
  * gDCA->impact() has the sign, thanks Marco for finding this
  *
@@ -830,9 +833,13 @@ StMinuitVertexFinder::fit(StEvent* event)
 } 
 //________________________________________________________________________________
 Double_t StMinuitVertexFinder::Chi2atVertex(StThreeVectorD &vtx) {
+static int nCall=0; nCall++;
   Double_t f = 0;
   Double_t e, s;
   nCTBHits = 0;
+  if (fabs(vtx.x())> 10) return 1e6;
+  if (fabs(vtx.y())> 10) return 1e6;
+  if (fabs(vtx.z())>300) return 1e6;
   if (! mUseDCA) {
     for (unsigned int i=0; i<mHelices.size(); i++) {
       if ((mHelixFlags[i] & kFlagDcaz) && (!requireCTB||(mHelixFlags[i] & kFlagCTBMatch))) {
@@ -869,14 +876,21 @@ Double_t StMinuitVertexFinder::Chi2atVertex(StThreeVectorD &vtx) {
 	if (sgn < 0) Imp = - Imp;
 	Double_t Z  = dcaP.z();
 #endif
-	const Float_t *errMatrix = gDCA->errMatrix();
 #if 0
+	const Float_t *errMatrix = gDCA->errMatrix();
 	Double_t d = errMatrix[0]*errMatrix[2] - errMatrix[1]*errMatrix[1];
 	if (TMath::Abs(d) < 1e-7) continue;
 	Double_t a[3] = {errMatrix[2]/d, -errMatrix[1]/d, errMatrix[0]/d};
 // 	Double_t chi2     = a[0]*Imp*Imp + 2*a[1]*Imp*Z + a[2]*Z*Z; 
 #endif
-	Double_t chi2     = e*e/(errMatrix[0] + errMatrix[2]);
+//VP version
+//VP	Double_t chi2     = e*e/(errMatrix[0] + errMatrix[2]);
+static int nCall=0;
+nCall++;
+        double err2;
+        double chi2 = gDCA->thelix().Dca(&(vtx.x()),&err2);
+        chi2*=chi2/err2;
+//EndVP
 	Double_t scale = 1./(mWidthScale*mWidthScale);
 	f += scale*(1. - TMath::Exp(-chi2/scale)); // robust potential
 	//	f -= scale*TMath::Exp(-chi2/scale); // robust potential
