@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.7  2004/09/09 22:45:56  fisyak
+ * Add protection for missing StTriggerData
+ *
  * Revision 1.6  2004/03/02 15:52:16  lbarnby
  * Completely updated to use StTriggerData from StEvent
  *
@@ -37,7 +40,6 @@
 
 #include "StEventTypes.h"
 #include "StMessMgr.h"
-#include "StChain.h"
 #include "St_DataSet.h"
 #include "St_DataSetIter.h"
 #include "ZdcCalPars.h"
