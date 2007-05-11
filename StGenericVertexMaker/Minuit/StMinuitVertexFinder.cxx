@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.11  2007/04/26 04:31:43  perev
+ * More precise Chi2 calculation
+ *
  * Revision 1.10  2007/01/05 19:55:20  jeromel
  * abs() is wrong, should have been fabs()
  *
@@ -141,10 +144,10 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
   LOG_INFO << "StMinuitVertexFinder::StMinuitVertexFinder is in use." << endm;
   mBeamHelix =0;
 
-  mMinNumberOfFitPointsOnTrack = 15; 
+  mMinNumberOfFitPointsOnTrack = 20; 
   mDcaZMax = 3;     // Note: best to use integer numbers
   mMinTrack = 5;
-  mRImpactMax = 2;
+  mRImpactMax = 1.5;
 
   mMinuit = new TMinuit(3);         
   mMinuit->SetFCN(&StMinuitVertexFinder::fcn);
@@ -503,6 +506,10 @@ StMinuitVertexFinder::fit(StEvent* event)
 	  mHelixFlags.push_back(1);
 	  
 	  Double_t path=(TMath::ATan2(-helix.ycenter(),-helix.xcenter())-helix.phase())/2/TMath::Pi();
+          if ( path < -0.5 )
+            path += 1;
+          if ( path > 0.5 )
+            path -= 1;
 	  path *= helix.h()*helix.period();
 	  StThreeVectorD tmp_pos = helix.at(path);
 	  
@@ -714,9 +721,9 @@ StMinuitVertexFinder::fit(StEvent* event)
       if (!mExternalSeedPresent && fabs(seed_z-mSeedZ[iSeed]) > mDcaZMax)
 	LOG_WARN << "Vertex walks during fits: seed was " << mSeedZ[iSeed] << ", vertex at " << seed_z << endl;
 
-      if (fabs(seed_z - old_vtx_z) < 0.1) {
+      if (fabs(seed_z - old_vtx_z) < mDcaZMax) {
 	if (mDebugLevel) 
-	  cout << "Vertices too close (<0.1). Skipping" << endl;
+	  cout << "Vertices too close (<mDcaZMax). Skipping" << endl;
 	continue;
       }
 
