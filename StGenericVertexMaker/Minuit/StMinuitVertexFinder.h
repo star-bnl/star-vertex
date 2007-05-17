@@ -111,6 +111,7 @@ public:
     int             fit(StEvent*);       
     void            printInfo(ostream& = cout) const;
     void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
+    virtual void           InitRun  (int runumber);
     void           Clear();
 
 
@@ -190,6 +191,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.6  2006/05/31 04:09:52  fisyak
+ * Use dca track parameters for primary vertex fit
+ *
  * Revision 1.5  2006/05/10 17:16:21  mvl
  * Added some comments to describe changes for multiple veretx finding (most importantly: ranking system)
  *
