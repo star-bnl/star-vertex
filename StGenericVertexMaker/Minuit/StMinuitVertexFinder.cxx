@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.14  2007/06/04 22:10:23  fine
+ * replace cout with LOG_INFO
+ *
  * Revision 1.13  2007/05/17 01:50:34  fisyak
  * Use PrimaryVertexCuts table
  *
@@ -186,7 +189,7 @@ void StMinuitVertexFinder::InitRun(int runumber) {
   VertexCuts_st *cuts = Cuts->GetTable();
   mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack;
   mDcaZMax                     = cuts->DcaZMax;     // Note: best to use integer numbers
-  mMinTrack                    = cuts->MinTrack;
+  mMinTrack                    = ( (GetMode() == 1) ? 1 : cuts->MinTrack );
   mRImpactMax                  = cuts->RImpactMax;
   LOG_INFO << "Set cuts: MinNumberOfFitPointsOnTrack = " << mMinNumberOfFitPointsOnTrack
 	   << " DcaZMax = " << mDcaZMax
@@ -242,7 +245,7 @@ int StMinuitVertexFinder::findSeeds() {
 	      nTrkZ++;
 	    }
 	  }
-	  if (nTrkZ > mMinTrack) {
+	  if (nTrkZ >= mMinTrack) {
 	    if (mDebugLevel) 
 	      LOG_INFO << "Seed " << mNSeed << ", z " << seed_z << " nTrk " << nTrkZ << " meanZ/nTrkZ " << meanZ/nTrkZ << endm;
 	    seed_z = meanZ/nTrkZ;
