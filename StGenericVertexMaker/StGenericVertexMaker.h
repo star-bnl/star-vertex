@@ -33,6 +33,7 @@ class StGenericVertexMaker : public StMaker
   Bool_t  useCTB;
   Bool_t  eval;
   Bool_t  externalFindUse; /// Finder will by called externally (by StiMaker)
+  Int_t   minTracks;
 
   TNtuple *mEvalNtuple;    /// Ntuple for evaluation purposes
 
@@ -69,6 +70,7 @@ class StGenericVertexMaker : public StMaker
   inline void SetInternalFind()		{externalFindUse= kFALSE;}
   inline void SetUseITTF()		{use_ITTF       = kTRUE; }
   inline void SetDoNotUseITTF()		{use_ITTF       = kFALSE;}
+  inline void SetMinimumTracks(int n)   {minTracks      = n;}
 
   virtual const char *GetCVS() const
     {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}

@@ -128,6 +128,7 @@ public:
     void                   DoNotUseITTF(){ mUseITTF=kFALSE;}
     void                   setFlagBase();
     void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
+    void                   SetMinimumTracks(int n) {mMinTrack = n;}
 
 private:
     enum  {kFlagDcaz = 1, kFlagCTBMatch = 2, kFlagBEMCMatch = 4, kFlagCrossMembrane = 8};
@@ -191,6 +192,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.7  2007/05/17 01:50:35  fisyak
+ * Use PrimaryVertexCuts table
+ *
  * Revision 1.6  2006/05/31 04:09:52  fisyak
  * Use dca track parameters for primary vertex fit
  *
