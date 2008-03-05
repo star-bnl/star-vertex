@@ -12,8 +12,8 @@
 #include "StPhysicalHelixD.hh"
 #include <vector>
 
-class St_ev0_ev0par2;
-class ev0_ev0par2_st;
+class St_V0FinderParameters;
+class V0FinderParameters_st;
 class StEvent;
 class StV0Vertex;
 class StTrack;
@@ -178,9 +178,9 @@ class StV0FinderMaker : public StMaker {
   
  protected:
   virtual Int_t Prepare();         //!
-  St_ev0_ev0par2* ev0par2;         //!
-  ev0_ev0par2_st* pars;            //!
-  ev0_ev0par2_st* pars2;           //!
+  St_V0FinderParameters* v0pars;   //!
+  V0FinderParameters_st* pars;     //!
+  V0FinderParameters_st* pars2;    //!
   StEvent* event;                  //!
   StV0Vertex* v0Vertex;            //!
   
@@ -188,7 +188,6 @@ class StV0FinderMaker : public StMaker {
   StMuDstMaker* mMuDstMaker;       //!
   //end Betty
   
-  double ptV0sq;                   //! 
   double Bfield;		   //!
   unsigned short trks;		   //!
   Bool_t prepared;		   //!
@@ -235,6 +234,9 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.10  2004/08/26 03:00:46  genevb
+// Improved vector size management
+//
 // Revision 1.9  2004/08/11 21:26:38  genevb
 // Trade static arrays for vectors
 //
