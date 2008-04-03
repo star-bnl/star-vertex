@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.16  2007/10/23 05:29:44  genevb
+ * Replace minimum 1 track vertex code with minimum N tracks
+ *
  * Revision 1.15  2007/10/22 20:43:02  genevb
  * Allow 1 track vertex-finding
  *
@@ -118,6 +121,10 @@
 #include "StEventTypes.h"
 #include "StEnumerations.h"
 #include "TMinuit.h"
+#if 0
+#include "TH1K.h"
+#include "TSpectrum.h"
+#endif
 #include "StGlobals.hh"
 #include "SystemOfUnits.h"
 #include "StCtbMatcher.h"
@@ -125,7 +132,7 @@
 #include <math.h>
 #include "StEmcUtil/geometry/StEmcGeom.h"
 #include "StDcaGeometry.h"
-#include "tables/St_VertexCuts_Table.h"
+#include "St_VertexCutsC.h"
 #include "StMaker.h"
 vector<StDcaGeometry*>   StMinuitVertexFinder::mDCAs;
 vector<StPhysicalHelixD> StMinuitVertexFinder::mHelices;
@@ -175,8 +182,8 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
 }
  
 
- StMinuitVertexFinder::~StMinuitVertexFinder()
- {
+StMinuitVertexFinder::~StMinuitVertexFinder()
+{
    delete mBeamHelix; mBeamHelix=0;
    LOG_WARN << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
    //delete mMinuit;
@@ -185,19 +192,17 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
    mHelixFlags.clear();
    mZImpact.clear();
    mSigma.clear();
- }
+}
 //________________________________________________________________________________
 void StMinuitVertexFinder::InitRun(int runumber) {
-  St_VertexCuts *Cuts = (St_VertexCuts *) StMaker::GetChain()->GetDataBase("Calibrations/tracker/PrimaryVertexCuts");
-  assert(Cuts);
-  VertexCuts_st *cuts = Cuts->GetTable();
-  mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack;
-  mDcaZMax                     = cuts->DcaZMax;     // Note: best to use integer numbers
-  mMinTrack                    = (mMinTrack<0 ? cuts->MinTrack : mMinTrack);
-  mRImpactMax                  = cuts->RImpactMax;
+  St_VertexCutsC *cuts = St_VertexCutsC::instance();
+  mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack();
+  mDcaZMax                     = cuts->DcaZMax();     // Note: best to use integer numbers
+  mMinTrack                    = (mMinTrack<0 ? cuts->MinTrack() : mMinTrack);
+  mRImpactMax                  = cuts->RImpactMax();
   LOG_INFO << "Set cuts: MinNumberOfFitPointsOnTrack = " << mMinNumberOfFitPointsOnTrack
 	   << " DcaZMax = " << mDcaZMax
-	   << " MinTrack = " << mMinTrack
+	   << " MinTrack = " << mMinTrack  
 	   << " RImpactMax = " << mRImpactMax
 	   << endm;
 }
@@ -761,7 +766,6 @@ StMinuitVertexFinder::fit(StEvent* event)
       memset(cov,0,sizeof(cov));
     
       Double_t val, verr;
-#if 1
       if (!mVertexConstrain) {
 	XVertex = StThreeVectorD(mMinuit->fU[0],mMinuit->fU[1],mMinuit->fU[2]);
 	Double_t emat[9];
@@ -785,29 +789,6 @@ StMinuitVertexFinder::fit(StEvent* event)
 	XVertex.setX(beamX(val));  cov[0]=0.1; // non-zero error values needed for Sti
 	XVertex.setY(beamY(val));  cov[2]=0.1;
       }
-#else
-      if (!mVertexConstrain) {
-	mMinuit->GetParameter(0, val, verr); 
-	XVertex.setX(val);  cov[0]=verr*verr;
-	
-	mMinuit->GetParameter(1, val, verr); 
-	XVertex.setY(val);  cov[2]=verr*verr;
-
-	mMinuit->GetParameter(2, val, verr); 
-	XVertex.setZ(val);  cov[5]=verr*verr;
-      
-      }
-      else {
-	mMinuit->GetParameter(0, val, verr); 
-	XVertex.setZ(val);  cov[5]=verr*verr;
-      
-	// LSB Really error in x and y should come from error on constraint
-	// At least this way it is clear that those were fixed paramters
-	XVertex.setX(beamX(val));  cov[0]=0.1; // non-zero error values needed for Sti
-	XVertex.setY(beamY(val));  cov[2]=0.1;
-      }
-#endif
-
       StPrimaryVertex primV;
       primV.setPosition(XVertex);
       primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
