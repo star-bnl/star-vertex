@@ -22,6 +22,7 @@ class StXiFinderMaker : public StV0FinderMaker {
   virtual ~StXiFinderMaker();
 
   virtual Int_t Init();
+  virtual Int_t InitRun(int runumber);
   virtual Int_t Make();
 
   virtual Bool_t UseV0();
@@ -44,4 +45,7 @@ class StXiFinderMaker : public StV0FinderMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.2  2003/04/30 19:15:55  faivre
+// Fix storage part. ITTF vs TPT Xis.
+//
 //
