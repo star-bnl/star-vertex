@@ -126,6 +126,7 @@ public:
     int            statusMin() const {return mStatusMin;}     // Minuit status flag
     void                   DoUseITTF(){    mUseITTF=kTRUE; }
     void                   DoNotUseITTF(){ mUseITTF=kFALSE;}
+    void                   useOldBEMCRank() { mUseOldBEMCRank = kTRUE; }
     void                   setFlagBase();
     void                   SetFitPointsCut(int fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
     void                   SetMinimumTracks(int n) {mMinTrack = n;}
@@ -146,6 +147,7 @@ private:
     
     bool                   mUseITTF;          // Use only tracks with ITTF encoded method
     static bool            mUseDCA;           // Use DCA track paramters
+    bool                   mUseOldBEMCRank;   // Use old BEMC rank calculation (Cu+Cu production)
     UInt_t                 mFlagBase;         // ITTF track flag
     bool                   mRequireCTB;       // Set maker to use CTB
     unsigned int           mMinNumberOfFitPointsOnTrack;
@@ -192,6 +194,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.8  2007/10/23 05:29:44  genevb
+ * Replace minimum 1 track vertex code with minimum N tracks
+ *
  * Revision 1.7  2007/05/17 01:50:35  fisyak
  * Use PrimaryVertexCuts table
  *

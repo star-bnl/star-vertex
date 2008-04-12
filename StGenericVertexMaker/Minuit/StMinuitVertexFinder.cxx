@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.17  2008/04/03 16:52:40  fisyak
+ * Clean ups, use VertexCuts Chair
+ *
  * Revision 1.16  2007/10/23 05:29:44  genevb
  * Replace minimum 1 track vertex code with minimum N tracks
  *
@@ -177,6 +180,7 @@ StMinuitVertexFinder::StMinuitVertexFinder() {
   requireCTB = false;
   mUseITTF   = false;
   mUseDCA    = false;
+  mUseOldBEMCRank = false;
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
   mMinTrack  = -1;
 }
@@ -409,8 +413,12 @@ void StMinuitVertexFinder::calculateRanks() {
     // expected values based on Cu+Cu data
     float avg_dip_expected = -0.0033*primV->position().z();
     float n_bemc_expected = 0;
-    if (nVtxTrackTot) 
-      n_bemc_expected = (1-0.25*(1-(float)primV->numTracksUsedInFinder()/nVtxTrackTot))*nBemcMatchTot; 
+    if (nVtxTrackTot) {
+      if (mUseOldBEMCRank) 
+        n_bemc_expected = (1-0.25*(1-(float)primV->numTracksUsedInFinder()/nVtxTrackTot))*nBemcMatchTot; 
+      else
+        n_bemc_expected = (float)primV->numTracksUsedInFinder()/nVtxTrackTot*nBemcMatchTot; 
+    }
 
     float n_cross_expected = fabs(primV->position().z())*0.0020*primV->numTracksUsedInFinder(); // old coeff 0.0016 with dca 3 and 10 points on track
 
@@ -428,7 +436,9 @@ void StMinuitVertexFinder::calculateRanks() {
 	// at small multiplicity
 	sigma = 0.75;
       }
-      rank_bemc = (primV->numMatchesWithBEMC() - n_bemc_expected)/sigma+0.5; // distribution is asymmetric; add 0.5 
+      rank_bemc = (primV->numMatchesWithBEMC() - n_bemc_expected)/sigma;
+      if (mUseOldBEMCRank)
+        rank_bemc += 0.5; // distribution is asymmetric; add 0.5 
     }
     if (rank_bemc < -5)
       rank_bemc = -5;
