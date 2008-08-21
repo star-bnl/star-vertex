@@ -30,6 +30,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void matchTrack2EEMC(const StiKalmanTrack*, TrackData &t, float z);
   void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t, float rxy);
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &t);
+  bool isPostCrossingTrack(const StiKalmanTrack* track);
   vector<TrackData>  mTrackData;
   vector<VertexData> mVertexData;
   bool buildLikelihood();
@@ -53,6 +54,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMinFitPfrac;    // nFit/nPossible
   bool   isMC;            // flag minor differences between Data & M-C
   bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
+  bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
 
   // beam line
   double          mX0  ;     // starting point of beam parameterization
@@ -77,6 +79,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
 public:
   void setMC(bool x=true){isMC=x;}
   void useCTB(bool x=true){mUseCtb=x;}
+  void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
   void Finish();
 
   TH1F *hA[mxH];
@@ -100,6 +103,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.7  2006/03/12 17:01:01  jeromel
+ * Minor change + use ppvNoCtbVertexFinder
+ *
  * Revision 1.6  2006/03/11 04:12:50  balewski
  * 2 changes in preparation for 2006 data processing:
  * - CTB matching  ON/OFF switch activated by m_Mode 0x8 or 0x10
