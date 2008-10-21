@@ -55,6 +55,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool   isMC;            // flag minor differences between Data & M-C
   bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
+  int    mStoreUnqualifiedVertex; // set the max # of vertices, sorted by rank
 
   // beam line
   double          mX0  ;     // starting point of beam parameterization
@@ -103,6 +104,19 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.8  2008/08/21 22:09:31  balewski
+ * - In matchTrack2Membrane()
+ *   - Cut on hit max R chanegd from 190 to 199cm
+ *   - Fixed logic failure of counting possible hits
+ *   - Fixed logic failure of crossing CM for certain pattern of hits
+ * - Added a new function bool isPostCrossingTrack()
+ *   - it returns true if track have 2 or more hits in wrong z
+ * - Use isPostCrossingTrack() in fit()
+ * - Added switch setDropPostCrossingTrack(bool), defaulted to true
+ * All changes tested & implemented by Akio in preparation for 2008 pp production.
+ * The key change (removing PostCrossingTrack) is in response to the change of the TPC cluster finder
+ * - now we use the on-line version which allows for longer range of TPC time buckets to be used.
+ *
  * Revision 1.7  2006/03/12 17:01:01  jeromel
  * Minor change + use ppvNoCtbVertexFinder
  *

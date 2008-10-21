@@ -106,6 +106,8 @@ StPPVertexFinder::Init() {
   mMinMatchTr   = 2;    // required to accept vertex              
   mMinAdcEemc   = 5;    // chan, MIP @ 6-18 ADC depending on eta
 
+  mStoreUnqualifiedVertex=5; // extension requested by Akio, October 2008, set to 0 do disable it
+
   if(isMC) {
     mMinAdcBemc =7; //ideal BTOW gain 60 GeV ET @ 3500 ADC
   }
@@ -184,6 +186,7 @@ StPPVertexFinder::InitRun(int runnumber){
     <<"\n bool   isMC ="<<isMC
     <<"\n bool useCtb ="<<mUseCtb
     <<"\n bool DropPostCrossingTrack ="<<mDropPostCrossingTrack
+    <<"\n Store # of UnqualifiedVertex ="<<mStoreUnqualifiedVertex
     <<"\n"
     <<endm; 
 
@@ -503,7 +506,7 @@ StPPVertexFinder::fit(StEvent* event) {
 
   LOG_INFO << "PPV::fit() nEve="<<mTotEve<<" , "<<nmAny<<" traks with good DCA, matching: CTB="<<kCtb<<" BEMC="<<kBemc<<" EEMC="<<kEemc<<endm;
 
-  if(nmAny<mMinMatchTr){
+  if(nmAny<mMinMatchTr &&  mStoreUnqualifiedVertex<=0){
     LOG_INFO << "StPPVertexFinder::fit() nEve="<<mTotEve<<" Quit, to few matched tracks"<<endm;
     printInfo();
     return 0;
@@ -517,6 +520,7 @@ StPPVertexFinder::fit(StEvent* event) {
   // ...................... search for multiple vertices 
   //............................................................
 
+  int nBadVertex=0;
   int vertexID=0;
   while(1) {
     if(! buildLikelihood() ) break;
@@ -524,11 +528,15 @@ StPPVertexFinder::fit(StEvent* event) {
     V.id=++vertexID;
     if(! findVertex(V)) break;
     bool trigV=evalVertex(V);   // V.print();
-    if(!trigV) continue;
+    if(!trigV) {
+      if( nBadVertex>=mStoreUnqualifiedVertex)  continue; // drop this vertex
+      nBadVertex++;
+      V.Lmax-=1e6; // preserve this unqalified vertex for Akio and deposit 1 cent on Jan's bank account (optional) 
+    }
     mVertexData.push_back(V);
   }
 
-  LOG_INFO << "StPPVertexFinder::fit(totEve="<<mTotEve<<") "<<mVertexData.size()<<" vertices found\n" << endm;
+  LOG_INFO << "StPPVertexFinder::fit(totEve="<<mTotEve<<") "<<mVertexData.size()<<" vertices found, nBadVertex=" <<nBadVertex<< endm;
   
   if(mVertexData.size()>0)  hA[0]->Fill(8);
   if(mVertexData.size()>1)  hA[0]->Fill(9);
@@ -612,7 +620,7 @@ StPPVertexFinder::buildLikelihood(){
   c.Print(tt+".ps");
 #endif
 
-  return n1>=mMinMatchTr;
+  return (n1>=mMinMatchTr) ||  (mStoreUnqualifiedVertex>0 );
 }
 
 //==========================================================
@@ -1172,6 +1180,19 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.29  2008/08/21 22:09:31  balewski
+ * - In matchTrack2Membrane()
+ *   - Cut on hit max R chanegd from 190 to 199cm
+ *   - Fixed logic failure of counting possible hits
+ *   - Fixed logic failure of crossing CM for certain pattern of hits
+ * - Added a new function bool isPostCrossingTrack()
+ *   - it returns true if track have 2 or more hits in wrong z
+ * - Use isPostCrossingTrack() in fit()
+ * - Added switch setDropPostCrossingTrack(bool), defaulted to true
+ * All changes tested & implemented by Akio in preparation for 2008 pp production.
+ * The key change (removing PostCrossingTrack) is in response to the change of the TPC cluster finder
+ * - now we use the on-line version which allows for longer range of TPC time buckets to be used.
+ *
  * Revision 1.28  2008/04/03 16:24:31  fisyak
  * replace sti->getToolkit() by StiToolkit::instance()
  *
