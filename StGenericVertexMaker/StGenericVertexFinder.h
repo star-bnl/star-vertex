@@ -29,6 +29,7 @@ class StGenericVertexFinder {
   virtual void           UseVertexConstraint(double, double, double, double, double)=0;
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
+  virtual void           UsePCT(bool usePCT = true);
 
   virtual void           printInfo(ostream& = cout) const=0;
 
@@ -61,6 +62,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.16  2006/04/26 15:37:04  jeromel
+// mVertexOrderMethod (To be tested)
+//
 // Revision 1.15  2006/04/08 00:18:10  mvl
 // Added member for debuglevel
 //

@@ -45,6 +45,12 @@ void StGenericVertexFinder::addVertex(StPrimaryVertex* vtx)
   mVertexList.push_back(*vtx);
 }
 //______________________________________________________________________________
+void StGenericVertexFinder::UsePCT(bool usePCT)
+{
+  LOG_WARN << "StGenericVertexFinder::UsePCT() not implemented for this vertex finder." << endm;
+  LOG_WARN << "StGenericVertexFinder::Expect Post-crossing tracks to be used by default in old finders." << endm;
+}
+//______________________________________________________________________________
 int StGenericVertexFinder::size() const
 {
   return mVertexList.size();
@@ -72,6 +78,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.12  2006/05/04 20:01:30  jeromel
+// Switched to logger
+//
 // Revision 1.11  2006/04/26 15:37:03  jeromel
 // mVertexOrderMethod (To be tested)
 //

@@ -28,9 +28,10 @@ class StGenericVertexMaker : public StMaker
 {
  private: 
   // control and cuts
-  Bool_t  use_ITTF;
-  Bool_t  usebeamline;
+  Bool_t  useITTF;
+  Bool_t  useBeamline;
   Bool_t  useCTB;
+  Bool_t  usePCT;
   Bool_t  eval;
   Bool_t  externalFindUse; /// Finder will by called externally (by StiMaker)
   Int_t   minTracks;
@@ -62,15 +63,17 @@ class StGenericVertexMaker : public StMaker
   int  GetMode2() 	{return m_Mode2; }
   inline StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
 
-  inline void UseBeamLine()		{usebeamline    = kTRUE; }
-  inline void DoNotUseBeamLine()	{usebeamline    = kFALSE;}
+  inline void UseBeamLine()		{useBeamline    = kTRUE; }
+  inline void DoNotUseBeamLine()	{useBeamline    = kFALSE;}
   inline void UseCTB()			{useCTB         = kTRUE; }
   inline void DoNotUseCTB()		{useCTB         = kFALSE;}
   inline void DoEval()			{eval           = kTRUE; }
   inline void SetInternalFind()		{externalFindUse= kFALSE;}
-  inline void SetUseITTF()		{use_ITTF       = kTRUE; }
-  inline void SetDoNotUseITTF()		{use_ITTF       = kFALSE;}
+  inline void SetUseITTF()		{useITTF       = kTRUE; }
+  inline void SetDoNotUseITTF()		{useITTF       = kFALSE;}
   inline void SetMinimumTracks(int n)   {minTracks      = n;}
+  inline void UsePCT()                  {usePCT         = kTRUE; }
+  inline void DoNotUsePCT()             {usePCT         = kFALSE; }
 
   virtual const char *GetCVS() const
     {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}

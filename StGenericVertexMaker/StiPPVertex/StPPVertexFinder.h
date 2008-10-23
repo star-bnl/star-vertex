@@ -80,6 +80,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
 public:
   void setMC(bool x=true){isMC=x;}
   void useCTB(bool x=true){mUseCtb=x;}
+  void usePCT(bool x=true){setDropPostCrossingTrack(!x);}
   void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
   void Finish();
 
@@ -104,6 +105,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.9  2008/10/21 19:23:06  balewski
+ * store unqualified vertices on Akio's request
+ *
  * Revision 1.8  2008/08/21 22:09:31  balewski
  * - In matchTrack2Membrane()
  *   - Cut on hit max R chanegd from 190 to 199cm
