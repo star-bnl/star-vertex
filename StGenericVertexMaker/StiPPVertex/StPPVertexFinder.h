@@ -41,7 +41,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void saveHisto(TString fname);
   int  mTotEve;
   int  eveID;
-  int  mTestMode; // internal  param to play with cuts
+  uint  mAlgoSwitches; //binary, assign 1bit per change, use enum below
+  enum {kSwitchOneHighPT=1}; 
 
   // params
   double mMinTrkPt;       //~ pT=0.16(GeV/c) == R=2 (m )in 2001
@@ -56,6 +57,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; // set the max # of vertices, sorted by rank
+  float  mCut_oneTrackPT; // threshold for storing one track vertices
 
   // beam line
   double          mX0  ;     // starting point of beam parameterization
@@ -105,6 +107,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.10  2008/10/23 20:37:32  genevb
+ * Add switches for turning on/off use of Post-Crossing Tracks [default:off]
+ *
  * Revision 1.9  2008/10/21 19:23:06  balewski
  * store unqualified vertices on Akio's request
  *
