@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.8  2007/04/28 17:57:28  perev
+ * Redundant StChain.h removed
+ *
  * Revision 1.7  2004/09/09 22:45:56  fisyak
  * Add protection for missing StTriggerData
  *
@@ -98,16 +101,7 @@ Int_t StZdcVertexMaker::InitRun(int runumber)
 { 
 
     // Getting Database info
-
-    TDataSet* p = GetDataBase("Calibrations/trg");
-    if (!p)
-    {
-        gMessMgr->Error() << "StZdcVertexMaker::Init():  GetDataBase() in ZdcVertexMaker did not find DB ." << endm;
-        return kStErr;
-    }
-    
-    St_DataSetIter       dblocal_calibrations(p);
-    St_ZdcCalPars * t  = (St_ZdcCalPars *)dblocal_calibrations("ZdcCalPars");
+    St_ZdcCalPars * t  = (St_ZdcCalPars *)GetDataBase("Calibrations/trg/ZdcCalPars");
     if (! t) {
       gMessMgr->Error() << "StZdcVertexMaker::Init():  in ZdcVertexMaker did not find ZdcCalPars." << endm;
       return kStErr;
