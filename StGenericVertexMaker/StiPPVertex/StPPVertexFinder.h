@@ -14,7 +14,7 @@ class VertexData;
 class TGraphErrors;
 class StEvent; 
 class StiToolkit;
-class StEEmcDbMaker;
+class StEEmcDb;
 
 class EEmcGeomSimple;
 
@@ -70,7 +70,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   CtbHitList     *ctbList;
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
-  StEEmcDbMaker  *eeDb;
+  StEEmcDb       *eeDb;
   EEmcGeomSimple *geomE;
 
   
@@ -107,6 +107,10 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.11  2008/12/01 22:57:46  balewski
+ * Added capability to reco 1 high pT track vertices with positive rank. 2+ match vertices will have rank above 1e6. Sub-prime vertices (for Akio) have negative rank. More details is given at:
+ * http://drupal.star.bnl.gov/STAR/comp/reco/vf/ppv-vertex/2009-algo-upgrade-1
+ *
  * Revision 1.10  2008/10/23 20:37:32  genevb
  * Add switches for turning on/off use of Post-Crossing Tracks [default:off]
  *

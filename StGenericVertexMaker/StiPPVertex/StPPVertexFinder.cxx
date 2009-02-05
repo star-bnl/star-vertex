@@ -44,9 +44,9 @@
 #define zG(t)   (t->z_g())
 #define rxyG(t) sqrt(xG(t)*xG(t) + yG(t)*yG(t)) 
 
-#include "StEEmcDbMaker/StEEmcDbMaker.h"
-#include "StEEmcDbMaker/EEmcDbItem.h"
-#include "StEEmcDbMaker/cstructs/eemcConstDB.hh"
+#include "StEEmcUtil/database/StEEmcDb.h"
+#include "StEEmcUtil/database/EEmcDbItem.h"
+#include "StEEmcUtil/database/cstructs/eemcConstDB.hh"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h" 
 
 #include "CtbHitList.h"
@@ -118,7 +118,7 @@ StPPVertexFinder::Init() {
   bemcList =new BemcHitList;
   
   // access EEMC-DB
-  eeDb = (StEEmcDbMaker*)StMaker::GetChain()->GetMaker("eeDb"); 
+  eeDb = (StEEmcDb*)StMaker::GetChain()->GetDataSet("StEEmcDb"); 
   assert(eeDb); // eemcDB must be in the chain, fix it,JB
   geomE= new EEmcGeomSimple();
   // choose which 'stat' bits are fatal for mip detection
@@ -1171,6 +1171,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.32  2008/12/02 14:35:05  balewski
+ * I forgot to require EMC hit for highPT track, now it is in
+ *
  * Revision 1.31  2008/12/01 22:57:39  balewski
  * Added capability to reco 1 high pT track vertices with positive rank. 2+ match vertices will have rank above 1e6. Sub-prime vertices (for Akio) have negative rank. More details is given at:
  * http://drupal.star.bnl.gov/STAR/comp/reco/vf/ppv-vertex/2009-algo-upgrade-1
