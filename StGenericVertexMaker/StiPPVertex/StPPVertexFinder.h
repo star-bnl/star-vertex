@@ -82,7 +82,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
 public:
   void setMC(bool x=true){isMC=x;}
   void useCTB(bool x=true){mUseCtb=x;}
-  void usePCT(bool x=true){setDropPostCrossingTrack(!x);}
+  void UsePCT(bool x=true){setDropPostCrossingTrack(!x);}
   void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
   void Finish();
 
@@ -107,6 +107,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.12  2009/02/05 21:43:59  balewski
+ * Oleksandr renamed StEEmcDbMaker to StEEmcDb and requested this set of code corrections
+ *
  * Revision 1.11  2008/12/01 22:57:46  balewski
  * Added capability to reco 1 high pT track vertices with positive rank. 2+ match vertices will have rank above 1e6. Sub-prime vertices (for Akio) have negative rank. More details is given at:
  * http://drupal.star.bnl.gov/STAR/comp/reco/vf/ppv-vertex/2009-algo-upgrade-1
