@@ -30,6 +30,7 @@ class StGenericVertexFinder {
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
   virtual void           UsePCT(bool usePCT = true);
+  virtual void           CalibBeamLine(){ /* noop */;} // overload if useful
 
   virtual void           printInfo(ostream& = cout) const=0;
 
@@ -62,6 +63,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.17  2008/10/23 20:37:31  genevb
+// Add switches for turning on/off use of Post-Crossing Tracks [default:off]
+//
 // Revision 1.16  2006/04/26 15:37:04  jeromel
 // mVertexOrderMethod (To be tested)
 //

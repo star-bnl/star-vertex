@@ -30,6 +30,7 @@ class StGenericVertexMaker : public StMaker
   // control and cuts
   Bool_t  useITTF;
   Bool_t  useBeamline;
+  Bool_t  calibBeamline;
   Bool_t  useCTB;
   Bool_t  usePCT;
   Bool_t  eval;
@@ -65,6 +66,7 @@ class StGenericVertexMaker : public StMaker
 
   inline void UseBeamLine()		{useBeamline    = kTRUE; }
   inline void DoNotUseBeamLine()	{useBeamline    = kFALSE;}
+  inline void CalibBeamLine()		{calibBeamline=kTRUE; }
   inline void UseCTB()			{useCTB         = kTRUE; }
   inline void DoNotUseCTB()		{useCTB         = kFALSE;}
   inline void DoEval()			{eval           = kTRUE; }
