@@ -1183,7 +1183,7 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
   // cout<<"#m nFit="<<nFit<<" of nPos="<<nPos<<endl;
 
   if(nFit<  mMinFitPfrac  * nPos) return false; // too short fragment of a track
-
+  t.scanNodes(hitPatt,jz0); // if central membrane is crossed
   return true;
 }
 
@@ -1225,6 +1225,10 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.34  2009/07/09 21:29:03  balewski
+ * allow export of prim tracks for 3D beam line fit (use VtxSeedCalG option),
+ * oneTrack vertex thresholds was lowered form 15 to 10 GeV/c
+ *
  * Revision 1.33  2009/02/05 21:43:59  balewski
  * Oleksandr renamed StEEmcDbMaker to StEEmcDb and requested this set of code corrections
  *
