@@ -44,7 +44,7 @@ class StGenericVertexFinder {
   virtual void           Clear();
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;} 
  
-  void                   FillStEvent(StEvent*) const;
+  void                   FillStEvent(StEvent*);
 
  protected: //................................
 
@@ -63,6 +63,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.18  2009/07/09 00:16:12  genevb
+// Create a calib mode for StGenericVertex when using VtxSeedCalG
+//
 // Revision 1.17  2008/10/23 20:37:31  genevb
 // Add switches for turning on/off use of Post-Crossing Tracks [default:off]
 //
