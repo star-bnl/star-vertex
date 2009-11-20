@@ -1210,8 +1210,8 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 	  if (r > RxyMax) continue;
 	  float z=hit->position().z();
 	  if (fabs(z) > zMax) continue;
-	  if (z < -zMembraneDepth && hit->sector() <= 12 ||
-	      z >  zMembraneDepth && hit->sector() >  12) {
+	  if ((z < -zMembraneDepth && hit->sector() <= 12) ||
+	      (z >  zMembraneDepth && hit->sector() >  12)) {
 	    nWrongZHit++;
 	    if(nWrongZHit>=nWrongZHitCut) {return true;}
 	  }	
@@ -1225,6 +1225,10 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.35  2009/11/05 21:40:08  rjreed
+ * Last line of matchTrack2Membrane was deleted between version 1.29 and 1.30.  This line checks
+ * tracks to determine whether they've crossed the TPC CM.  This rev reinstates the line.
+ *
  * Revision 1.34  2009/07/09 21:29:03  balewski
  * allow export of prim tracks for 3D beam line fit (use VtxSeedCalG option),
  * oneTrack vertex thresholds was lowered form 15 to 10 GeV/c
