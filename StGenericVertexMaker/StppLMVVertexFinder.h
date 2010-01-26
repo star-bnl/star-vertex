@@ -57,7 +57,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     int    mTotEve;
     int    eveID;
     int    NCtbMatches();
-    void   changeCuts();
 
     /*!
      * \struct
@@ -73,6 +72,9 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.10  2005/07/19 21:57:40  perev
+ * MultiVertex
+ *
  * Revision 1.9  2005/06/21 02:16:36  balewski
  * multiple prim vertices are stored in StEvent
  *

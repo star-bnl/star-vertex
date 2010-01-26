@@ -49,33 +49,28 @@ class StGenericVertexMaker : public StMaker
 
   Int_t nEvTotal,nEvGood;
 
- protected:
-  int m_Mode2; // auxiliary flags 
-
  public: 
   StGenericVertexMaker(const char *name="GenericVertex");
   virtual       ~StGenericVertexMaker();
   virtual Int_t Init();
-  virtual Int_t InitRun (int runumber);
+  virtual Int_t InitRun (Int_t runumber);
   virtual void  Clear(const char* opt="");
   virtual Int_t Finish();
   virtual Int_t Make();
-  void SetMode2(int x) 	{m_Mode2=x;}
-  int  GetMode2() 	{return m_Mode2; }
-  inline StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
+  StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
 
-  inline void UseBeamLine()		{useBeamline    = kTRUE; }
-  inline void DoNotUseBeamLine()	{useBeamline    = kFALSE;}
-  inline void CalibBeamLine()		{calibBeamline=kTRUE; }
-  inline void UseCTB()			{useCTB         = kTRUE; }
-  inline void DoNotUseCTB()		{useCTB         = kFALSE;}
-  inline void DoEval()			{eval           = kTRUE; }
-  inline void SetInternalFind()		{externalFindUse= kFALSE;}
-  inline void SetUseITTF()		{useITTF       = kTRUE; }
-  inline void SetDoNotUseITTF()		{useITTF       = kFALSE;}
-  inline void SetMinimumTracks(int n)   {minTracks      = n;}
-  inline void UsePCT()                  {usePCT         = kTRUE; }
-  inline void DoNotUsePCT()             {usePCT         = kFALSE; }
+  void UseBeamLine()            {SetAttr("BeamLine"       , kTRUE );}
+  void DoNotUseBeamLine()       {SetAttr("BeamLine"       , kFALSE);}
+  void CalibBeamLine()          {SetAttr("calibBeamline"  , kTRUE );}
+  void UseCTB()                 {SetAttr("CTB"            , kTRUE );}
+  void DoNotUseCTB()            {SetAttr("CTB"            , kFALSE);}
+  void DoEval()                 {SetAttr("eval"           , kTRUE );}
+  void SetInternalFind()        {SetAttr("externalFindUse", kFALSE);}
+  void SetUseITTF()             {SetAttr("ITTF"           , kTRUE );}
+  void SetDoNotUseITTF()        {SetAttr("ITTF"           , kFALSE);}
+  void SetMinimumTracks(Int_t n){SetAttr("minTracks"      , n     );}
+  void UsePCT()                 {SetAttr("PCT"            , kTRUE );}
+  void DoNotUsePCT()            {SetAttr("PCT"            , kFALSE);}
 
   virtual const char *GetCVS() const
     {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
