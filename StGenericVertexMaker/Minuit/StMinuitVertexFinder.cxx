@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.20  2010/01/26 21:01:49  fisyak
+ * Clean up, switch from bit mask to attributes
+ *
  * Revision 1.19  2008/07/31 18:11:10  genevb
  * VFMinuit3 chain option for lower ranking of split vertices
  *
@@ -559,23 +562,23 @@ StMinuitVertexFinder::fit(StEvent* event)
 	mZImpact.push_back(z_lin);
 	mSigma.push_back(-1);
 	
-      }
-      Bool_t shouldHitCTB = kFALSE;
-      Double_t etaInCTBFrame = -999;
-      ctb_match =  EtaAndPhiToOrriginAtCTB(g,&ctbHits,shouldHitCTB,etaInCTBFrame);
-      if (ctb_match) {
-	mHelixFlags[mHelixFlags.size()-1] |= kFlagCTBMatch;
-	n_ctb_match_tot++;
-      }
-      
-      if (matchTrack2BEMC(g)) {
-	mHelixFlags[mHelixFlags.size()-1] |= kFlagBEMCMatch;
-	n_bemc_match_tot++;
-      }
-      
-      if (checkCrossMembrane(g)) {
-	mHelixFlags[mHelixFlags.size()-1] |= kFlagCrossMembrane;
-	n_cross_tot++;
+	Bool_t shouldHitCTB = kFALSE;
+	Double_t etaInCTBFrame = -999;
+	ctb_match =  EtaAndPhiToOrriginAtCTB(g,&ctbHits,shouldHitCTB,etaInCTBFrame);
+	if (ctb_match) {
+	  mHelixFlags[mHelixFlags.size()-1] |= kFlagCTBMatch;
+	  n_ctb_match_tot++;
+	}
+	
+	if (matchTrack2BEMC(g)) {
+	  mHelixFlags[mHelixFlags.size()-1] |= kFlagBEMCMatch;
+	  n_bemc_match_tot++;
+	}
+	
+	if (checkCrossMembrane(g)) {
+	  mHelixFlags[mHelixFlags.size()-1] |= kFlagCrossMembrane;
+	  n_cross_tot++;
+	}
       }
     }
     if (mDebugLevel) {
