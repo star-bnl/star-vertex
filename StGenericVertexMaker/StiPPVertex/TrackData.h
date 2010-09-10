@@ -39,9 +39,10 @@ class TrackData {
   float rxyDca;
   float gPt; // (GeV) global
   // 3-stat logic: 1=match, -1=veto, 0=dunno
-  int mCtb,mBemc,mEemc,mTpc; 
+  int mBtof,mCtb,mBemc,mEemc,mTpc; 
   bool anyMatch,anyVeto;
   float weight; // compound from all maching tests
+  int btofBin; // >=0 if track passed through BTOF cell
   int ctbBin;  // >=0 if track passed through CTB slat
   int bemcBin; // >=0 if track passed through BTOW tower
   int eemcBin; // >=0 if track passed through ETOW tower
@@ -57,6 +58,10 @@ class TrackData {
 
 /*
  * $Log$
+ * Revision 1.2  2009/07/09 21:29:03  balewski
+ * allow export of prim tracks for 3D beam line fit (use VtxSeedCalG option),
+ * oneTrack vertex thresholds was lowered form 15 to 10 GeV/c
+ *
  * Revision 1.1  2005/07/11 20:38:12  balewski
  * PPV added for real
  *
