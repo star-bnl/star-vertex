@@ -13,7 +13,7 @@
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
-  mVertexConstrain(false), mMode(0), mDebugLevel(0)
+  mVertexConstrain(false), mMode(0), mDebugLevel(0), mUseBtof(false)
 {
   mVertexOrderMethod = orderByNumberOfDaughters;
 }
@@ -58,7 +58,7 @@ void StGenericVertexFinder::UsePCT(bool usePCT)
   LOG_WARN << "StGenericVertexFinder::UsePCT() not implemented for this vertex finder." << endm;
   LOG_WARN << "StGenericVertexFinder::Expect Post-crossing tracks to be used by default in old finders." << endm;
 }
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int StGenericVertexFinder::size() const
 {
   return mVertexList.size();
@@ -86,6 +86,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.14  2009/11/11 03:52:14  genevb
+// Re-order the vertices upon filling StEvent
+//
 // Revision 1.13  2008/10/23 20:37:31  genevb
 // Add switches for turning on/off use of Post-Crossing Tracks [default:off]
 //

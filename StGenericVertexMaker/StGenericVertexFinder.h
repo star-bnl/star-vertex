@@ -30,6 +30,7 @@ class StGenericVertexFinder {
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
   virtual void           UsePCT(bool usePCT = true);
+  virtual void           UseBTOF(bool useBTOF = true){mUseBtof=useBTOF;}
   virtual void           CalibBeamLine(){ /* noop */;} // overload if useful
 
   virtual void           printInfo(ostream& = cout) const=0;
@@ -57,12 +58,16 @@ class StGenericVertexFinder {
   bool                   mVertexConstrain;   // Use vertex constraint from db
   int                    mMode;              // used for any Finder behavior change
   int                    mDebugLevel;
+  bool                   mUseBtof;          // default use btof = false
 
 };
 
 
 
 // $Log$
+// Revision 1.19  2009/11/11 03:52:14  genevb
+// Re-order the vertices upon filling StEvent
+//
 // Revision 1.18  2009/07/09 00:16:12  genevb
 // Create a calib mode for StGenericVertex when using VtxSeedCalG
 //
