@@ -33,6 +33,7 @@ class StGenericVertexMaker : public StMaker
   Bool_t  calibBeamline;
   Bool_t  useCTB;
   Bool_t  usePCT;
+  Bool_t  useBTOF;
   Bool_t  eval;
   Bool_t  externalFindUse; /// Finder will by called externally (by StiMaker)
   Int_t   minTracks;
