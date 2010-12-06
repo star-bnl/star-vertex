@@ -159,7 +159,7 @@ private:
 
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
     
-    enum                   {maxSeed=20};
+    enum                   {maxSeed=500};
     Int_t                  mNSeed;
     Float_t                mSeedZ[maxSeed];
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
@@ -189,6 +189,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.11  2010/01/26 21:01:49  fisyak
+ * Clean up, switch from bit mask to attributes
+ *
  * Revision 1.10  2008/07/31 18:11:10  genevb
  * VFMinuit3 chain option for lower ranking of split vertices
  *
