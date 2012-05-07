@@ -59,7 +59,7 @@
 #include "StEmcCollection.h"
 #include "StBTofCollection.h" // dongx
 #include "StBTofUtil/StBTofGeometry.h"
-
+#include "TObjectSet.h"
 
 //==========================================================
 //==========================================================
@@ -158,12 +158,15 @@ StPPVertexFinder::InitRun(int runnumber){
  // Initialize BTOF geometry - dongx
   if (mUseBtof){ // only add btof if it is required
     btofGeom = 0;
-    if(TDataSet *geom = mydb->GetDataSet("btofGeometry")) {
-      btofGeom = (StBTofGeometry *)geom;
+    TObjectSet *geom = (TObjectSet *) mydb->GetDataSet("btofGeometry");
+    if (geom)   btofGeom = (StBTofGeometry *) geom->GetObject();
+    if (btofGeom) {
       LOG_INFO << " Found btofGeometry ... " << endm;
     } else {
       btofGeom = new StBTofGeometry("btofGeometry","btofGeometry in VertexFinder");
+      geom = new TObjectSet("btofGeometry",btofGeom);
       LOG_INFO << " Create a new btofGeometry ... " << endm;
+      mydb->AddConst(geom);
     } 
     if(btofGeom && !btofGeom->IsInitDone()) {
       LOG_INFO << " BTofGeometry initialization ... " << endm;
@@ -292,7 +295,7 @@ StPPVertexFinder::~StPPVertexFinder() {
   //x delete mTrackData;
   //x delete mVertexData;
   delete geomE;
-  if(btofGeom) delete btofGeom; // dongx
+  //yf  if(btofGeom) delete btofGeom; // dongx 
 }
 
 //======================================================
@@ -1352,6 +1355,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.38  2010/09/16 04:18:55  rjreed
+ * Moved intialized of btof from init to initrun and changed it so that the btof class is not utilized if mUseBtof is false
+ *
  * Revision 1.37  2010/09/10 21:08:35  rjreed
  * Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
  * Added functions, and variables necessary to use the TOF in PPV for vertex finding.  Includes matching tracks to the TOF and changing the track weight based on its matched status with the TOF.
