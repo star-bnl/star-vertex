@@ -6,6 +6,9 @@
  * $Id$
  *
  */
+#ifdef __APPLE__
+#include <sys/types.h>
+#endif
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 #include "StPhysicalHelixD.hh" // dongx
@@ -120,6 +123,10 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.15  2010/09/10 21:08:35  rjreed
+ * Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
+ * Added functions, and variables necessary to use the TOF in PPV for vertex finding.  Includes matching tracks to the TOF and changing the track weight based on its matched status with the TOF.
+ *
  * Revision 1.14  2009/07/09 21:29:03  balewski
  * allow export of prim tracks for 3D beam line fit (use VtxSeedCalG option),
  * oneTrack vertex thresholds was lowered form 15 to 10 GeV/c

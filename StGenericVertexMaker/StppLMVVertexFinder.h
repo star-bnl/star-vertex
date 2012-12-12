@@ -7,6 +7,9 @@
  *
  */
 
+#ifdef __APPLE__
+#include <sys/types.h>
+#endif
 #include <vector>
 #include <StThreeVectorD.hh>
 #include <StPhysicalHelixD.hh>
@@ -72,6 +75,9 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.11  2010/01/26 21:01:49  fisyak
+ * Clean up, switch from bit mask to attributes
+ *
  * Revision 1.10  2005/07/19 21:57:40  perev
  * MultiVertex
  *
