@@ -21,12 +21,12 @@ class StiToolkit;
 class StEEmcDb;
 
 class EEmcGeomSimple;
-class StBTofGeometry; // dongx
+class StBTofGeometry; 
 
-class  BtofHitList;  // dongx
-class  CtbHitList;
-class  BemcHitList;
-class  EemcHitList;
+class BtofHitList;  
+class CtbHitList;
+class BemcHitList;
+class EemcHitList;
 class Vertex3D;
 
 class StPPVertexFinder: public StGenericVertexFinder {
@@ -65,12 +65,14 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMinAdcBemc;     // BEMC towers with MIP response
   float  mMinAdcEemc;     // EEMC towers with MIP response
   float  mMinFitPfrac;    // nFit/nPossible
+  bool   mBoostEffi;      // changes some cuts, higher VF efficiency, lower VF purity
   bool   isMC;            // flag minor differences between Data & M-C
   bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; // set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT; // threshold for storing one track vertices
-  int    mBeamLineTracks; // activates writing them out + lot of QA histos, use  BFC option: VtxSeedCalG to enable it, expert only
+  int    mBeamLineTracks; // activates writing them out + lot of QA histos, 
+                          // use  BFC option: VtxSeedCalG to enable it, expert only
 
   // beam line
   double          mX0  ;     // starting point of beam parameterization
@@ -98,6 +100,7 @@ public:
   void useCTB(bool x=true){mUseCtb=x;}
   void UsePCT(bool x=true){setDropPostCrossingTrack(!x);}
   void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
+  void boostEfficiency();
   void Finish();
 
   TH1F *hA[mxH];
@@ -123,6 +126,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.16  2012/12/12 22:09:58  fisyak
+ * add sys/types.h include for APPLE
+ *
  * Revision 1.15  2010/09/10 21:08:35  rjreed
  * Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
  * Added functions, and variables necessary to use the TOF in PPV for vertex finding.  Includes matching tracks to the TOF and changing the track weight based on its matched status with the TOF.
