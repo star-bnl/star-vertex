@@ -65,7 +65,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMinAdcBemc;     // BEMC towers with MIP response
   float  mMinAdcEemc;     // EEMC towers with MIP response
   float  mMinFitPfrac;    // nFit/nPossible
-  bool   mBoostEffi;      // changes some cuts, higher VF efficiency, lower VF purity
+  bool   mFitPossWeighting; // Use nFit/nPossible in track weighting (ranking)
   bool   isMC;            // flag minor differences between Data & M-C
   bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
@@ -100,7 +100,6 @@ public:
   void useCTB(bool x=true){mUseCtb=x;}
   void UsePCT(bool x=true){setDropPostCrossingTrack(!x);}
   void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
-  void boostEfficiency();
   void Finish();
 
   TH1F *hA[mxH];
@@ -126,6 +125,14 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.17  2013/04/05 21:00:02  jeromel
+ * Implemented and merged back to source the boostEfficiency (i.e. change of
+ * nFit /nPossible points on the track fract to consider). No DB imp yet.
+ *
+ * Fixed boostEfficiency()
+ *
+ * Changed cout to LOG_INFO
+ *
  * Revision 1.16  2012/12/12 22:09:58  fisyak
  * add sys/types.h include for APPLE
  *
