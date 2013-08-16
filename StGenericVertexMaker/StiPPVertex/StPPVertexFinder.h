@@ -66,8 +66,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMinAdcEemc;     // EEMC towers with MIP response
   float  mMinFitPfrac;    // nFit/nPossible
   bool   mFitPossWeighting; // Use nFit/nPossible in track weighting (ranking)
-  bool   isMC;            // flag minor differences between Data & M-C
-  bool   mUseCtb;         // disable CTB from matching/vetoing of tracks
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; // set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT; // threshold for storing one track vertices
@@ -96,10 +94,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void initHisto();
   
 public:
-  void setMC(bool x=true){isMC=x;}
-  void useCTB(bool x=true){mUseCtb=x;}
-  void UsePCT(bool x=true){setDropPostCrossingTrack(!x);}
-  void setDropPostCrossingTrack(bool x=true){mDropPostCrossingTrack=x;}
+  void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}
+  void setDropPostCrossingTrack(bool x=true)	{mDropPostCrossingTrack=x;}
   void Finish();
 
   TH1F *hA[mxH];
@@ -125,6 +121,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.18  2013/04/09 22:37:56  genevb
+ * Remove boostEfficiency codes: DB usage implemented
+ *
  * Revision 1.17  2013/04/05 21:00:02  jeromel
  * Implemented and merged back to source the boostEfficiency (i.e. change of
  * nFit /nPossible points on the track fract to consider). No DB imp yet.

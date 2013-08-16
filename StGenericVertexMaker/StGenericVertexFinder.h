@@ -31,6 +31,8 @@ class StGenericVertexFinder {
           int            IsVertexConstraint() const {return mVertexConstrain;}
   virtual void           UsePCT(bool usePCT = true);
   virtual void           UseBTOF(bool useBTOF = true){mUseBtof=useBTOF;}
+  virtual void           UseCTB (bool useCTB  = true){mUseCtb =useCTB ;}
+          void           setMC  (bool x=true)        {mIsMC   = x     ;}
   virtual void           CalibBeamLine(){ /* noop */;} // overload if useful
 
   virtual void           printInfo(ostream& = cout) const=0;
@@ -58,13 +60,18 @@ class StGenericVertexFinder {
   bool                   mVertexConstrain;   // Use vertex constraint from db
   int                    mMode;              // used for any Finder behavior change
   int                    mDebugLevel;
-  bool                   mUseBtof;          // default use btof = false
+  bool   		 mIsMC;              // flag minor differences between Data & M-C
+  bool                   mUseBtof;           // default use btof = false
+  bool                   mUseCtb;            // default use ctb = false
 
 };
 
 
 
 // $Log$
+// Revision 1.20  2010/09/10 21:06:45  rjreed
+// Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
+//
 // Revision 1.19  2009/11/11 03:52:14  genevb
 // Re-order the vertices upon filling StEvent
 //

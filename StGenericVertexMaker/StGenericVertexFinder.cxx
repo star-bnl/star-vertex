@@ -13,8 +13,12 @@
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
-  mVertexConstrain(false), mMode(0), mDebugLevel(0), mUseBtof(false)
+  mVertexConstrain(false), mMode(0), mDebugLevel(0)
 {
+  
+  mIsMC	  =0;            	// flag minor differences between Data & M-C
+  mUseBtof=0;           	// default use btof = false
+  mUseCtb =0;            	// default use ctb = false
   mVertexOrderMethod = orderByNumberOfDaughters;
 }
 //______________________________________________________________________________
@@ -86,6 +90,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.15  2010/09/10 21:06:45  rjreed
+// Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
+//
 // Revision 1.14  2009/11/11 03:52:14  genevb
 // Re-order the vertices upon filling StEvent
 //
