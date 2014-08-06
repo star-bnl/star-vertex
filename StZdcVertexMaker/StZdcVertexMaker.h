@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.5  2004/01/14 22:57:29  fisyak
+ * Add declaration of InitRun
+ *
  * Revision 1.4  2003/10/06 04:06:14  perev
  * cvs() overloaded
  *
@@ -39,7 +42,7 @@ public:
     Int_t Make();
     Int_t Finish();
     virtual const char *GetCVS() const
-    {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
+    {static const char cvs[]="Tag $Name$ $Id$ built " __DATE__ " " __TIME__ ; return cvs;}
     
 private:    
     float mEAP0;

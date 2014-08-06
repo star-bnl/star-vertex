@@ -174,7 +174,7 @@ class StV0FinderMaker : public StMaker {
   //end Betty
   
   virtual const char *GetCVS() const
-    {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
+    {static const char cvs[]="Tag $Name$ $Id$ built " __DATE__ " " __TIME__ ; return cvs;}
   
  protected:
   virtual Int_t Prepare();         //!
@@ -234,6 +234,9 @@ class StV0FinderMaker : public StMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.11  2008/03/05 04:20:18  genevb
+// Change to DB table of V0FinderParameters, reduce logger output, improve Bfield calc
+//
 // Revision 1.10  2004/08/26 03:00:46  genevb
 // Improved vector size management
 //

@@ -28,7 +28,7 @@ class StXiFinderMaker : public StV0FinderMaker {
   virtual Bool_t UseV0();
 
   virtual const char *GetCVS() const
-  {static const char cvs[]="Tag $Name$ $Id$ built "__DATE__" "__TIME__ ; return cvs;}
+  {static const char cvs[]="Tag $Name$ $Id$ built " __DATE__ " " __TIME__ ; return cvs;}
 
  protected:
   St_exi_exipar* exipar;           //!
@@ -45,6 +45,9 @@ class StXiFinderMaker : public StV0FinderMaker {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.3  2008/04/03 19:58:37  fisyak
+// move parameters initialization from Init into InitRun
+//
 // Revision 1.2  2003/04/30 19:15:55  faivre
 // Fix storage part. ITTF vs TPT Xis.
 //
