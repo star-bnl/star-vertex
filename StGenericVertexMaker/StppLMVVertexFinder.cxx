@@ -9,19 +9,19 @@
  *
  ************************************************************/
 
-#include <StEventTypes.h>
-#include <StEnumerations.h>
-#include <StGlobals.hh>
-#include <SystemOfUnits.h>
-#include <StMessMgr.h>
+#include <StEvent/StEventTypes.h>
+#include <StEvent/StEnumerations.h>
+#include <StarClassLibrary/StGlobals.hh>
+#include <StarClassLibrary/SystemOfUnits.h>
+#include <St_base/StMessMgr.h>
 #include <cmath>
 #include "math_constants.h"
 
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
-#include "StMaker.h"
+#include "StChain/StMaker.h"
 
-#include "StppLMVVertexFinder.h"
-#include "StGenericVertexMaker.h"
+#include "StGenericVertexMaker/StppLMVVertexFinder.h"
+#include "StGenericVertexMaker/StGenericVertexMaker.h"
 
 //==========================================================
 //==========================================================

@@ -24,7 +24,7 @@
 #define STAR_StFixedVertexFinder
 
 
-#include "StGenericVertexFinder.h"
+#include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 class StEvent;
 

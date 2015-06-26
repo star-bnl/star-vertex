@@ -4,13 +4,13 @@
 #include <cmath>
 #include <math_constants.h>
 
-#include <StMessMgr.h>
+#include <St_base/StMessMgr.h>
 
 #include <tables/St_g2t_ctf_hit_Table.h>
-#include <StTriggerData.h>
+#include <StEvent/StTriggerData.h>
 
 
-#include "CtbHitList.h"
+#include "StGenericVertexMaker/StvPPVertex/CtbHitList.h"
 
 // This needs cleanup of the mapping code
 extern void cts_get_ctb_indexes(long, long &, long &);

@@ -94,9 +94,9 @@
 
 
 #include <vector>
-#include "StThreeVectorD.hh"
-#include "StPhysicalHelixD.hh"
-#include "StGenericVertexFinder.h"
+#include "StarClassLibrary/StThreeVectorD.hh"
+#include "StarClassLibrary/StPhysicalHelixD.hh"
+#include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 class StEvent;
 class StTrack;

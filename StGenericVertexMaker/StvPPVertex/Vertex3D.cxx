@@ -1,7 +1,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
-#include <StMessMgr.h>
+#include <St_base/StMessMgr.h>
 
 #include <TH1.h>
 #include <TH2.h>
@@ -16,7 +16,7 @@
 #include <StBFChain/StBFChain.h> // for geant vertex
 #include <tables/St_g2t_vertex_Table.h> //for geant vertex
 
-#include "Vertex3D.h"
+#include "StGenericVertexMaker/StvPPVertex/Vertex3D.h"
 
 namespace StEvPPV {
 

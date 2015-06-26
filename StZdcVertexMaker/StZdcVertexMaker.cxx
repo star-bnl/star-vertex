@@ -39,15 +39,15 @@
  * Modified code to retrieve ADC and TDC pulses from TrgDet table
  *
  **************************************************************************/
-#include "StZdcVertexMaker.h"
+#include "StZdcVertexMaker/StZdcVertexMaker.h"
 
 #include <stdlib.h>
 #include <math.h>
 
-#include "StEventTypes.h"
-#include "StMessMgr.h"
-#include "St_DataSet.h"
-#include "St_DataSetIter.h"
+#include "StEvent/StEventTypes.h"
+#include "St_base/StMessMgr.h"
+#include "Star2Root/St_DataSet.h"
+#include "Star2Root/St_DataSetIter.h"
 #include "ZdcCalPars.h"
 #include "tables/St_ZdcCalPars_Table.h"
 #include "tables/St_dst_TrgDet_Table.h"

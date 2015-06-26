@@ -134,23 +134,23 @@
  *
  **************************************************************************/
 #include <assert.h>
-#include "StMinuitVertexFinder.h"
-#include "StEventTypes.h"
-#include "StEnumerations.h"
+#include "StGenericVertexMaker/Minuit/StMinuitVertexFinder.h"
+#include "StEvent/StEventTypes.h"
+#include "StEvent/StEnumerations.h"
 #include "TMinuit.h"
 #if 0
 #include "TH1K.h"
 #include "TSpectrum.h"
 #endif
-#include "StGlobals.hh"
-#include "SystemOfUnits.h"
-#include "StCtbMatcher.h"
-#include "StMessMgr.h"
+#include "StarClassLibrary/StGlobals.hh"
+#include "StarClassLibrary/SystemOfUnits.h"
+#include "StGenericVertexMaker/StCtbMatcher.h"
+#include "St_base/StMessMgr.h"
 #include <math.h>
 #include "StEmcUtil/geometry/StEmcGeom.h"
-#include "StDcaGeometry.h"
-#include "St_VertexCutsC.h"
-#include "StMaker.h"
+#include "StEvent/StDcaGeometry.h"
+#include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
+#include "StChain/StMaker.h"
 vector<StDcaGeometry*>     StMinuitVertexFinder::mDCAs;
 vector<StPhysicalHelixD>   StMinuitVertexFinder::mHelices;
 vector<UShort_t>           StMinuitVertexFinder::mHelixFlags;

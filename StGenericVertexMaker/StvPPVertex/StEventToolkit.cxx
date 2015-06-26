@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include <StEvent/StEvent.h>
-#include "StEventToolkit.h"
+#include "StGenericVertexMaker/StvPPVertex/StEventToolkit.h"
 
 //______________________________________________________________________________
 StEventToolkit* StEventToolkit::instance()

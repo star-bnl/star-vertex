@@ -4,10 +4,10 @@
 #include "math_constants.h"
 
 #include "tables/St_g2t_ctf_hit_Table.h"
-#include <StMessMgr.h>
+#include <St_base/StMessMgr.h>
 
 
-#include <StTriggerData.h>
+#include <StEvent/StTriggerData.h>
 
 // This needs cleanup of the mapping code
 extern void cts_get_ctb_indexes(long, long &, long &);
@@ -17,7 +17,7 @@ extern void cts_get_ctb_indexes(long, long &, long &);
  */
 
 
-#include "StCtbUtility.h"
+#include "StGenericVertexMaker/StCtbUtility.h"
 //==========================================================
 //==========================================================
 StCtbUtility::StCtbUtility() {

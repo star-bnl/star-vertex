@@ -12,8 +12,8 @@
 #ifndef STAR_StGenericVertexFinder
 #define STAR_StGenericVertexFinder
 
-#include "StEventTypes.h"
-#include "StPrimaryVertex.h"
+#include "StEvent/StEventTypes.h"
+#include "StEvent/StPrimaryVertex.h"
 
 class StEvent;
 

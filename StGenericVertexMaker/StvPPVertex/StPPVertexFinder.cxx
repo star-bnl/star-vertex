@@ -9,7 +9,7 @@
  *
  ************************************************************/
    
-#include "StMessMgr.h"
+#include "St_base/StMessMgr.h"
 #include "TGraphErrors.h"
 #include "TF1.h"
 #include "TH2.h"
@@ -20,14 +20,14 @@
 #include "math_constants.h"
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
 
-#include "StPPVertexFinder.h"
-#include "TrackData.h"
-#include "VertexData.h" 
-#include "Vertex3D.h"
-#include "StGenericVertexMaker.h"
-#include "St_VertexCutsC.h"
+#include "StGenericVertexMaker/StvPPVertex/StPPVertexFinder.h"
+#include "StGenericVertexMaker/StvPPVertex/TrackData.h"
+#include "StGenericVertexMaker/StvPPVertex/VertexData.h" 
+#include "StGenericVertexMaker/StvPPVertex/Vertex3D.h"
+#include "StGenericVertexMaker/StGenericVertexMaker.h"
+#include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
 
-#include "StEventToolkit.h"
+#include "StGenericVertexMaker/StvPPVertex/StEventToolkit.h"
 #include "StEvent/StGlobalTrack.h"
 #include "StEvent/StContainers.h"
 #include "StEvent/StEnumerations.h"
@@ -51,13 +51,13 @@
 #include "StEEmcUtil/database/cstructs/eemcConstDB.hh"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
 
-#include "BtofHitList.h" // dongx
-#include "CtbHitList.h"
-#include "BemcHitList.h"
-#include "EemcHitList.h"
+#include "StGenericVertexMaker/StvPPVertex/BtofHitList.h" // dongx
+#include "StGenericVertexMaker/StvPPVertex/CtbHitList.h"
+#include "StGenericVertexMaker/StvPPVertex/BemcHitList.h"
+#include "StGenericVertexMaker/StvPPVertex/EemcHitList.h"
 
-#include "StEmcCollection.h"
-#include "StBTofCollection.h" // dongx
+#include "StEvent/StEmcCollection.h"
+#include "StEvent/StBTofCollection.h" // dongx
 #include "StBTofUtil/StBTofGeometry.h"
 #include "TObjectSet.h"
 

@@ -8,8 +8,8 @@
 #ifndef StV0FinderMaker_hh
 #define StV0FinderMaker_hh
 
-#include "StMaker.h"
-#include "StPhysicalHelixD.hh"
+#include "StChain/StMaker.h"
+#include "StarClassLibrary/StPhysicalHelixD.hh"
 #include <vector>
 
 class St_V0FinderParameters;

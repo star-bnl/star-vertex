@@ -29,7 +29,7 @@
 #ifndef StZdcVertexMaker_hh
 #define StZdcVertexMaker_hh
 
-#include "StMaker.h"
+#include "StChain/StMaker.h"
 
 class St_ZdcCalPars;
 

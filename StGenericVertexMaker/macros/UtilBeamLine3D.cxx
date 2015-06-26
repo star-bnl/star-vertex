@@ -7,7 +7,7 @@
 #include <TLine.h>
 #include <TList.h>
 
-#include "UtilBeamLine3D.h"
+#include "StGenericVertexMaker/macros/UtilBeamLine3D.h"
 
 //========================
 //========================

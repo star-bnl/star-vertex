@@ -10,24 +10,24 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-#include "StMemStat.h"
-#include "StKinkMaker.h"
-#include "StKinkLocalTrack.hh"
-#include "StTrackGeometry.h"
-#include "StV0FinderMaker.h"
+#include "StarRoot/StMemStat.h"
+#include "StSecondaryVertexMaker/StKinkMaker.h"
+#include "StSecondaryVertexMaker/StKinkLocalTrack.hh"
+#include "StEvent/StTrackGeometry.h"
+#include "StSecondaryVertexMaker/StV0FinderMaker.h"
 #include "StEvent/StEventTypes.h"
-#include "StEvent.h"
+#include "StEvent/StEvent.h"
 #include "TMath.h"
-#include "StTrack.h"
+#include "StEvent/StTrack.h"
 #include "tables/St_tkf_tkfpar_Table.h"
-#include "StMessMgr.h"
+#include "St_base/StMessMgr.h"
 
-#include "math_constants.h"
-#include "phys_constants.h"
+#include "StHbtMaker/doc/Make/math_constants.h"
+#include "StHbtMaker/doc/Make/phys_constants.h"
 #include "TVector2.h"
-#include "StThreeVectorF.hh"
+#include "StarClassLibrary/StThreeVectorF.hh"
 #include "TObjArray.h"
-#include "SystemOfUnits.h"
+#include "StarClassLibrary/SystemOfUnits.h"
 
 
 #if !defined(ST_NO_NAMESPACES)

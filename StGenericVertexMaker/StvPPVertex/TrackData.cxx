@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <cmath>
-#include <StMessMgr.h>
+#include <St_base/StMessMgr.h>
 
-#include "TrackData.h"
-#include "VertexData.h"
+#include "StGenericVertexMaker/StvPPVertex/TrackData.h"
+#include "StGenericVertexMaker/StvPPVertex/VertexData.h"
 
 namespace StEvPPV {
 //==========================================================

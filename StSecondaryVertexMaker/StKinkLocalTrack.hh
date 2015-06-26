@@ -10,7 +10,7 @@
 #define StKinkLocalTrack_hh
 
 #include "TObject.h"
-#include "StThreeVectorD.hh"
+#include "StarClassLibrary/StThreeVectorD.hh"
 class StTrack;
 
 class StKinkLocalTrack:public TObject {

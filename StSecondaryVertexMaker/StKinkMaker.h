@@ -13,13 +13,13 @@
 #ifndef STAR_StKinkMaker
 #define STAR_StKinkMaker
 
-#include "StMaker.h"
-#include "StThreeVectorD.hh"
+#include "StChain/StMaker.h"
+#include "StarClassLibrary/StThreeVectorD.hh"
 
 class StKinkLocalTrack;
 class St_tkf_tkfpar;
 class tkf_tkfpar_st;
-#include "StPhysicalHelixD.hh"
+#include "StarClassLibrary/StPhysicalHelixD.hh"
 class StEvent;
 class StKinkVertex;
 class StTrack;

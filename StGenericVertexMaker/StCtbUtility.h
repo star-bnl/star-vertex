@@ -7,8 +7,8 @@
  */
 
 #include <vector>
-#include <StObject.h> // just to make 'vector' working, JB
-#include "St_DataSet.h"
+#include <St_base/StObject.h> // just to make 'vector' working, JB
+#include "Star2Root/St_DataSet.h"
 class StTriggerData;
 
 class StCtbUtility {

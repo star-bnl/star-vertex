@@ -14,7 +14,7 @@
 #define STAR_StGenericVertexMaker
 
 #ifndef StMaker_H
-#include "StMaker.h"
+#include "StChain/StMaker.h"
 #endif
 
 

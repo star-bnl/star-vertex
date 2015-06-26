@@ -4,7 +4,7 @@
 #include <TVector3.h>
 #include <TH1.h>
 
-#include "UtilBeamLine3D.h"
+#include "StGenericVertexMaker/macros/UtilBeamLine3D.h"
 const float detEpsilon=1e-4; // tolernace for paralell lines for DCA computation.
 
 //==========================================================

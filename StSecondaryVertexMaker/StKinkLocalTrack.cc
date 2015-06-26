@@ -7,10 +7,10 @@
  *
  */
 
-#include "StKinkLocalTrack.hh"
-#include "SystemOfUnits.h"
-#include "StTrackGeometry.h"
-#include "StTrack.h"
+#include "StSecondaryVertexMaker/StKinkLocalTrack.hh"
+#include "StarClassLibrary/SystemOfUnits.h"
+#include "StEvent/StTrackGeometry.h"
+#include "StEvent/StTrack.h"
 #include <iostream>
 using namespace std;
 #ifndef ST_NO_NAMESPACES

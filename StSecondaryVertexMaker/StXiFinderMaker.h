@@ -8,7 +8,7 @@
 #ifndef StXiFinderMaker_hh
 #define StXiFinderMaker_hh
 
-#include "StV0FinderMaker.h"
+#include "StSecondaryVertexMaker/StV0FinderMaker.h"
 
 class St_exi_exipar;
 class exi_exipar_st;

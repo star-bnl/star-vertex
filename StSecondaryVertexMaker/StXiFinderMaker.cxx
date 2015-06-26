@@ -9,15 +9,15 @@
 //
 
 
-#include "StXiFinderMaker.h"
-#include "StMessMgr.h"
+#include "StSecondaryVertexMaker/StXiFinderMaker.h"
+#include "St_base/StMessMgr.h"
 #include "StEvent/StEventTypes.h"
 #include "TMath.h"
 #include "TVector2.h"
 #include "tables/St_exi_exipar_Table.h"
-#include "PhysicalConstants.h"
-#include "math_constants.h"
-#include "phys_constants.h"
+#include "StarClassLibrary/PhysicalConstants.h"
+#include "StHbtMaker/doc/Make/math_constants.h"
+#include "StHbtMaker/doc/Make/phys_constants.h"
 
 
 StSPtrVecXiVertex* vecXi=0;

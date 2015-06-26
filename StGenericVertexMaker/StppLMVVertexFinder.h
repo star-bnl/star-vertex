@@ -11,10 +11,10 @@
 #include <sys/types.h>
 #endif
 #include <vector>
-#include <StThreeVectorD.hh>
-#include <StPhysicalHelixD.hh>
-#include "StGenericVertexFinder.h"
-#include "StCtbUtility.h"
+#include <StarClassLibrary/StThreeVectorD.hh>
+#include <StarClassLibrary/StPhysicalHelixD.hh>
+#include "StGenericVertexMaker/StGenericVertexFinder.h"
+#include "StGenericVertexMaker/StCtbUtility.h"
 
 class StEvent;
 class StTrack;

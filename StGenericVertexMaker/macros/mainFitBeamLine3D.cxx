@@ -7,7 +7,7 @@
 #include <TObjArray.h>
 #include <TRandom3.h>
 
-#include "UtilBeamLine3D.h"
+#include "StGenericVertexMaker/macros/UtilBeamLine3D.h"
 
 UtilBeamLine3D util; // global instance
 int twoLineDca3D(double& lambda,double& kappa,TVector3& V, TVector3& U, TVector3& R,TVector3& P);

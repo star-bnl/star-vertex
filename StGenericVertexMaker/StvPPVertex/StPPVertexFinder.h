@@ -11,7 +11,7 @@
 #endif
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
-#include "StPhysicalHelixD.hh" // dongx
+#include "StarClassLibrary/StPhysicalHelixD.hh" // dongx
 class StEventToolkit;
 class StGlobalTrack;
 class TGraphErrors;

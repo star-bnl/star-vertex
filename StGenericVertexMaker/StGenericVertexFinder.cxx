@@ -7,9 +7,9 @@
  * Description: Base class for vertex finders
  *
  ***************************************************************************/
-#include "StGenericVertexFinder.h"
-#include "StMessMgr.h"
-#include "StMaker.h"
+#include "StGenericVertexMaker/StGenericVertexFinder.h"
+#include "St_base/StMessMgr.h"
+#include "StChain/StMaker.h"
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
