@@ -499,14 +499,14 @@ Int_t StV0FinderMaker::Make() {
           //2D+ METHOD (GETS 3D APPROXIMATION AFTER TWO 2D SOLUTIONS)
           path2 = heli[i].pathLength(rad_j,xcj.X(),xcj.Y());
           // Two possible solutions: process ones that aren't nans
-          if (!isnan(path2.first))
+          if (!std::isnan(path2.first))
              {solution = path2.first;
-              if ((!isnan(path2.second)) && (path2.second != path2.first))
+              if ((!std::isnan(path2.second)) && (path2.second != path2.first))
                  {doSecond = kTRUE;
                   }
               goto ProcessSolution;
               }
-             else if (isnan(path2.second))
+             else if (std::isnan(path2.second))
              {// no solutions
               continue;
               }
@@ -834,6 +834,9 @@ void StV0FinderMaker::ExpandVectors(unsigned short size) {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.34  2013/02/22 18:37:39  perev
+// Cleanu
+//
 // Revision 1.33  2013/02/22 17:06:10  fisyak
 // Remove reference to gufld, which is not used
 //
