@@ -346,7 +346,7 @@ StPPVertexFinder::printInfo(ostream& os) const
       << Form("    Btof %3d,%d,%d",t->btofBin,btofList->getFired(t->btofBin),btofList->getTrack(t->btofBin))   // dongx
       << Form("    CTB  %3d,%d,%d",t->ctbBin,ctbList->getFired(t->ctbBin),ctbList->getTrack(t->ctbBin))
       << Form("    Bemc %3d,%d,%d",t->bemcBin,bemcList->getFired(t->bemcBin),bemcList->getTrack(t->bemcBin))
-      << Form("    Eemc %3d,%d,%d",t->eemcBin,eemcList->getFired(t->eemcBin),bemcList->getTrack(t->bemcBin))
+      << Form("    Eemc %3d,%d,%d",t->eemcBin,eemcList->getFired(t->eemcBin),eemcList->getTrack(t->eemcBin))
       << Form("    TPC %d",t->mTpc)
       <<endm;
   }
@@ -1386,6 +1386,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.45  2013/08/16 20:49:38  perev
+ * PPV with only StEvent dependency
+ *
  * Revision 1.44  2013/04/09 22:37:56  genevb
  * Remove boostEfficiency codes: DB usage implemented
  *
