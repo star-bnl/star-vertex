@@ -156,6 +156,8 @@ private:
     Double_t               mWeight ;          // Weight in fit for vertex contraint
     Double_t               mRImpactMax;       // Max distance between helix and nominal beamline (0,0,z)
     Int_t                  mMinTrack;         // Min number of tracks
+    Float_t                mZMin;             // Min z of possible vertex positions
+    Float_t                mZMax;             // Max z of possible vertex positions
 
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
     
@@ -189,6 +191,9 @@ private:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.12  2010/12/06 20:07:23  fisyak
+ * Increase maximum number of possible seeds
+ *
  * Revision 1.11  2010/01/26 21:01:49  fisyak
  * Clean up, switch from bit mask to attributes
  *
