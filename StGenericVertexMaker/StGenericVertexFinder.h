@@ -48,7 +48,8 @@ class StGenericVertexFinder {
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;} 
  
   void                   FillStEvent(StEvent*);
-
+  virtual void SetVertexPosition(double x,double y,double z){assert(0);}
+  virtual int            IsFixed() const 	{return 0;}
  protected: //................................
 
   StGenericVertexFinder();
@@ -69,6 +70,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.21  2013/08/16 20:49:38  perev
+// PPV with only StEvent dependency
+//
 // Revision 1.20  2010/09/10 21:06:45  rjreed
 // Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
 //

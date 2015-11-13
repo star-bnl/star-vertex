@@ -28,7 +28,8 @@
 
 class StEvent;
 
-class StFixedVertexFinder: public StGenericVertexFinder{
+class StFixedVertexFinder: public StGenericVertexFinder
+{
 public:
     StFixedVertexFinder();
     // should we have destructor too?
@@ -45,6 +46,7 @@ public:
     
     // member not from base class
     void SetVertexPosition(double x, double y, double z);
+    int  IsFixed() const 	{return 1;}
     
 private:
     Double_t mFixedX; //!< X co-ordinate of vertex
@@ -56,6 +58,9 @@ private:
 /***************************************************************************
 *
 * $Log$
+* Revision 1.3  2006/05/18 19:14:24  lbarnby
+* Added SetVertexPosition function. Tidied up comments/docs
+*
 * Revision 1.2  2006/05/10 14:35:00  jeromel
 * Changed VertexId to new enum, added doxygen doc
 *
