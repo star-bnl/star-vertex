@@ -56,7 +56,7 @@ root_generate_linkdef_and_dictionary(StGenericVertexMaker HEADERS
 file(GLOB StGenericVertexMaker_SOURCES "StGenericVertexMaker/*.cxx"  "StGenericVertexMaker/Minuit/*.cxx"
 	"StGenericVertexMaker/StiPPVertex/*.cxx" "StGenericVertexMaker/StvPPVertex/*.cxx")
 
-add_library (StGenericVertexMaker SHARED ${StGenericVertexMaker_SOURCES} StGenericVertexMaker_Cint.cxx)
+add_library(StGenericVertexMaker SHARED ${StGenericVertexMaker_SOURCES} StGenericVertexMaker_dict.cxx)
 
 
 # Installation section
