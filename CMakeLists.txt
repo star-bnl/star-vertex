@@ -1,23 +1,10 @@
-# cmake -D CMAKE_CXX_FLAGS=-std=c++0x \
-# -D STAR_BASE_DIR=~/star-repos/star-base \
-# -D STAR_STEVENT_DIR=~/star-repos/star-stevent \
-# -D STAR_STDB_DIR=~/star-repos/star-stdb \
-# -D STAR_TABLES_DIR=~/star-repos/star-tables \
-# -D STAR_EMC_DIR=~/star-repos/star-emc \
-# -D STAR_DAQ_DIR=~/star-repos/star-daq \
-# -D STAR_TPC_DIR=~/star-repos/star-tpc \
-# -D STAR_TOF_DIR=~/star-repos/star-tof \
-# -D STAR_PAMS_DIR=~/star-repos/star-pams \
-# -D STAR_STI_DIR=~/star-repos/star-sti \
-# -D STAR_BFCHAIN_DIR=~/star-soft/star-bfchain ../
-
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 project(star-vertex)
 
 
 # Add to path in order to pick up the FindXXX.cmake files included in this project
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/star-cmake")
 
 # This project depends on ROOT
 find_package(ROOT)
@@ -26,8 +13,11 @@ if(NOT ROOT_FOUND)
 	message(FATAL_ERROR "Fatal error: ROOT package not found")
 endif()
 
+# Perform some setup standard to STAR experiment environment
+include(StarCommon)
 
 add_definitions(-D__ROOT__)
+
 
 include_directories(
 	${ROOT_INCLUDE_DIR}
@@ -46,10 +36,7 @@ include_directories(
 )
 
 
-# StGenericVertexMaker library
-#root_generate_dictionary(StGenericVertexMaker_dict
-#	StGenericVertexMaker/StGenericVertexMaker.h StGenericVertexMaker/Minuit/St_VertexCutsC.h
-#	LINKDEF StGenericVertexMaker/StGenericVertexMakerLinkDef.h OPTIONS -D__ROOT__)
+# Build StGenericVertexMaker library
 root_generate_linkdef_and_dictionary(StGenericVertexMaker HEADERS
 	StGenericVertexMaker/StGenericVertexMaker.h StGenericVertexMaker/Minuit/St_VertexCutsC.h)
 
@@ -60,11 +47,5 @@ add_library(StGenericVertexMaker SHARED ${StGenericVertexMaker_SOURCES} StGeneri
 
 
 # Installation section
-set(ADDITIONAL_INSTALL_PREFIX ".")
-
-if(DEFINED ENV{STAR_HOST_SYS})
-	set(ADDITIONAL_INSTALL_PREFIX ".$ENV{STAR_HOST_SYS}")
-endif()
-
 install(TARGETS StGenericVertexMaker
-	DESTINATION "${ADDITIONAL_INSTALL_PREFIX}/lib")
+	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib")
