@@ -33,6 +33,8 @@ include_directories(
 	${STAR_PAMS_DIR}/global/inc
 	${STAR_STI_DIR}
 	${STAR_BFCHAIN_DIR}
+	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include
+	$ENV{STAR}/StRoot
 )
 
 
