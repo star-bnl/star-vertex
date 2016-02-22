@@ -43,10 +43,35 @@ include_directories(
 root_generate_linkdef_and_dictionary(StGenericVertexMaker HEADERS
 	StGenericVertexMaker/StGenericVertexMaker.h StGenericVertexMaker/Minuit/St_VertexCutsC.h)
 
-file(GLOB StGenericVertexMaker_SOURCES "StGenericVertexMaker/*.cxx"  "StGenericVertexMaker/Minuit/*.cxx"
-	"StGenericVertexMaker/StiPPVertex/*.cxx" "StGenericVertexMaker/StvPPVertex/*.cxx")
-
-add_library(StGenericVertexMaker SHARED ${StGenericVertexMaker_SOURCES} StGenericVertexMaker_dict.cxx)
+add_library(StGenericVertexMaker SHARED
+	StGenericVertexMaker/StCtbUtility.cxx
+	StGenericVertexMaker/StFixedVertexFinder.cxx
+	StGenericVertexMaker/StGenericVertexFinder.cxx
+	StGenericVertexMaker/StGenericVertexMaker.cxx
+	StGenericVertexMaker/StppLMVVertexFinder.cxx
+	StGenericVertexMaker/Minuit/StMinuitVertexFinder.cxx
+	StGenericVertexMaker/Minuit/St_VertexCutsC.cxx
+	StGenericVertexMaker/StiPPVertex/BemcHitList.cxx
+	StGenericVertexMaker/StiPPVertex/BtofHitList.cxx
+	StGenericVertexMaker/StiPPVertex/CtbHitList.cxx
+	StGenericVertexMaker/StiPPVertex/EemcHitList.cxx
+	StGenericVertexMaker/StiPPVertex/ScintHitList.cxx
+	StGenericVertexMaker/StiPPVertex/StPPVertexFinder.cxx
+	StGenericVertexMaker/StiPPVertex/TrackData.cxx
+	StGenericVertexMaker/StiPPVertex/Vertex3D.cxx
+	StGenericVertexMaker/StiPPVertex/VertexData.cxx
+	StGenericVertexMaker/StvPPVertex/BemcHitList.cxx
+	StGenericVertexMaker/StvPPVertex/BtofHitList.cxx
+	StGenericVertexMaker/StvPPVertex/CtbHitList.cxx
+	StGenericVertexMaker/StvPPVertex/EemcHitList.cxx
+	StGenericVertexMaker/StvPPVertex/ScintHitList.cxx
+	StGenericVertexMaker/StvPPVertex/StEventToolkit.cxx
+	StGenericVertexMaker/StvPPVertex/StPPVertexFinder.cxx
+	StGenericVertexMaker/StvPPVertex/TrackData.cxx
+	StGenericVertexMaker/StvPPVertex/Vertex3D.cxx
+	StGenericVertexMaker/StvPPVertex/VertexData.cxx
+	StGenericVertexMaker_dict.cxx
+)
 
 
 # Build StSecondaryVertexMaker library
