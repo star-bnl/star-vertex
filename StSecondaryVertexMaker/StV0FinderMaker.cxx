@@ -22,8 +22,6 @@
 #include "StMuDSTMaker/COMMON/StMuTypes.hh"
 ///End Betty
 
-#include "StHbtMaker/doc/Make/math_constants.h"
-#include "StHbtMaker/doc/Make/phys_constants.h"
 #include "StarClassLibrary/SystemOfUnits.h"
 
 static const int BLOCK=1024;

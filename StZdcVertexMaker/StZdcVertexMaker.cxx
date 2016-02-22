@@ -48,7 +48,7 @@
 #include "St_base/StMessMgr.h"
 #include "Star2Root/St_DataSet.h"
 #include "Star2Root/St_DataSetIter.h"
-#include "ZdcCalPars.h"
+#include "tables/ZdcCalPars.h"
 #include "tables/St_ZdcCalPars_Table.h"
 #include "tables/St_dst_TrgDet_Table.h"
 #include "StDaqLib/TRG/trgStructures.h"

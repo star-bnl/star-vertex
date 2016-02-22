@@ -16,8 +16,8 @@
 #include "TVector2.h"
 #include "tables/St_exi_exipar_Table.h"
 #include "StarClassLibrary/PhysicalConstants.h"
-#include "StHbtMaker/doc/Make/math_constants.h"
-#include "StHbtMaker/doc/Make/phys_constants.h"
+#include "math_constants.h"
+#include "phys_constants.h"
 
 
 StSPtrVecXiVertex* vecXi=0;

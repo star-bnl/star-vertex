@@ -22,8 +22,8 @@
 #include "tables/St_tkf_tkfpar_Table.h"
 #include "St_base/StMessMgr.h"
 
-#include "StHbtMaker/doc/Make/math_constants.h"
-#include "StHbtMaker/doc/Make/phys_constants.h"
+#include "math_constants.h"
+#include "phys_constants.h"
 #include "TVector2.h"
 #include "StarClassLibrary/StThreeVectorF.hh"
 #include "TObjArray.h"
