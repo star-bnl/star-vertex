@@ -33,6 +33,7 @@ include_directories(
 	${STAR_PAMS_DIR}/global/inc
 	${STAR_STI_DIR}
 	${STAR_BFCHAIN_DIR}
+	${STAR_MUDST_DIR}
 	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include
 	$ENV{STAR}/StRoot
 )
@@ -48,6 +49,29 @@ file(GLOB StGenericVertexMaker_SOURCES "StGenericVertexMaker/*.cxx"  "StGenericV
 add_library(StGenericVertexMaker SHARED ${StGenericVertexMaker_SOURCES} StGenericVertexMaker_dict.cxx)
 
 
+# Build StSecondaryVertexMaker library
+root_generate_linkdef_and_dictionary(StSecondaryVertexMaker HEADERS
+	StSecondaryVertexMaker/StKinkMaker.h
+	StSecondaryVertexMaker/StV0FinderMaker.h
+	StSecondaryVertexMaker/StXiFinderMaker.h
+	StSecondaryVertexMaker/StKinkLocalTrack.hh
+)
+
+add_library(StSecondaryVertexMaker SHARED
+	StSecondaryVertexMaker/StKinkLocalTrack.cc
+	StSecondaryVertexMaker/StKinkMaker.cxx
+	StSecondaryVertexMaker/StV0FinderMaker.cxx
+	StSecondaryVertexMaker/StXiFinderMaker.cxx
+	StSecondaryVertexMaker_dict.cxx
+)
+
+
+# Build StZdcVertexMaker library
+root_generate_linkdef_and_dictionary(StZdcVertexMaker HEADERS StZdcVertexMaker/StZdcVertexMaker.h)
+
+add_library(StZdcVertexMaker SHARED StZdcVertexMaker/StZdcVertexMaker.cxx StZdcVertexMaker_dict.cxx)
+
+
 # Installation section
-install(TARGETS StGenericVertexMaker
+install(TARGETS StGenericVertexMaker StSecondaryVertexMaker StZdcVertexMaker
 	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib")
