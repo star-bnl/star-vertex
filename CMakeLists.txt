@@ -26,6 +26,7 @@ include_directories(
 	${STAR_STEVENT_DIR}
 	${STAR_STDB_DIR}
 	${STAR_TABLES_DIR}
+	${STAR_TABLES_DIR}/tables
 	${STAR_EMC_DIR}
 	${STAR_DAQ_DIR}
 	${STAR_TPC_DIR}
@@ -35,6 +36,7 @@ include_directories(
 	${STAR_BFCHAIN_DIR}
 	${STAR_MUDST_DIR}
 	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include
+	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include/tables
 	$ENV{STAR}/StRoot
 )
 
