@@ -21,6 +21,7 @@
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
 
 #include "StPPVertexFinder.h"
+#include <StEventTypes.h>
 #include "TrackData.h"
 #include "VertexData.h" 
 #include "Vertex3D.h"
@@ -1237,6 +1238,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.2  2013/08/19 21:27:32  perev
+ * Check for Dca geo added
+ *
  * Revision 1.1  2013/08/16 22:19:56  perev
  * PPV with only StEvent dependency
  *

@@ -21,6 +21,7 @@
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
 
 #include "StPPVertexFinder.h"
+#include <StEventTypes.h>
 #include "TrackData.h"
 #include "VertexData.h" 
 #include "Vertex3D.h"
@@ -1386,6 +1387,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.46  2015/08/31 20:28:02  genevb
+ * Correct a typo in a print statement present since version 1.1 : bemc->eemc
+ *
  * Revision 1.45  2013/08/16 20:49:38  perev
  * PPV with only StEvent dependency
  *

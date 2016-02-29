@@ -10,6 +10,7 @@
 #include "StGenericVertexFinder.h"
 #include "StMessMgr.h"
 #include "StMaker.h"
+#include "StEventTypes.h"
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
@@ -90,6 +91,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.16  2013/08/16 20:49:38  perev
+// PPV with only StEvent dependency
+//
 // Revision 1.15  2010/09/10 21:06:45  rjreed
 // Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
 //

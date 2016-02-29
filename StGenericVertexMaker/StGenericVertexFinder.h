@@ -12,7 +12,7 @@
 #ifndef STAR_StGenericVertexFinder
 #define STAR_StGenericVertexFinder
 
-#include "StEventTypes.h"
+//#include "StEventTypes.h"
 #include "StPrimaryVertex.h"
 
 class StEvent;
@@ -70,6 +70,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.22  2015/11/13 04:12:18  perev
+// Added metod IsFixed
+//
 // Revision 1.21  2013/08/16 20:49:38  perev
 // PPV with only StEvent dependency
 //
