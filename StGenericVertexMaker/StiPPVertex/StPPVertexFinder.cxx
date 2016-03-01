@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.46 2015/08/31 20:28:02 genevb Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.47 2016/02/29 22:58:23 jwebb Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -26,6 +26,7 @@
 #include "StGenericVertexMaker/StiPPVertex/Vertex3D.h"
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
+#include "StEvent/StEventTypes.h"
 
 #include <Sti/StiToolkit.h>
 #include <Sti/StiKalmanTrack.h>
@@ -1386,6 +1387,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
 /**************************************************************************
  **************************************************************************
  * $Log: StPPVertexFinder.cxx,v $
+ * Revision 1.47  2016/02/29 22:58:23  jwebb
+ * Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
+ *
  * Revision 1.46  2015/08/31 20:28:02  genevb
  * Correct a typo in a print statement present since version 1.1 : bemc->eemc
  *

@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.2 2013/08/19 21:27:32 perev Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.3 2016/02/29 22:58:23 jwebb Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -26,6 +26,7 @@
 #include "StGenericVertexMaker/StvPPVertex/Vertex3D.h"
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
+#include "StEvent/StEventTypes.h"
 
 #include "StGenericVertexMaker/StvPPVertex/StEventToolkit.h"
 #include "StEvent/StGlobalTrack.h"
@@ -1237,6 +1238,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log: StPPVertexFinder.cxx,v $
+ * Revision 1.3  2016/02/29 22:58:23  jwebb
+ * Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
+ *
  * Revision 1.2  2013/08/19 21:27:32  perev
  * Check for Dca geo added
  *
