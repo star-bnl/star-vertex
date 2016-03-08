@@ -1154,7 +1154,6 @@ void StPPVertexFinder::matchTrack2EEMC(const StGlobalTrack* track,TrackData &t,f
 //==========================================================
 bool StPPVertexFinder::matchTrack2Membrane(const StGlobalTrack* track,TrackData &t)
 {
-static int nCall = 0; nCall++;
   //generate bitt pattern for TPC nodes with hits 
   int nPos=0,nFit=0,jz0=0;
   const StDcaGeometry* dcaGeo = track->dcaGeometry();
@@ -1238,6 +1237,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.3  2016/02/29 22:58:23  jwebb
+ * Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
+ *
  * Revision 1.2  2013/08/19 21:27:32  perev
  * Check for Dca geo added
  *

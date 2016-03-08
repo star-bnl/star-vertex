@@ -10,6 +10,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.22  2015/10/09 18:54:02  genevb
+ * Use new vertex-finding parameters ZMin,ZMax
+ *
  * Revision 1.21  2010/01/26 22:36:31  fisyak
  * Fix bracket
  *
@@ -859,7 +862,6 @@ StMinuitVertexFinder::fit(StEvent* event)
 } 
 //________________________________________________________________________________
 Double_t StMinuitVertexFinder::Chi2atVertex(StThreeVectorD &vtx) {
-static Int_t nCall=0; nCall++;
   Double_t f = 0;
   Double_t e;
   nCTBHits = 0;
@@ -874,8 +876,6 @@ static Int_t nCall=0; nCall++;
       e = helix.distance(vtx, kFALSE);  // false: don't do multiple loops
       //VP version
       //VP	Double_t chi2     = e*e/(errMatrix[0] + errMatrix[2]);
-      static Int_t nCall=0;
-      nCall++;
       Double_t err2;
       Double_t chi2 = gDCA->thelix().Dca(&(vtx.x()),&err2);
       chi2*=chi2/err2;
