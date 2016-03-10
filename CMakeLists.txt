@@ -75,6 +75,21 @@ add_library(StGenericVertexMaker SHARED
 	StGenericVertexMaker_dict.cxx
 )
 
+# Build StGenericVertexMakerNoSti library
+root_generate_linkdef_and_dictionary(StGenericVertexMakerNoSti HEADERS
+	StGenericVertexMaker/StGenericVertexMaker.h StGenericVertexMaker/Minuit/St_VertexCutsC.h)
+
+add_library(StGenericVertexMakerNoSti SHARED
+	StGenericVertexMaker/StCtbUtility.cxx
+	StGenericVertexMaker/StFixedVertexFinder.cxx
+	StGenericVertexMaker/StGenericVertexFinder.cxx
+	StGenericVertexMaker/StGenericVertexMaker.cxx
+	StGenericVertexMaker/StppLMVVertexFinder.cxx
+	StGenericVertexMaker/Minuit/StMinuitVertexFinder.cxx
+	StGenericVertexMaker/Minuit/St_VertexCutsC.cxx
+	StGenericVertexMakerNoSti_dict.cxx
+)
+
 
 # Build StSecondaryVertexMaker library
 root_generate_linkdef_and_dictionary(StSecondaryVertexMaker HEADERS
@@ -100,5 +115,5 @@ add_library(StZdcVertexMaker SHARED StZdcVertexMaker/StZdcVertexMaker.cxx StZdcV
 
 
 # Installation section
-install(TARGETS StGenericVertexMaker StSecondaryVertexMaker StZdcVertexMaker
+install(TARGETS StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
 	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib")
