@@ -28,6 +28,7 @@ class StGenericVertexFinder {
   void                   addVertex(StPrimaryVertex*);
   int                    size() const;
   virtual void           UseVertexConstraint(double, double, double, double, double)=0;
+          void           UseVertexConstraint(const vertexSeed_st& beamline);
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
   virtual void           UsePCT(bool usePCT = true);
@@ -74,6 +75,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.24  2016/04/11 20:44:26  smirnovd
+// StGenericVertexFinder: Added static member to keep beamline parameters
+//
 // Revision 1.23  2016/02/29 22:58:22  jwebb
 // Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
 //
