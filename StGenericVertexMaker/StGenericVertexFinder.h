@@ -14,6 +14,7 @@
 
 //#include "StEventTypes.h"
 #include "StPrimaryVertex.h"
+#include "vertexSeed.h"
 
 class StEvent;
 
@@ -65,11 +66,17 @@ class StGenericVertexFinder {
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 
+  /// All measured parameters of the beamline. Updated whenever
+  /// UseVertexConstraint(const vertexSeed_st&) is called
+  static vertexSeed_st  sBeamline;
 };
 
 
 
 // $Log$
+// Revision 1.23  2016/02/29 22:58:22  jwebb
+// Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
+//
 // Revision 1.22  2015/11/13 04:12:18  perev
 // Added metod IsFixed
 //

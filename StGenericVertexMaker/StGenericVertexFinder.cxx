@@ -12,6 +12,10 @@
 #include "StMaker.h"
 #include "StEventTypes.h"
 
+// Initialize static variable with default values
+vertexSeed_st StGenericVertexFinder::sBeamline;
+
+
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder() : 
   mVertexConstrain(false), mMode(0), mDebugLevel(0)
@@ -91,6 +95,9 @@ void StGenericVertexFinder::NoVertexConstraint()
 
 
 // $Log$
+// Revision 1.17  2016/02/29 22:58:22  jwebb
+// Moved include of StEventTypes from header of generic class to implementation files of generic and concrete classes.
+//
 // Revision 1.16  2013/08/16 20:49:38  perev
 // PPV with only StEvent dependency
 //
