@@ -7,9 +7,8 @@
  * Description: Base class for vertex finders
  *
  ***************************************************************************/
-#include "TRMatrix.h"
-#include "TRSymMatrix.h"
-
+#include "StarRoot/TRMatrix.h"
+#include "StarRoot/TRSymMatrix.h"
 #include "StGenericVertexFinder.h"
 #include "StMessMgr.h"
 #include "StMaker.h"
@@ -200,6 +199,9 @@ void StGenericVertexFinder::UseVertexConstraint(const vertexSeed_st& beamline)
 
 
 // $Log$
+// Revision 1.20  2016/04/11 20:53:20  smirnovd
+// StGenericVertexFinder: Added static method to calculate chi2 for beamline and a point
+//
 // Revision 1.19  2016/04/11 20:53:13  smirnovd
 // Use all available beamline (aka vertex seed) parameters from DB
 //
