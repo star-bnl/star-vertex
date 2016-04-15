@@ -14,7 +14,7 @@
 
 //#include "StEventTypes.h"
 #include "StPrimaryVertex.h"
-#include "vertexSeed.h"
+#include "tables/St_vertexSeed_Table.h"
 
 class StEvent;
 
@@ -78,6 +78,9 @@ class StGenericVertexFinder {
 
 
 // $Log$
+// Revision 1.26  2016/04/11 20:53:20  smirnovd
+// StGenericVertexFinder: Added static method to calculate chi2 for beamline and a point
+//
 // Revision 1.25  2016/04/11 20:53:13  smirnovd
 // Use all available beamline (aka vertex seed) parameters from DB
 //
