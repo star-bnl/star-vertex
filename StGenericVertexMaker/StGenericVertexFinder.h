@@ -6,14 +6,14 @@
  * (pseudo) Base class for vertex finders
  *
  *
- * $Id: StGenericVertexFinder.h,v 1.26 2016/04/11 20:53:20 smirnovd Exp $
+ * $Id: StGenericVertexFinder.h,v 1.27 2016/04/15 19:07:43 smirnovd Exp $
  */
 
 #ifndef STAR_StGenericVertexFinder
 #define STAR_StGenericVertexFinder
 
 #include "StEvent/StPrimaryVertex.h"
-#include "vertexSeed.h"
+#include "tables/St_vertexSeed_Table.h"
 
 class StEvent;
 
@@ -77,6 +77,9 @@ class StGenericVertexFinder {
 
 
 // $Log: StGenericVertexFinder.h,v $
+// Revision 1.27  2016/04/15 19:07:43  smirnovd
+// Switch to another but equivalent header file
+//
 // Revision 1.26  2016/04/11 20:53:20  smirnovd
 // StGenericVertexFinder: Added static method to calculate chi2 for beamline and a point
 //
