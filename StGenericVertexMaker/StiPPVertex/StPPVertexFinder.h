@@ -103,7 +103,7 @@ public:
   TH1D *hL ;      // likelyhood distribution
   TH1D *hM, *hW ; // cumulative track mult & weight distribution, for better errZ calculation
   TObjArray * HList;
-  StPPVertexFinder();
+  StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline1D);
 
   // mandatory implementations
   virtual  ~StPPVertexFinder();

@@ -104,7 +104,7 @@ class TMinuit;
 class StDcaGeometry;
 class StMinuitVertexFinder: public StGenericVertexFinder {
 public:
-    StMinuitVertexFinder();
+    StMinuitVertexFinder(VertexFit_t fitMode=VertexFit_t::NoBeamline);
 
     // mandatory implementations
     virtual        ~StMinuitVertexFinder();

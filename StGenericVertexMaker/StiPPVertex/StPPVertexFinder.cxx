@@ -66,7 +66,7 @@
 //==========================================================
 //==========================================================
 
-StPPVertexFinder::StPPVertexFinder() {
+StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) : StGenericVertexFinder(fitMode) {
   LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
 
   mdxdz=mdydz=mX0=mY0  = 0; // beam line params

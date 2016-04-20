@@ -54,7 +54,8 @@ StMinuitVertexFinder::setExternalSeed(const StThreeVectorD& s)
 }
 
 
-StMinuitVertexFinder::StMinuitVertexFinder() {
+StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) : StGenericVertexFinder(fitMode)
+{
   LOG_INFO << "StMinuitVertexFinder::StMinuitVertexFinder is in use." << endm;
   mBeamHelix =0;
   
