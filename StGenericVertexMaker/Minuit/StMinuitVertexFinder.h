@@ -144,6 +144,7 @@ private:
 
     static void fcn(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
     static void fcn1D(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
+    static void Chi2Beamline3D(Int_t&, Double_t*, Double_t&, Double_t*, Int_t);
     static Double_t Chi2atVertex(StThreeVectorD &vtx);
     
     bool                   mUseITTF;          // Use only tracks with ITTF encoded method
