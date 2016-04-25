@@ -166,7 +166,7 @@ private:
     Int_t                  mNSeed;
     Float_t                mSeedZ[maxSeed];
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
-    static vector<StDcaGeometry*>   mDCAs;
+    static vector<const StDcaGeometry*>   mDCAs;
     static vector<StPhysicalHelixD> mHelices;
     static vector<UShort_t>         mHelixFlags;
     static vector<Double_t>         mSigma;
