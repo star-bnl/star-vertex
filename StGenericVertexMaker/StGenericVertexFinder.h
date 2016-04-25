@@ -93,7 +93,7 @@ class StGenericVertexFinder {
   static double CalcBeamlineChi2(const StThreeVectorD& point);
 
   /// A static container with pointers to DCA states to be used in a vertex fit
-  static std::vector<const StDcaGeometry*>  mDCAs;
+  static std::vector<const StDcaGeometry*>  sDCAs;
 
   /// All measured parameters of the beamline. Updated whenever
   /// UseVertexConstraint(const vertexSeed_st&) is called

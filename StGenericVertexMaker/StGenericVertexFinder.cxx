@@ -15,10 +15,11 @@
 #include "StEvent/StDcaGeometry.h"
 #include "StEventTypes.h"
 
+
 // Initialize static variable with default values
 
 /// Pointers to DCA states to be used in a vertex fit
-std::vector<const StDcaGeometry*>  StGenericVertexFinder::mDCAs;
+std::vector<const StDcaGeometry*>  StGenericVertexFinder::sDCAs;
 
 vertexSeed_st StGenericVertexFinder::sBeamline;
 
