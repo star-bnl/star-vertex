@@ -197,3 +197,23 @@ void StGenericVertexFinder::UseVertexConstraint(const vertexSeed_st& beamline)
    LOG_INFO << "x(z) = (" << sBeamline.x0 << " +/- " << sBeamline.err_x0 << ") + (" << sBeamline.dxdz << " +/- " << sBeamline.err_dxdz << ") * z" << endm;
    LOG_INFO << "y(z) = (" << sBeamline.y0 << " +/- " << sBeamline.err_y0 << ") + (" << sBeamline.dydz << " +/- " << sBeamline.err_dydz << ") * z" << endm;
 }
+
+
+/**
+ * Returns x coordinate on the beamline (given by sBeamline) corresponding to
+ * the passed value of z.
+ */
+double StGenericVertexFinder::beamX(double z)
+{
+  return sBeamline.x0 + sBeamline.dxdz*z;
+}
+
+
+/**
+ * Returns y coordinate on the beamline (given by sBeamline) corresponding to
+ * the passed value of z.
+ */
+double StGenericVertexFinder::beamY(double z)
+{
+  return sBeamline.y0 + sBeamline.dydz*z;
+}

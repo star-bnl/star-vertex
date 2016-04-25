@@ -179,8 +179,6 @@ private:
     static Double_t                 mY0  ; // starting point of beam parameterization
     static Double_t                 mdxdz; // beam slope
     static Double_t                 mdydz; // beam slope
-    static Double_t beamX(Double_t z); // beamline parameterization
-    static Double_t beamY(Double_t z); // beamline parameterization
     Int_t                    mStatusMin;           // Minuit status flag 
     StThreeVectorD           mExternalSeed;
     Bool_t                   mExternalSeedPresent;

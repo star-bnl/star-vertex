@@ -77,6 +77,14 @@ class StGenericVertexFinder {
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 
+  /// Returns x coordinate on the beamline (given by sBeamline) corresponding to
+  /// the passed value of z.
+  static double beamX(double z);
+
+  /// Returns y coordinate on the beamline (given by sBeamline) corresponding to
+  /// the passed value of z.
+  static double beamY(double z);
+
   /// Caclulates chi2 for the beamline and a point
   static double CalcBeamlineChi2(const StThreeVectorD& point);
 
