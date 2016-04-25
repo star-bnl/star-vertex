@@ -90,7 +90,7 @@ class StGenericVertexFinder {
   static double beamY(double z);
 
   /// Caclulates chi2 for the beamline and a point
-  static double CalcBeamlineChi2(const StThreeVectorD& point);
+  static double CalcChi2Beamline(const StThreeVectorD& point);
 
   /// A static container with pointers to DCA states to be used in a vertex fit
   static std::vector<const StDcaGeometry*>  sDCAs;

@@ -781,7 +781,7 @@ void StMinuitVertexFinder::Chi2Beamline3D(int& npar, double* gin, double& f, dou
 
   // Add to the chi2 with the beamline
   static double scale = 1./(mWidthScale*mWidthScale);
-  f += scale*(1. - TMath::Exp(-CalcBeamlineChi2(vtx)/scale));
+  f += scale*(1. - TMath::Exp(-StGenericVertexFinder::CalcChi2Beamline(vtx)/scale));
 }
 
 

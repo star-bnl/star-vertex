@@ -111,7 +111,7 @@ StGenericVertexFinder::Clear()
  * \author Dmitri Smirnov
  * \date April, 2016
  */
-double StGenericVertexFinder::CalcBeamlineChi2(const StThreeVectorD& point)
+double StGenericVertexFinder::CalcChi2Beamline(const StThreeVectorD& point)
 {
    // Just for shorthand
    const vertexSeed_st& bl = sBeamline;
