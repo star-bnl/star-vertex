@@ -12,11 +12,15 @@
 #ifndef STAR_StGenericVertexFinder
 #define STAR_StGenericVertexFinder
 
+#include <vector>
+
 //#include "StEventTypes.h"
 #include "StPrimaryVertex.h"
 #include "tables/St_vertexSeed_Table.h"
 
 class StEvent;
+class StDcaGeometry;
+
 
 class StGenericVertexFinder {
  public:
@@ -87,6 +91,9 @@ class StGenericVertexFinder {
 
   /// Caclulates chi2 for the beamline and a point
   static double CalcBeamlineChi2(const StThreeVectorD& point);
+
+  /// A static container with pointers to DCA states to be used in a vertex fit
+  static std::vector<const StDcaGeometry*>  mDCAs;
 
   /// All measured parameters of the beamline. Updated whenever
   /// UseVertexConstraint(const vertexSeed_st&) is called

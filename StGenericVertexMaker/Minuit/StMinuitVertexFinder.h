@@ -101,7 +101,7 @@
 class StEvent;
 class StTrack;
 class TMinuit;
-class StDcaGeometry;
+
 class StMinuitVertexFinder: public StGenericVertexFinder {
 public:
     StMinuitVertexFinder(VertexFit_t fitMode=VertexFit_t::NoBeamline);
@@ -166,7 +166,6 @@ private:
     Int_t                  mNSeed;
     Float_t                mSeedZ[maxSeed];
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
-    static vector<const StDcaGeometry*>   mDCAs;
     static vector<StPhysicalHelixD> mHelices;
     static vector<UShort_t>         mHelixFlags;
     static vector<Double_t>         mSigma;

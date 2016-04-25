@@ -26,7 +26,6 @@
 #include "StDcaGeometry.h"
 #include "St_VertexCutsC.h"
 #include "StMaker.h"
-vector<const StDcaGeometry*>     StMinuitVertexFinder::mDCAs;
 vector<StPhysicalHelixD>   StMinuitVertexFinder::mHelices;
 vector<UShort_t>           StMinuitVertexFinder::mHelixFlags;
 vector<Double_t >          StMinuitVertexFinder::mSigma;
@@ -94,7 +93,6 @@ StMinuitVertexFinder::~StMinuitVertexFinder()
    delete mBeamHelix; mBeamHelix=0;
    LOG_WARN << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
    //delete mMinuit;
-   mDCAs.clear();
    mHelices.clear();
    mHelixFlags.clear();
    mZImpact.clear();
