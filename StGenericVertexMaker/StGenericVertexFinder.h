@@ -95,6 +95,10 @@ class StGenericVertexFinder {
   /// Caclulates chi2 for the beamline and a point
   static double CalcChi2Beamline(const StThreeVectorD& point);
 
+  /// Recalculates the vertex position from DCA measurements in the input list
+  /// of DCAs
+  static StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
+
   /// Caclulates total chi2 for the track DCAs stored in sDCAs and a point
   static double CalcChi2DCAs(const StThreeVectorD &point);
 
