@@ -98,6 +98,33 @@ StGenericVertexFinder::Clear()
 }
 
 
+double StGenericVertexFinder::CalcChi2DCAs(const StThreeVectorD &point)
+{
+   static double scale = 100;
+
+   // Initialize f with value for beamline
+   double f = 0;
+
+   for (const StDcaGeometry* dca : sDCAs())
+   {
+      double err2;
+      double dist = dca->thelix().Dca( &point.x(), &err2);
+      double chi2 = dist*dist/err2;
+
+      f += scale*(1. - TMath::Exp(-chi2/scale)); // robust potential
+   }
+
+   return f;
+}
+
+
+double StGenericVertexFinder::CalcChi2DCAsBeamline(const StThreeVectorD &point)
+{
+   static double scale = 100;
+
+   return CalcChi2DCAs(point) + scale*(1. - TMath::Exp(-CalcChi2Beamline(point)/scale));
+}
+
 
 /**
  * Calculates chi^2 for the beamline and a point (xv, yv, zv) passed as input
