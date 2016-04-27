@@ -25,6 +25,9 @@ class StDcaGeometry;
 class StGenericVertexFinder {
  public:
 
+  // Alias for shorthand
+  using StDcaList = std::vector<const StDcaGeometry*>;
+
   /// Options used to define the type of vertex fit performed in a concrete
   /// implementation
   enum class VertexFit_t : int { Unspecified, NoBeamline, Beamline1D, Beamline3D };
@@ -93,7 +96,7 @@ class StGenericVertexFinder {
   static double CalcChi2Beamline(const StThreeVectorD& point);
 
   /// A static container with pointers to DCA states to be used in a vertex fit
-  static std::vector<const StDcaGeometry*>&  sDCAs();
+  static StDcaList&  sDCAs();
 
   /// All measured parameters of the beamline. Updated whenever
   /// UseVertexConstraint(const vertexSeed_st&) is called
