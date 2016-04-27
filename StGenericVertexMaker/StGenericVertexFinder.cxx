@@ -19,7 +19,12 @@
 // Initialize static variable with default values
 
 /// Pointers to DCA states to be used in a vertex fit
-std::vector<const StDcaGeometry*>  StGenericVertexFinder::sDCAs;
+StGenericVertexFinder::StDcaList&  StGenericVertexFinder::sDCAs()
+{
+   static StDcaList* sDCAs = new StDcaList();
+   return *sDCAs;
+}
+
 
 vertexSeed_st StGenericVertexFinder::sBeamline;
 
