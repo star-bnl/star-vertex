@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StppLMVVertexFinder.cxx,v 1.26 2016/04/15 19:24:14 smirnovd Exp $
+ * $Id: StppLMVVertexFinder.cxx,v 1.24.2.1 2016/04/27 12:28:01 jeromel Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -287,7 +287,7 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
 
   sigma=0;
   const double Rctb=213.6; // (cm) radius of the CTB 
-  uint nFitP=0;
+  uint nPoss=0, nFitP=0, nSvtP=0;
 
   if (!track) return false; // it should never happen
   if(!finite(track->geometry()->helix().curvature())){
@@ -315,6 +315,8 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
   n2++;
   
   nFitP = track->detectorInfo()->numberOfPoints(kTpcId);
+  nSvtP = track->detectorInfo()->numberOfPoints(kSvtId);
+  nPoss=track->numberOfPossiblePoints(kTpcId);
 
   if(  nFitP <= mMinNumberOfFitPointsOnTrack) return false;
   n3++;
@@ -348,7 +350,7 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
   float strag=0.0136/beta/pmomM*spathL; 
   if(fabs(mBfield)<0.01) strag=0.0136*spathL; // no field case, pT makes no sense
 
-  //  printf("stragling=%f %f p=%f %f nFp=%d nPp=%d\n",strag,beta,pmom.mag(),spath, track->fitTraits().numberOfFitPoints(), track->numberOfPossiblePoints(kTpcId) );
+  //  printf("stragling=%f %f p=%f %f nFp=%d nPp=%d\n",strag,beta,pmom.mag(),spath, track->fitTraits().numberOfFitPoints(),nPoss );
   
 
   if ( !track->outerGeometry() )  return false;
@@ -396,7 +398,7 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
     // printf("  CTB match OK:  del_eta=%.2f, del_phi/deg=%.1f \n", del_eta,del_phi/C_PI*180);
     sigma=strag;
     n6++;    
-    //  printf("add tr %d w/ sigma=%f p/GeV=%f spath/cm=%f nFitP=%d nSVT=%d\n",mPrimCand.size(),sigma,pmom.mag(),spath,nFitP, track->detectorInfo()->numberOfPoints(kSvtId) );
+    //  printf("add tr %d w/ sigma=%f p/GeV=%f spath/cm=%f nFitP=%d nPoss=%d nSVT=%d\n",mPrimCand.size(),sigma,pmom.mag(),spath,nFitP, nPoss,nSvtP);
     
     return true;
   }
@@ -530,10 +532,8 @@ StppLMVVertexFinder::ppLMV5() {
   
   //  double  chi2pdof = chi2/(mPrimCand.size()-1);
 
-  StPrimaryVertex primV;                    //  Initial comment - cxx,?,cyy,?,?,czz
-  Float_t cov[6] = {(Float_t) C11, 0.0,     //  m(1,1)          m(1,2)==m(2,1)
-		    (Float_t) C22, 0.0,     //  m(2,2)          m(1,3)==m(3,1)
-		    0.0, (Float_t) C33  };  //  m(2,3)==m(3,2)  m(3,3)
+  StPrimaryVertex primV;
+  Float_t cov[6] = { (Float_t) C11,0.0, (Float_t) C22,0.0,0.0, (Float_t) C33 };  //  cxx,?,cyy,?,?,czz
   
   primV.setPosition(XVertex);
   primV.setCovariantMatrix(cov); 
@@ -606,11 +606,8 @@ int  StppLMVVertexFinder::NCtbMatches() {
 
 /*
  * $Log: StppLMVVertexFinder.cxx,v $
- * Revision 1.26  2016/04/15 19:24:14  smirnovd
- * Got rid of unused variables reported by compiler
- *
- * Revision 1.25  2014/07/28 18:07:59  jeromel
- * Cst for C++11 and added comment for cov elements as per StVertex
+ * Revision 1.24.2.1  2016/04/27 12:28:01  jeromel
+ * Patches for getting SL13b compiled with gcc44
  *
  * Revision 1.24  2010/01/26 21:01:49  fisyak
  * Clean up, switch from bit mask to attributes
