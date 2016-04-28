@@ -848,11 +848,13 @@ StPPVertexFinder::evalVertexZ(VertexData &V) { // and tag used tracks
 //-------------------------------------------------
 void 
 StPPVertexFinder::exportVertices(){
-  if (mVertexFitMode != VertexFit_t::Beamline1D)
+  if ( mVertexFitMode != VertexFit_t::Beamline1D &&
+       mVertexFitMode != VertexFit_t::Beamline3D )
   {
     // code is not ready for reco w/o beamLine
     LOG_FATAL << "StPPVertexFinder code is not ready for reco w/o beamLine" << endm;
-    assert(mVertexFitMode == VertexFit_t::Beamline1D);
+    assert(mVertexFitMode == VertexFit_t::Beamline1D ||
+           mVertexFitMode == VertexFit_t::Beamline3D);
   }
   uint i;
   for(i=0;i<mVertexData.size();i++) {
