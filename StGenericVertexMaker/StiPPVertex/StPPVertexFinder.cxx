@@ -200,8 +200,12 @@ StPPVertexFinder::InitRun(int runnumber){
     // in late 2008 Matt uploaded ideal (aka sim) gians matching endcap
     if(dateY>=2008)  mMinAdcBemc =8; //ideal BTOW gain 60 GeV ET @ 4076 ADC
 
-    if(dateY>2006)  LOG_WARN <<
-	  "PPV InitRun() , M-C time stamp differs from 2005,\n BTOW status tables questionable,\n PPV results qauestionable, \n\n  F I X    B T O W    S T A T U S     T A B L E S     B E F O R E     U S E  !!!  \n \n chain will continue taking whatever is loaded in to DB\n  Jan Balewski, January 2006\n"<<endm; 
+    if(dateY>2006) {
+       LOG_WARN << "PPV InitRun() , M-C time stamp differs from 2005,\n"
+          "BTOW status tables questionable,\n PPV results qauestionable,\n\n"
+          "F I X    B T O W    S T A T U S     T A B L E S     B E F O R E     U S E  !!!\n\n"
+          "chain will continue taking whatever is loaded in to DB\n  Jan Balewski, January 2006\n" << endm;
+    }
   }
 
   if(dateY<2006) {
@@ -314,10 +318,7 @@ StPPVertexFinder::Clear(){
 //==========================================================
 //==========================================================
 StPPVertexFinder::~StPPVertexFinder() {
-  //x delete mTrackData;
-  //x delete mVertexData;
   delete geomE;
-  //yf  if(btofGeom) delete btofGeom; // dongx 
 }
 
 //======================================================

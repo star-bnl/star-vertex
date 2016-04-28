@@ -111,7 +111,8 @@ class StGenericVertexFinder {
      f = CalcChi2DCAsBeamline( StThreeVectorD(par) );
   }
 
-  /// A static container with pointers to DCA states to be used in a vertex fit
+  /// A static container with pointers to DCA states to be used in a vertex fit.
+  /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
   static StDcaList&  sDCAs();
 
   /// All measured parameters of the beamline. Updated whenever

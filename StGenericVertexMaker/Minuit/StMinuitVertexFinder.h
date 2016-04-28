@@ -102,7 +102,9 @@ class StEvent;
 class StTrack;
 class TMinuit;
 
-class StMinuitVertexFinder: public StGenericVertexFinder {
+
+class StMinuitVertexFinder: public StGenericVertexFinder
+{
 public:
     StMinuitVertexFinder(VertexFit_t fitMode=VertexFit_t::NoBeamline);
 
@@ -163,7 +165,10 @@ private:
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
     
     enum                   {maxSeed=500};
-    Int_t                  mNSeed;
+
+    /// The number of vertex seeds found in current event
+    Int_t  mNSeed;
+
     Float_t                mSeedZ[maxSeed];
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
     static vector<StPhysicalHelixD> mHelices;

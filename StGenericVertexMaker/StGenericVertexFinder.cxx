@@ -16,6 +16,7 @@
 #include "StEventTypes.h"
 
 
+
 // Initialize static variable with default values
 
 /// Pointers to DCA states to be used in a vertex fit
@@ -26,6 +27,7 @@ StGenericVertexFinder::StDcaList&  StGenericVertexFinder::sDCAs()
 }
 
 
+/// All measured parameters of the beamline
 vertexSeed_st StGenericVertexFinder::sBeamline;
 
 

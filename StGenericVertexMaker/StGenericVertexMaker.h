@@ -78,7 +78,3 @@ class StGenericVertexMaker : public StMaker
 };
     
 #endif
-    
-
-
-
