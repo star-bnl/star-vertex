@@ -533,7 +533,7 @@ StppLMVVertexFinder::ppLMV5() {
   //  double  chi2pdof = chi2/(mPrimCand.size()-1);
 
   StPrimaryVertex primV;
-  Float_t cov[6] = {C11,0.0,C22,0.0,0.0,C33  };  //  cxx,?,cyy,?,?,czz
+  Float_t cov[6] = { (Float_t) C11,0.0, (Float_t) C22,0.0,0.0, (Float_t) C33 };  //  cxx,?,cyy,?,?,czz
   
   primV.setPosition(XVertex);
   primV.setCovariantMatrix(cov); 
@@ -606,6 +606,12 @@ int  StppLMVVertexFinder::NCtbMatches() {
 
 /*
  * $Log$
+ * Revision 1.24.2.1  2016/04/27 12:28:01  jeromel
+ * Patches for getting SL13b compiled with gcc44
+ *
+ * Revision 1.24  2010/01/26 21:01:49  fisyak
+ * Clean up, switch from bit mask to attributes
+ *
  * Revision 1.23  2006/05/05 18:35:39  balewski
  * block the fake second prim vertex
  *
