@@ -114,6 +114,15 @@ root_generate_linkdef_and_dictionary(StZdcVertexMaker HEADERS StZdcVertexMaker/S
 add_library(StZdcVertexMaker SHARED StZdcVertexMaker/StZdcVertexMaker.cxx StZdcVertexMaker_dict.cxx)
 
 
+# A collective target to build all libraries in this project. Can be used to
+# build all specified targets from a parent project
+add_custom_target(star-vertex DEPENDS
+	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
+)
+
+
 # Installation section
-install(TARGETS StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
-	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib")
+install(TARGETS
+	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
+	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib" OPTIONAL
+)
