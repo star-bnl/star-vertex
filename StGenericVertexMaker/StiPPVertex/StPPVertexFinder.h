@@ -48,6 +48,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t, float rxy);
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &t);
   bool isPostCrossingTrack(const StiKalmanTrack* track);
+
+  /// A container with pre-selected tracks to be used in seed finding
   vector<TrackData>  mTrackData;
   vector<VertexData> mVertexData;
   Vertex3D *vertex3D; // for stand alone 3D vertex reco
