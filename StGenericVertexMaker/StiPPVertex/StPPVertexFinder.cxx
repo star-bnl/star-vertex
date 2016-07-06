@@ -33,6 +33,7 @@
 #include <Sti/StiKalmanTrack.h>
 #include <Sti/StiKalmanTrackNode.h>
 #include <Sti/StiTrackContainer.h>
+#include "Sti/StiTrack.h"
 
 #include <St_db_Maker/St_db_Maker.h>
 #include <StIOMaker/StIOMaker.h> // to save  local histos 
@@ -501,8 +502,10 @@ StPPVertexFinder::fit(StEvent* event) {
 
   std::array<int, 7> ntrk{};
 
-  for (StiTrackContainer::const_iterator it=(*tracks).begin();  it!=(*tracks).end(); ++it) {
-    const StiKalmanTrack* track = static_cast<StiKalmanTrack*>(*it);
+  for (const StiTrack* stiTrack : *tracks)
+  {
+    const StiKalmanTrack* track = static_cast<const StiKalmanTrack*>(stiTrack);
+
     TrackData t;
 
     ntrk[0]++;
