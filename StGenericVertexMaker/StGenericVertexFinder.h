@@ -52,17 +52,17 @@ class StGenericVertexFinder {
 
   // General (default)
   virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
-  virtual int            GetMode() const 	{return mMode;}
+  virtual int            GetMode() const        {return mMode;}
           void           SetDebugLevel(Int_t level) {mDebugLevel=level;}
   virtual void           Init(){ /* noop */;}
   virtual void           Finish(){ /* noop */;}
   virtual void           InitRun  (int runumber){ /* noop */;}
   virtual void           Clear();
-  const std::vector<StPrimaryVertex> *result() {return &mVertexList;} 
- 
+  const std::vector<StPrimaryVertex> *result() {return &mVertexList;}
+
   void                   FillStEvent(StEvent*);
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
-  virtual int            IsFixed() const 	{return 0;}
+  virtual int            IsFixed() const        {return 0;}
  protected: //................................
 
   StGenericVertexFinder(VertexFit_t fitMode=VertexFit_t::Unspecified);
@@ -79,7 +79,7 @@ class StGenericVertexFinder {
   VertexFit_t            mVertexFitMode;
 
   int                    mDebugLevel;
-  bool   		 mIsMC;              // flag minor differences between Data & M-C
+  bool                   mIsMC;              // flag minor differences between Data & M-C
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 
