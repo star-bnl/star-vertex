@@ -13,10 +13,6 @@
 #include "StEventTypes.h"
 #include "StEnumerations.h"
 #include "TMinuit.h"
-#if 0
-#include "TH1K.h"
-#include "TSpectrum.h"
-#endif
 #include "StGlobals.hh"
 #include "SystemOfUnits.h"
 #include "StCtbMatcher.h"

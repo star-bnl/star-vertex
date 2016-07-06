@@ -425,26 +425,6 @@ StPPVertexFinder::fit(StEvent* event) {
   StEvent *mEvent = (StEvent *)  StMaker::GetChain()->GetInputDS("StEvent");
   assert(mEvent); 
 
-#if 0 // do you want trigger filter?
-  //-------------------tmp trigger filter
-  StTriggerIdCollection *ticA=mEvent->triggerIdCollection();
-  assert(ticA);     
-  const StTriggerId *L1=L1=ticA->nominal(); 
-  // vector<unsigned int> trgL=tic->nominal().triggerIds();
-  vector<unsigned int> trgL=L1->triggerIds();
-  printf("PPVertex::Fit START trigL len=%d \n",trgL.size());
-  uint ii;
-  for(ii=0;ii<trgL.size();ii++){
-    printf("ii=%d trigID=%d\n",ii,trgL[ii]);
-  }
-  
-  if(L1->isTrigger(127221)==0) { 
-    printf("PPV is off for this trigger(s)\n"); 
-    return false;
-  }
-#endif
-  //--------------------end of trigger filter
-
   mTotEve++;
   eveID=event->id();
   LOG_INFO << "\n   @@@@@@   PPVertex::Fit START nEve="<<mTotEve<<"  eveID="<<eveID<<  endm;
@@ -719,16 +699,6 @@ StPPVertexFinder::buildLikelihoodZ(){
   }
 
  LOG_DEBUG<< Form("PPV::buildLikelihood() %d tracks w/ matched @ Lmax=%f",n1,hL->GetMaximum())<<endm;
-
-#if 0 // save .ps for every vertex found
-  //tmp
-  LOG_WARN << "PPV saves .ps for every vertex, jan"<<endm;
-  TCanvas c;
-  hL->Draw();
-  TString tt="eve";
-  tt+=eveID; tt+="Lmx"; tt+=hL->GetMaximum();
-  c.Print(tt+".ps");
-#endif
 
   return (n1>=mMinMatchTr) ||  (mStoreUnqualifiedVertex>0 );
 }
@@ -1491,124 +1461,3 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
   }
   return false;
 }
-
-
-#if 0
-
-old scraps of code
-
----------------------------
-  const float maxZerr=1; // cm
-
-  fprintf(fdOut,"%3d nEve %.2f   %d %d %d    %d %d %d   %d ",mTotEve,zGeant,ctbList->getnFired(),bemcList->getnFired(),eemcList->getnFired(),mTrackData->size(),nTpcM,nTpcV,mVertexData->size());
-  if(mVertexData->size()>1) 
-    fprintf(fdOut,"nV "); 
-  else  
-    fprintf(fdOut,"nv "); 
-  fprintf(fdOut," %d\n",eveID);
-
-  float del=888;
-  for(i=0;i<mVertexData->size();i++) {
-    VertexData *V=&mVertexData->at(i);
-    printf("%.1f:%d:%d ",V->r.z(),V->nUsedTrack,V->nAnyMatch);
-    fprintf(fdOut,"     v %d  %.2f   %d %d %d   %d %d   %d %d   %d %d   %d %d",i+1,V->r.z(),V->nUsedTrack,V->nAnyMatch,V->nAnyVeto,V->nCtb,V->nCtbV,V->nBemc,V->nBemcV,V->nEemc,V->nEemcV,V->nTpc,V->nTpcV);
-    
-    if(fabs(V->r.z()-zGeant)<maxZerr) {
-      printf("****%d ",i+1);
-      fprintf(fdOut," *\n");
-      del=zGeant-V->r.z();
-      hA[13]->Fill(del);
-    } else	
-      fprintf(fdOut," ,\n");
-    
-  }
-  printf(" del=%.1f\n",del);
-
-
-===============================================================
-
-  int PlotEveN=-1; //save Z-likelihood as histo for first events
-
-    if(mTotEve==PlotEveN )  // for every vertex found
-      plotVertex(&V);//....... save Z-likelihood plot for first events
-  }
-  if(mTotEve==PlotEveN ) plotTracksDca() ; // save trask used
-
-
-//-------------------------------------------------
-//-------------------------------------------------
-void StPPVertexFinder::plotVertex(VertexData *V) {
-    float z0=V->r.z();
-    float ez=V->er.z();
-    TH1D *h=( TH1D *) hL->Clone();
-    char txt[100];
-    sprintf(txt,"e%dV%d",mTotEve,V->id);
-    h->SetName(txt);
-    sprintf(txt,"lnLike vertZ=%d  nTr=%d eveID=%d",V->id,V->nUsedTrack,eveID);
-    h->SetTitle(txt);
-    h->SetAxisRange(z0-8, z0+8);
-    HList->Add(h);
-
-    TList* LL= h->GetListOfFunctions();
-
-    // add Likelyhood shape  function
-    sprintf(txt,"e%dV%dL",mTotEve,V->id);
-    TF1  *fL = new TF1(txt,"[2]- (x-[0])*(x-[0])/2/[1]/[1]",-200,200);
-    fL->SetParName(0,"z0");
-    fL->SetParName(1,"sig");
-    fL->SetParName(2,"Lmax");
-    fL->SetLineColor(kRed);
-    fL->SetLineWidth(1);
-    fL->SetParameter(0,z0);
-    fL->SetParameter(1,ez); 
-    fL->SetParameter(2,V->Lmax);
-    LL->Add(fL);
-    TLine *ln=new TLine(z0,0,z0,V->Lmax); ln->SetLineColor(kRed); 
-    LL->Add(ln);
-    ln=new TLine(z0+ez,0,z0+ez,V->Lmax); ln->SetLineColor(kRed); 
-    ln->SetLineStyle(2); LL->Add(ln);
-    ln=new TLine(z0-ez,0,z0-ez,V->Lmax); ln->SetLineColor(kRed); 
-    ln->SetLineStyle(2); LL->Add(ln);
-}
-
-//-------------------------------------------------
-//-------------------------------------------------
-void StPPVertexFinder::plotTracksDca() {
-#if 0
-    char txt[100];
-
-    sprintf(txt,"e%dGin",mTotEve);
-    TGraphErrors *g1=new TGraphErrors;
-    g1->SetMarkerStyle(27);
-    g1->SetName(txt);
-    sprintf(txt,"in-time Z along beam @ DCA, eveID=%d; Z (cm); pT (GeV/c)",eveID);
-    g1->SetTitle(txt);
-    g1->SetLineColor(kBlue);
-    g1->SetMarkerColor(kBlue);
-
-    sprintf(txt,"e%dGout",mTotEve);
-    TGraphErrors *g2=new TGraphErrors;
-    g2->SetMarkerStyle(5);
-    g2->SetName(txt);
-    sprintf(txt,"out-of-time Z along beam @ DCA, eveID=%d; Z (cm); pT (GeV/c)",eveID);
-    g2->SetTitle(txt);
-    g2->SetLineColor(kMagenta);
-    g2->SetMarkerColor(kMagenta);
-
-    int i;
-    int nt=mTrackData->size();
-    for(i=0;i<nt;i++) {
-      TrackData *t=&mTrackData->at(i);
-      TGraphErrors *g=g1;
-      if(!t->ctbMatch) g=g2; // out-of-time
-      int n=g->GetN();
-      g->SetPoint(n,t->zDca,t->gPt);
-      g->SetPointError(n,t->ezDca,0);
-    }
-    HList->Add(g1);
-    HList->Add(g2);
-#endif
-}
-
-
-#endif
