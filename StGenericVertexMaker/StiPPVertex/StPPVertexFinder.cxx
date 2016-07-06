@@ -496,14 +496,12 @@ StPPVertexFinder::fit(StEvent* event) {
   hA[0]->Fill(4);
   
   //select reasonable tracks and add them to my list
-  int k=0;
   int kBtof=0,kCtb=0,kBemc=0, kEemc=0,kTpc=0;
   int nmAny=0;
 
-  int ntrk[7]; for(int i=0; i<7; i++) ntrk[i]=0;
+  std::array<int, 7> ntrk{};
 
   for (StiTrackContainer::const_iterator it=(*tracks).begin();  it!=(*tracks).end(); ++it) {
-    k++;
     const StiKalmanTrack* track = static_cast<StiKalmanTrack*>(*it);
     TrackData t;
 
@@ -517,7 +515,7 @@ StPPVertexFinder::fit(StEvent* event) {
     if(!matchTrack2Membrane(track,t)) {ntrk[5]++; continue;}  // kill if nFitP too small	   
     ntrk[6]++;
 
-    //cout <<"\n#e itr="<<k<<" gPt="<<track->getPt()<<" gEta="<<track->getPseudoRapidity()<<" nFitP="<<track->getFitPointCount()<<" of "<<track->getMaxPointCount()<<" poolSize="<< mTrackData->size()<<"  myW="<<t.weight<<endl;
+    //cout <<"\n#e gPt="<<track->getPt()<<" gEta="<<track->getPseudoRapidity()<<" nFitP="<<track->getFitPointCount()<<" of "<<track->getMaxPointCount()<<" poolSize="<< mTrackData->size()<<"  myW="<<t.weight<<endl;
     //printf(" t.weight AA=%f\n", t.weight);
 
     hA[1]->Fill(track->getChi2());
