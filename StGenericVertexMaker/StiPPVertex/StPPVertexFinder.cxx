@@ -33,6 +33,7 @@
 #include <Sti/StiKalmanTrack.h>
 #include <Sti/StiKalmanTrackNode.h>
 #include <Sti/StiTrackContainer.h>
+#include "Sti/StiTrack.h"
 
 #include <St_db_Maker/St_db_Maker.h>
 #include <StIOMaker/StIOMaker.h> // to save  local histos 
@@ -501,35 +502,37 @@ StPPVertexFinder::fit(StEvent* event) {
 
   std::array<int, 7> ntrk{};
 
-  for (StiTrackContainer::const_iterator it=(*tracks).begin();  it!=(*tracks).end(); ++it) {
-    const StiKalmanTrack* track = static_cast<StiKalmanTrack*>(*it);
+  for (const StiTrack* stiTrack : *tracks)
+  {
+    const StiKalmanTrack& stiKalmanTrack = static_cast<const StiKalmanTrack&>(*stiTrack);
+
     TrackData t;
 
     ntrk[0]++;
-    if(track->getFlag()!=true)        {ntrk[1]++; continue;}
-    if(track->getPt()<mMinTrkPt)      {ntrk[2]++; continue;}
+    if(stiKalmanTrack.getFlag()!=true)        {ntrk[1]++; continue;}
+    if(stiKalmanTrack.getPt()<mMinTrkPt)      {ntrk[2]++; continue;}
     if(mDropPostCrossingTrack){
-      if(isPostCrossingTrack(track))  {ntrk[3]++; continue;}  // kill if it has hits in wrong z
+      if(isPostCrossingTrack(&stiKalmanTrack))  {ntrk[3]++; continue;}  // kill if it has hits in wrong z
     }
-    if(!examinTrackDca(track,t))      {ntrk[4]++; continue;}  // drop from DCA		   
-    if(!matchTrack2Membrane(track,t)) {ntrk[5]++; continue;}  // kill if nFitP too small	   
+    if(!examinTrackDca(&stiKalmanTrack,t))      {ntrk[4]++; continue;}  // drop from DCA
+    if(!matchTrack2Membrane(&stiKalmanTrack,t)) {ntrk[5]++; continue;}  // kill if nFitP too small
     ntrk[6]++;
 
-    //cout <<"\n#e gPt="<<track->getPt()<<" gEta="<<track->getPseudoRapidity()<<" nFitP="<<track->getFitPointCount()<<" of "<<track->getMaxPointCount()<<" poolSize="<< mTrackData->size()<<"  myW="<<t.weight<<endl;
+    //cout <<"\n#e gPt="<<stiKalmanTrack.getPt()<<" gEta="<<stiKalmanTrack.getPseudoRapidity()<<" nFitP="<<stiKalmanTrack.getFitPointCount()<<" of "<<stiKalmanTrack.getMaxPointCount()<<" poolSize="<< mTrackData->size()<<"  myW="<<t.weight<<endl;
     //printf(" t.weight AA=%f\n", t.weight);
 
-    hA[1]->Fill(track->getChi2());
-    hA[2]->Fill(track->getFitPointCount());
-    hA[16]->Fill(track->getPt());
-    //  dumpKalmanNodes(track);
+    hA[1]->Fill(stiKalmanTrack.getChi2());
+    hA[2]->Fill(stiKalmanTrack.getFitPointCount());
+    hA[16]->Fill(stiKalmanTrack.getPt());
+    //  dumpKalmanNodes(&stiKalmanTrack);
     
     // ......... matcho various detectors ....................
-    if(mUseBtof) matchTrack2BTOF(track,t,btofGeom);  // matching track to btofGeometry
-    if(mUseCtb)  matchTrack2CTB(track,t);
-    matchTrack2BEMC(track,t,242); // middle of tower in Rxy
-    matchTrack2EEMC(track,t,288); // middle of tower in Z
+    if(mUseBtof) matchTrack2BTOF(&stiKalmanTrack,t,btofGeom);  // matching track to btofGeometry
+    if(mUseCtb)  matchTrack2CTB(&stiKalmanTrack,t);
+    matchTrack2BEMC(&stiKalmanTrack,t,242); // middle of tower in Rxy
+    matchTrack2EEMC(&stiKalmanTrack,t,288); // middle of tower in Z
     //.... all test done on this track .........
-    t.mother=track;
+    t.mother=&stiKalmanTrack;
     mTrackData.push_back(t); 
 
     hA[5]->Fill(t.rxyDca);
