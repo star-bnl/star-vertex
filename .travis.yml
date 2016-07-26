@@ -37,17 +37,17 @@ before_script:
   - rsync -auv root/math/mathmore/inc/Math root/include/
     # Install dependencies
   - git clone --depth=1 https://github.com/star-bnl/star-base.git    ext/star-base
+  - git clone --depth=1 https://github.com/star-bnl/star-bfchain.git ext/star-bfchain
+  - git clone --depth=1 https://github.com/star-bnl/star-muDst.git   ext/star-muDst
   - git clone --depth=1 https://github.com/star-bnl/star-stevent.git ext/star-stevent
   - git clone --depth=1 https://github.com/star-bnl/star-stdb.git    ext/star-stdb
   - git clone --depth=1 https://github.com/star-bnl/star-tables.git  ext/star-tables
   - git clone --depth=1 https://github.com/star-bnl/star-emc.git     ext/star-emc
-  - git clone --depth=1 https://github.com/star-bnl/star-tpc.git     ext/star-tpc
   - git clone --depth=1 https://github.com/star-bnl/star-daq.git     ext/star-daq
-  - git clone --depth=1 https://github.com/star-bnl/star-tof.git     ext/star-tof
-  - git clone --depth=1 https://github.com/star-bnl/star-pams.git    ext/star-pams
   - git clone --depth=1 https://github.com/star-bnl/star-sti.git     ext/star-sti
-  - git clone --depth=1 https://github.com/star-bnl/star-bfchain.git ext/star-bfchain
-  - git clone --depth=1 https://github.com/star-bnl/star-muDst.git   ext/star-muDst
+  - git clone --depth=1 https://github.com/star-bnl/star-tof.git     ext/star-tof
+  - git clone --depth=1 https://github.com/star-bnl/star-tpc.git     ext/star-tpc
+  - git clone --depth=1 https://github.com/star-bnl/star-pams.git    ext/star-pams
 
 script:
   - mkdir build/ && cd build/ && pwd
