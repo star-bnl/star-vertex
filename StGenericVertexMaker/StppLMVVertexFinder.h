@@ -37,7 +37,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
  private:
   
     unsigned int           mMinNumberOfFitPointsOnTrack;
-    double                 mWeight ;          // Weight in fit for vertex contraint
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
 
     //jan--------------------
