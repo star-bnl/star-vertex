@@ -215,7 +215,7 @@ Int_t StGenericVertexMaker::InitRun(int runnumber){
        LOG_INFO << "BeamLine Constraint: " << endm;
        LOG_INFO << "x(z) = " << x0 << " + " << dxdz << " * z" << endm;
        LOG_INFO << "y(z) = " << y0 << " + " << dydz << " * z" << endm;
-       theFinder->UseVertexConstraint(x0,y0,dxdz,dydz,0.0001);
+
        theFinder->UseVertexConstraint(*vSeed);
 
      } else {

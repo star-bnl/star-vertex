@@ -38,7 +38,6 @@ class StGenericVertexFinder {
   StPrimaryVertex*       getVertex(int idx) const;
   void                   addVertex(StPrimaryVertex*);
   int                    size() const;
-  virtual void           UseVertexConstraint(double, double, double, double, double)=0;
           void           UseVertexConstraint(const vertexSeed_st& beamline);
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
@@ -69,6 +68,8 @@ class StGenericVertexFinder {
 
  private:
   vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
+
+  virtual void           UseVertexConstraint(double, double, double, double, double)=0;
 
  protected: //................................
   StPrimaryVertexOrder   mVertexOrderMethod; // will default to 0 i.e. orderByNumberOfDaughters

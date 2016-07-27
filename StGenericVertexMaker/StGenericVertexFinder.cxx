@@ -281,6 +281,8 @@ void StGenericVertexFinder::UseVertexConstraint(const vertexSeed_st& beamline)
    // 0.0001f radians corresponds to a 0.1mm arc at 1m = 1000mm length
    sBeamline.err_dxdz = std::max(0.0001f, sBeamline.err_dxdz);
    sBeamline.err_dydz = std::max(0.0001f, sBeamline.err_dydz);
+
+   UseVertexConstraint(sBeamline.x0,sBeamline.y0,sBeamline.dxdz,sBeamline.dydz,0.0001);
 }
 
 
