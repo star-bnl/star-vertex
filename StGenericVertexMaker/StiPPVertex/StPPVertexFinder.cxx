@@ -394,12 +394,6 @@ StPPVertexFinder::CalibBeamLine(){
   mBeamLineTracks=1; 
 }
 
-//======================================================
-//======================================================
-void 
-StPPVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight) {
-}
-
 
 //==========================================================
 //==========================================================

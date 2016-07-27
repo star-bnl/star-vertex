@@ -87,7 +87,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   //  void plotTracksDca();
   void initHisto();
 
-  virtual void  UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
+  virtual void  UseVertexConstraint() {}
   
 public:
   void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}

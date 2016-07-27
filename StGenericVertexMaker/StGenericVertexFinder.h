@@ -70,7 +70,7 @@ class StGenericVertexFinder {
  private:
   vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
 
-  virtual void           UseVertexConstraint(double, double, double, double, double)=0;
+  virtual void           UseVertexConstraint()=0;
 
  protected: //................................
   StPrimaryVertexOrder   mVertexOrderMethod; // will default to 0 i.e. orderByNumberOfDaughters
