@@ -27,7 +27,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     virtual         ~StppLMVVertexFinder();
     int             fit(StEvent*);         
     void            printInfo(ostream& = cout) const;
-    void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
     void            Clear();
 
     // over-written method
@@ -35,6 +34,8 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     void addFakeVerex(float z);
 
  private:
+
+    virtual void    UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
   
     unsigned int           mMinNumberOfFitPointsOnTrack;
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix

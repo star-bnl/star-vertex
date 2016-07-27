@@ -112,7 +112,6 @@ public:
     virtual        ~StMinuitVertexFinder();
     Int_t           fit(StEvent*);       
     void            printInfo(ostream& = cout) const;
-    void            UseVertexConstraint(Double_t x0, Double_t y0, Double_t dxdz, Double_t dydz, Double_t weight);
     virtual void    InitRun  (Int_t runumber);
     void            Clear();
 
@@ -143,6 +142,8 @@ private:
     Int_t   checkCrossMembrane(const StTrack *);
     void    calculateRanks();
     Int_t   findSeeds();
+
+    virtual void    UseVertexConstraint(Double_t x0, Double_t y0, Double_t dxdz, Double_t dydz, Double_t weight);
 
     static void fcn(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
     static void fcn1D(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
