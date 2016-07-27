@@ -79,7 +79,6 @@ StPPVertexFinder::StPPVertexFinder()
 {
   LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
 
-  mdxdz=mdydz=mX0=mY0  = 0; // beam line params
   mTotEve              = 0;
   HList=0;
   mToolkit =0;
@@ -409,19 +408,6 @@ void StPPVertexFinder::CalibBeamLine()
 //======================================================
 //======================================================
 void StPPVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight) {
-  mVertexConstrain = true;
-  mX0 = x0;
-  mY0 = y0;
-  mdxdz = dxdz;
-  mdydz = dydz;
-
-  // weight - not used ;
-  LOG_INFO << "StPPVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "x origin = " << mX0 << endm;
-  LOG_INFO << "y origin = " << mY0 << endm;
-  LOG_INFO << "slope dxdz = " << mdxdz << endm;
-  LOG_INFO << "slope dydz = " << mdydz << endm;
-
 }
 
 

@@ -73,12 +73,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   int    mBeamLineTracks; // activates writing them out + lot of QA histos, 
                           // use  BFC option: VtxSeedCalG to enable it, expert only
 
-  // beam line
-  double          mX0  ;     // starting point of beam parameterization
-  double          mY0  ;     // starting point of beam parameterization
-  double          mdxdz;     // beam slope
-  double          mdydz;     // beam slope
-
   // util
   BtofHitList    *btofList;  // dongx
   CtbHitList     *ctbList;
