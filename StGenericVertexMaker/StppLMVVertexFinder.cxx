@@ -30,7 +30,6 @@ StppLMVVertexFinder::StppLMVVertexFinder() {
   mBeamHelix           = 0;
   mVertexConstrain     = false;
   mTotEve              = 0;
-  mdxdz=mdydz=mX0=mY0  = 0;
   mMode                = 1;
 }
 
@@ -244,16 +243,12 @@ void
 StppLMVVertexFinder::UseVertexConstraint(double x0, double y0, 
 					 double dxdz, double dydz, double weight) {
   mVertexConstrain = true;
-  mX0 = x0;
-  mY0 = y0;
-  mdxdz = dxdz;
-  mdydz = dydz;
+  double mX0 = sBeamline.x0;
+  double mY0 = sBeamline.y0;
+  double mdxdz = sBeamline.dxdz;
+  double mdydz = sBeamline.dydz;
   mWeight = weight;
   LOG_INFO << "StppLMVVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "x origin = " << mX0 << endm;
-  LOG_INFO << "y origin = " << mY0 << endm;
-  LOG_INFO << "slope dxdz = " << mdxdz << endm;
-  LOG_INFO << "slope dydz = " << mdydz << endm;
   LOG_INFO << "NOT used (JB) weight in fit = " << weight <<  endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   double pt  = 88889999;   
@@ -305,7 +300,7 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
   StPhysicalHelixD TrkHlxIn=track->geometry()->helix();
 
   //           check Rxy_min condition  close to beam    
-  double spath = TrkHlxIn.pathLength(mX0, mY0 );
+  double spath = TrkHlxIn.pathLength(sBeamline.x0, sBeamline.y0);
   StThreeVectorD posDCA = TrkHlxIn.at(spath);
   //  cout<<" DCA Position: "<<posDCA<<endl;
   double x_m = posDCA.x(), y_m = posDCA.y();
@@ -418,8 +413,8 @@ StppLMVVertexFinder::ppLMV5() {
   //printf("passed %d tracks match to CTB,  BeamLine=%d\n",totTr,mVertexConstrain );
   LOG_DEBUG << "passed " << totTr << " tracks match to CTB,  BeamLine=" << mVertexConstrain << endm;
    
-  double xo = mX0;
-  double yo = mY0;
+  double xo = sBeamline.x0;
+  double yo = sBeamline.y0;
  
   //Do the actual vertex fitting, continue until good
   double A11=0.0,A12=0.0,A13=0.0;

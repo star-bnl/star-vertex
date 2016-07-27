@@ -179,10 +179,6 @@ private:
     static Bool_t                   requireCTB;
     static Int_t                    nCTBHits;
     static Double_t                 mWidthScale;
-    static Double_t                 mX0  ; // starting point of beam parameterization
-    static Double_t                 mY0  ; // starting point of beam parameterization
-    static Double_t                 mdxdz; // beam slope
-    static Double_t                 mdydz; // beam slope
     Int_t                    mStatusMin;           // Minuit status flag 
     StThreeVectorD           mExternalSeed;
     Bool_t                   mExternalSeedPresent;

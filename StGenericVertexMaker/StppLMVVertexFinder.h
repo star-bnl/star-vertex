@@ -36,10 +36,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
 
  private:
   
-    double          mX0  ;     // starting point of beam parameterization
-    double          mY0  ;     // starting point of beam parameterization
-    double          mdxdz;     // beam slope
-    double          mdydz;     // beam slope
     unsigned int           mMinNumberOfFitPointsOnTrack;
     double                 mWeight ;          // Weight in fit for vertex contraint
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
