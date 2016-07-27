@@ -282,7 +282,7 @@ void StGenericVertexFinder::UseVertexConstraint(const vertexSeed_st& beamline)
    sBeamline.err_dxdz = std::max(0.0001f, sBeamline.err_dxdz);
    sBeamline.err_dydz = std::max(0.0001f, sBeamline.err_dydz);
 
-   UseVertexConstraint(sBeamline.x0,sBeamline.y0,sBeamline.dxdz,sBeamline.dydz,0.0001);
+   UseVertexConstraint();
 }
 
 

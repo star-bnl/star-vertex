@@ -35,7 +35,7 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
 
  private:
 
-    virtual void    UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
+    virtual void    UseVertexConstraint();
   
     unsigned int           mMinNumberOfFitPointsOnTrack;
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix

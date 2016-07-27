@@ -820,7 +820,7 @@ StMinuitVertexFinder::printInfo(ostream& os) const
     os << "final potential width scale .... " << mWidthScale << endl;
 }
 
-void StMinuitVertexFinder::UseVertexConstraint(Double_t x0, Double_t y0, Double_t dxdz, Double_t dydz, Double_t weight) {
+void StMinuitVertexFinder::UseVertexConstraint() {
 
   // Historically, this method was designed for a 1D fit with beamline
   // So, we'll keep it this way for backward compatibility

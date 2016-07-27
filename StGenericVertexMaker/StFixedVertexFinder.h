@@ -52,7 +52,7 @@ private:
      * Vertex constraint not useful for this VF but is part of base class so implementation just
      * displays warning to this effect
      */
-    virtual void UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
+    virtual void UseVertexConstraint();
 
 };
 

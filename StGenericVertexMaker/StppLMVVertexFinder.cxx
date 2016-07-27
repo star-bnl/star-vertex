@@ -240,8 +240,7 @@ StppLMVVertexFinder::printInfo(ostream& os) const
 //======================================================
 //======================================================
 void 
-StppLMVVertexFinder::UseVertexConstraint(double x0, double y0, 
-					 double dxdz, double dydz, double weight) {
+StppLMVVertexFinder::UseVertexConstraint() {
   mVertexConstrain = true;
   double mX0 = sBeamline.x0;
   double mY0 = sBeamline.y0;
