@@ -276,7 +276,6 @@ Int_t StGenericVertexMaker::Make()
 {
   nEvTotal++;
   primV  = NULL;
-  mEvent = NULL;
   mEvent = (StEvent *)GetInputDS("StEvent");
   LOG_DEBUG << "StGenericVertexMaker::Make: StEvent pointer " << mEvent << endm;
   LOG_DEBUG << "StGenericVertexMaker::Make: external find use " << externalFindUse << endm;
