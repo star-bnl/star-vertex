@@ -27,10 +27,6 @@ vector<UShort_t>           StMinuitVertexFinder::mHelixFlags;
 vector<Double_t >          StMinuitVertexFinder::mSigma;
 vector<Double_t >          StMinuitVertexFinder::mZImpact;
 Double_t                   StMinuitVertexFinder::mWidthScale = 0.1; // 1./TMath::Sqrt(5.);
-Double_t                   StMinuitVertexFinder::mX0;
-Double_t                   StMinuitVertexFinder::mY0;
-Double_t                   StMinuitVertexFinder::mdxdz;
-Double_t                   StMinuitVertexFinder::mdydz;
 Bool_t                     StMinuitVertexFinder::requireCTB;
 Int_t                      StMinuitVertexFinder::nCTBHits;
 //==========================================================
@@ -830,16 +826,12 @@ void StMinuitVertexFinder::UseVertexConstraint(Double_t x0, Double_t y0, Double_
   // So, we'll keep it this way for backward compatibility
   if (mVertexFitMode != VertexFit_t::Beamline1D) return;
 
-  mX0 = x0;
-  mY0 = y0;
-  mdxdz = dxdz;
-  mdydz = dydz;
+  double mX0 = sBeamline.x0;
+  double mY0 = sBeamline.y0;
+  double mdxdz = sBeamline.dxdz;
+  double mdydz = sBeamline.dydz;
   mWeight = weight;
   LOG_INFO << "StMinuitVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "x origin = " << mX0 << endm;
-  LOG_INFO << "y origin = " << mY0 << endm;
-  LOG_INFO << "slope dxdz = " << mdxdz << endm;
-  LOG_INFO << "slope dydz = " << mdydz << endm;
   LOG_INFO << "weight in fit = " << weight <<  endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   Double_t pt  = 88889999;   
