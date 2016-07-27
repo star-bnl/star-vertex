@@ -830,9 +830,7 @@ void StMinuitVertexFinder::UseVertexConstraint(Double_t x0, Double_t y0, Double_
   double mY0 = sBeamline.y0;
   double mdxdz = sBeamline.dxdz;
   double mdydz = sBeamline.dydz;
-  mWeight = weight;
   LOG_INFO << "StMinuitVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "weight in fit = " << weight <<  endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   Double_t pt  = 88889999;   
   Double_t nxy=::sqrt(mdxdz*mdxdz +  mdydz*mdydz);

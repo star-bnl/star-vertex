@@ -247,9 +247,7 @@ StppLMVVertexFinder::UseVertexConstraint(double x0, double y0,
   double mY0 = sBeamline.y0;
   double mdxdz = sBeamline.dxdz;
   double mdydz = sBeamline.dydz;
-  mWeight = weight;
   LOG_INFO << "StppLMVVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "NOT used (JB) weight in fit = " << weight <<  endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   double pt  = 88889999;   
   double nxy=::sqrt(mdxdz*mdxdz +  mdydz*mdydz);

@@ -156,7 +156,6 @@ private:
     bool                   mRequireCTB;       // Set maker to use CTB
     UInt_t                 mMinNumberOfFitPointsOnTrack;
     Float_t                mDcaZMax;
-    Double_t               mWeight ;          // Weight in fit for vertex contraint
     Double_t               mRImpactMax;       // Max distance between helix and nominal beamline (0,0,z)
     Int_t                  mMinTrack;         // Min number of tracks
     Float_t                mZMin;             // Min z of possible vertex positions
