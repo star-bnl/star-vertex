@@ -62,12 +62,13 @@ class StGenericVertexFinder {
   void                   FillStEvent(StEvent*);
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
   virtual int            IsFixed() const        {return 0;}
+
  protected: //................................
 
   StGenericVertexFinder(VertexFit_t fitMode=VertexFit_t::Unspecified);
 
  private:
-  vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
+  std::vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
 
   virtual void           UseVertexConstraint()=0;
 
