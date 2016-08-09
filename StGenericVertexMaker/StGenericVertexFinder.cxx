@@ -58,9 +58,10 @@ StGenericVertexFinder::FillStEvent(StEvent* event){
     //allocates new memory for each vertex
     StPrimaryVertex* primV = new StPrimaryVertex(mVertexList[i]); 
     event->addPrimaryVertex(primV,mVertexOrderMethod);
-    LOG_INFO << "StGenericVertexFinder::FillStEvent: Added " <<i+1 
-		     <<" primary vertex (" << mVertexOrderMethod << ")" << endm;
   }
+
+  LOG_INFO << "StGenericVertexFinder::FillStEvent: Added " << mVertexList.size()
+           <<" primary vertices using ordering method: " << mVertexOrderMethod << endm;
 
   // Use StEvent's ordering
   // (might be undesirable for some debugging)
