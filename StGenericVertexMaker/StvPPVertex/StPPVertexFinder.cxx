@@ -79,7 +79,6 @@ StPPVertexFinder::StPPVertexFinder()
 {
   LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
 
-  mdxdz=mdydz=mX0=mY0  = 0; // beam line params
   mTotEve              = 0;
   HList=0;
   mToolkit =0;
@@ -404,24 +403,6 @@ void StPPVertexFinder::CalibBeamLine()
 {
   LOG_INFO << "StPPVertexFinder::CalibBeamLine: activated saving high quality prim tracks for 3D fit of the beamLine"<<endm;
   mBeamLineTracks=1; 
-}
-
-//======================================================
-//======================================================
-void StPPVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight) {
-  mVertexConstrain = true;
-  mX0 = x0;
-  mY0 = y0;
-  mdxdz = dxdz;
-  mdydz = dydz;
-
-  // weight - not used ;
-  LOG_INFO << "StPPVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "x origin = " << mX0 << endm;
-  LOG_INFO << "y origin = " << mY0 << endm;
-  LOG_INFO << "slope dxdz = " << mdxdz << endm;
-  LOG_INFO << "slope dydz = " << mdydz << endm;
-
 }
 
 
@@ -760,10 +741,7 @@ bool StPPVertexFinder::findVertexZ(VertexData &V) {
   if(sigZ<0.1) sigZ=0.1; // tmp, make it not smaller than the bin size
 
   // take x,y from beam line equation, TMP
-  float x=mX0+z0*mdxdz;
-  float y=mY0+z0*mdydz;
-
-  V.r=TVector3(x,y,z0);
+  V.r=TVector3(beamX(z0), beamY(z0), z0);
   V.er=TVector3(0.1,0.1,sigZ); //tmp
   V.Lmax=Lmax;
 
