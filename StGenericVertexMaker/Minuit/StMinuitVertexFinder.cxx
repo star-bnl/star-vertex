@@ -849,7 +849,7 @@ void StMinuitVertexFinder::UseVertexConstraint() {
     //re-initilize minuit for 1D fitting
     mMinuit = new TMinuit(1);         
     mMinuit->SetFCN(&StMinuitVertexFinder::fcn1D);
-    mMinuit->SetPrintLevel(1);
+    mMinuit->SetPrintLevel(-1);
     mMinuit->SetMaxIterations(1000);
     mExternalSeedPresent = kFALSE;
 
