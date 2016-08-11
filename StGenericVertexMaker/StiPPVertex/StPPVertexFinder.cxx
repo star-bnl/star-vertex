@@ -899,9 +899,17 @@ void StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
 
    static double step[3] = {0.01, 0.01, 0.01};
 
-   minuit.mnparm(0, "x", vertexSeed.x(), step[0], vertexSeed.x()-10, vertexSeed.x()+10, minuitStatus);
-   minuit.mnparm(1, "y", vertexSeed.y(), step[1], vertexSeed.y()-10, vertexSeed.y()+10, minuitStatus);
-   minuit.mnparm(2, "z", vertexSeed.z(), step[2], vertexSeed.z()-30, vertexSeed.z()+30, minuitStatus);
+   double x_lo = vertexSeed.x() - mMaxTrkDcaRxy;
+   double y_lo = vertexSeed.y() - mMaxTrkDcaRxy;
+   double z_lo = vertexSeed.z() - mMaxZradius;
+
+   double x_hi = vertexSeed.x() + mMaxTrkDcaRxy;
+   double y_hi = vertexSeed.y() + mMaxTrkDcaRxy;
+   double z_hi = vertexSeed.z() + mMaxZradius;
+
+   minuit.mnparm(0, "x", vertexSeed.x(), step[0], x_lo, x_hi, minuitStatus);
+   minuit.mnparm(1, "y", vertexSeed.y(), step[1], y_lo, y_hi, minuitStatus);
+   minuit.mnparm(2, "z", vertexSeed.z(), step[2], z_lo, z_hi, minuitStatus);
 
    minuit.mnexcm("minimize", 0, 0, minuitStatus);
 
