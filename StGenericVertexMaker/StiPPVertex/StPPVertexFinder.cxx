@@ -879,6 +879,14 @@ void StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
    // Recalculate vertex seed coordinates to be used as initial point in the fit
    StThreeVectorD vertexSeed = StGenericVertexFinder::CalcVertexSeed(sDCAs());
 
+   // For fits with beamline force the seed to be on the beamline
+   if ( mVertexFitMode == VertexFit_t::Beamline1D ||
+        mVertexFitMode == VertexFit_t::Beamline3D )
+   {
+      vertexSeed.setX( beamX(vertexSeed.z()) );
+      vertexSeed.setY( beamY(vertexSeed.z()) );
+   }
+
    static TMinuit minuit(3);
 
    minuit.SetFCN(&StGenericVertexFinder::fcnCalcChi2DCAsBeamline);
