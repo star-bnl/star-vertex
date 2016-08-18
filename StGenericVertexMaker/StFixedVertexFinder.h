@@ -37,11 +37,6 @@ public:
     // mandatory implementations
     int fit(StEvent*);
     void printInfo(ostream& = cout)const;
-    /**
-     * Vertex constraint not useful for this VF but is part of base class so implementation just
-     * displays warning to this effect
-     */
-    void UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
 
     
     // member not from base class
@@ -53,11 +48,20 @@ private:
     Double_t mFixedY; //!< Y co-ordinate of vertex
     Double_t mFixedZ; //!< Z co-ordinate of vertex
 
+    /**
+     * Vertex constraint not useful for this VF but is part of base class so implementation just
+     * displays warning to this effect
+     */
+    virtual void UseVertexConstraint();
+
 };
 
 /***************************************************************************
 *
 * $Log$
+* Revision 1.4  2015/11/13 04:11:40  perev
+* Added metod IsFixed
+*
 * Revision 1.3  2006/05/18 19:14:24  lbarnby
 * Added SetVertexPosition function. Tidied up comments/docs
 *

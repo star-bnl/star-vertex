@@ -71,7 +71,7 @@ void StFixedVertexFinder::printInfo(ostream& os)const{
     os << "Fixed position: x=" << mFixedX << " y=" << mFixedY << " z=" << mFixedZ << endl;
 }
 
-void StFixedVertexFinder::UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight){
+void StFixedVertexFinder::UseVertexConstraint(){
     LOG_WARN << "StFixedVertexFinder::UseVertexConstraint() - vertex beam constraint NOT implemented in context of fixed vertex finder" << endm;
 
 }
@@ -84,4 +84,7 @@ void StFixedVertexFinder::SetVertexPosition(double x, double y, double z){
 
 /*
  * $Log$
+ * Revision 1.4  2006/05/18 19:14:24  lbarnby
+ * Added SetVertexPosition function. Tidied up comments/docs
+ *
  */

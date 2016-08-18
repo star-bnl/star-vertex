@@ -73,12 +73,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   int    mBeamLineTracks; // activates writing them out + lot of QA histos, 
                           // use  BFC option: VtxSeedCalG to enable it, expert only
 
-  // beam line
-  double          mX0  ;     // starting point of beam parameterization
-  double          mY0  ;     // starting point of beam parameterization
-  double          mdxdz;     // beam slope
-  double          mdydz;     // beam slope
-
   // util
   BtofHitList    *btofList;  // dongx
   CtbHitList     *ctbList;
@@ -92,6 +86,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   //  void plotVertex(VertexData *);
   //  void plotTracksDca();
   void initHisto();
+
+  virtual void  UseVertexConstraint() {}
   
 public:
   void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}
@@ -109,7 +105,6 @@ public:
   virtual  ~StPPVertexFinder();
   int       fit(StEvent*);        
   void      printInfo(ostream& = cout) const;
-  void      UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
  
   // over-written method
   virtual void  Init();
@@ -122,6 +117,9 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.1  2013/08/16 22:19:56  perev
+ * PPV with only StEvent dependency
+ *
  * Revision 1.18  2013/04/09 22:37:56  genevb
  * Remove boostEfficiency codes: DB usage implemented
  *

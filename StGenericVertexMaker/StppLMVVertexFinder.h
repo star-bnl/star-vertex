@@ -27,7 +27,6 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     virtual         ~StppLMVVertexFinder();
     int             fit(StEvent*);         
     void            printInfo(ostream& = cout) const;
-    void            UseVertexConstraint(double x0, double y0, double dxdz, double dydz, double weight);
     void            Clear();
 
     // over-written method
@@ -35,13 +34,10 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     void addFakeVerex(float z);
 
  private:
+
+    virtual void    UseVertexConstraint();
   
-    double          mX0  ;     // starting point of beam parameterization
-    double          mY0  ;     // starting point of beam parameterization
-    double          mdxdz;     // beam slope
-    double          mdydz;     // beam slope
     unsigned int           mMinNumberOfFitPointsOnTrack;
-    double                 mWeight ;          // Weight in fit for vertex contraint
     StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
 
     //jan--------------------
@@ -75,6 +71,9 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.12  2012/12/12 22:09:58  fisyak
+ * add sys/types.h include for APPLE
+ *
  * Revision 1.11  2010/01/26 21:01:49  fisyak
  * Clean up, switch from bit mask to attributes
  *

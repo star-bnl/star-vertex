@@ -30,7 +30,6 @@ StppLMVVertexFinder::StppLMVVertexFinder() {
   mBeamHelix           = 0;
   mVertexConstrain     = false;
   mTotEve              = 0;
-  mdxdz=mdydz=mX0=mY0  = 0;
   mMode                = 1;
 }
 
@@ -241,20 +240,13 @@ StppLMVVertexFinder::printInfo(ostream& os) const
 //======================================================
 //======================================================
 void 
-StppLMVVertexFinder::UseVertexConstraint(double x0, double y0, 
-					 double dxdz, double dydz, double weight) {
+StppLMVVertexFinder::UseVertexConstraint() {
   mVertexConstrain = true;
-  mX0 = x0;
-  mY0 = y0;
-  mdxdz = dxdz;
-  mdydz = dydz;
-  mWeight = weight;
+  double mX0 = sBeamline.x0;
+  double mY0 = sBeamline.y0;
+  double mdxdz = sBeamline.dxdz;
+  double mdydz = sBeamline.dydz;
   LOG_INFO << "StppLMVVertexFinder::Using Constrained Vertex" << endm;
-  LOG_INFO << "x origin = " << mX0 << endm;
-  LOG_INFO << "y origin = " << mY0 << endm;
-  LOG_INFO << "slope dxdz = " << mdxdz << endm;
-  LOG_INFO << "slope dydz = " << mdydz << endm;
-  LOG_INFO << "NOT used (JB) weight in fit = " << weight <<  endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   double pt  = 88889999;   
   double nxy=::sqrt(mdxdz*mdxdz +  mdydz*mdydz);
@@ -305,7 +297,7 @@ StppLMVVertexFinder::matchTrack2CTB (StTrack* track, float & sigma) {
   StPhysicalHelixD TrkHlxIn=track->geometry()->helix();
 
   //           check Rxy_min condition  close to beam    
-  double spath = TrkHlxIn.pathLength(mX0, mY0 );
+  double spath = TrkHlxIn.pathLength(sBeamline.x0, sBeamline.y0);
   StThreeVectorD posDCA = TrkHlxIn.at(spath);
   //  cout<<" DCA Position: "<<posDCA<<endl;
   double x_m = posDCA.x(), y_m = posDCA.y();
@@ -418,8 +410,8 @@ StppLMVVertexFinder::ppLMV5() {
   //printf("passed %d tracks match to CTB,  BeamLine=%d\n",totTr,mVertexConstrain );
   LOG_DEBUG << "passed " << totTr << " tracks match to CTB,  BeamLine=" << mVertexConstrain << endm;
    
-  double xo = mX0;
-  double yo = mY0;
+  double xo = sBeamline.x0;
+  double yo = sBeamline.y0;
  
   //Do the actual vertex fitting, continue until good
   double A11=0.0,A12=0.0,A13=0.0;
@@ -614,6 +606,9 @@ int  StppLMVVertexFinder::NCtbMatches() {
 
 /*
  * $Log$
+ * Revision 1.27  2016/04/28 18:17:38  smirnovd
+ * [Cosmetic] Whitespace, doxygen, comments, and readability changes only
+ *
  * Revision 1.26  2016/04/15 19:24:14  smirnovd
  * Got rid of unused variables reported by compiler
  *
