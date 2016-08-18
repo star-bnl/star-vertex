@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.56 2016/04/28 18:18:01 smirnovd Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.57 2016/08/18 17:46:14 smirnovd Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -485,39 +485,39 @@ StPPVertexFinder::fit(StEvent* event) {
 
   for (const StiTrack* stiTrack : *tracks)
   {
-    const StiKalmanTrack& stiKalmanTrack = static_cast<const StiKalmanTrack&>(*stiTrack);
+    const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
 
     TrackData t;
 
     ntrk[0]++;
 
-    if(stiKalmanTrack.getFlag() != true)          {ntrk[1]++; continue;}
-    if(stiKalmanTrack.getPt() < mMinTrkPt)        {ntrk[2]++; continue;}
+    if(stiKalmanTrack->getFlag() != true)        {ntrk[1]++; continue;}
+    if(stiKalmanTrack->getPt() < mMinTrkPt)      {ntrk[2]++; continue;}
     if(mDropPostCrossingTrack &&
-       isPostCrossingTrack(&stiKalmanTrack))      {ntrk[3]++; continue;}  // kill if it has hits in wrong z
-    if(!examinTrackDca(&stiKalmanTrack, t))       {ntrk[4]++; continue;}  // drop from DCA
-    if(!matchTrack2Membrane(&stiKalmanTrack, t))  {ntrk[5]++; continue;}  // kill if nFitP too small
+       isPostCrossingTrack(stiKalmanTrack))      {ntrk[3]++; continue;}  // kill if it has hits in wrong z
+    if(!examinTrackDca(stiKalmanTrack, t))       {ntrk[4]++; continue;}  // drop from DCA
+    if(!matchTrack2Membrane(stiKalmanTrack, t))  {ntrk[5]++; continue;}  // kill if nFitP too small
 
     ntrk[6]++;
 
-    //cout << "\n#e gPt="<<stiKalmanTrack.getPt()
-    //     << " gEta="<<stiKalmanTrack.getPseudoRapidity()
-    //     << " nFitP="<<stiKalmanTrack.getFitPointCount() << " of " << stiKalmanTrack.getMaxPointCount()
+    //cout << "\n#e gPt="<<stiKalmanTrack->getPt()
+    //     << " gEta="<<stiKalmanTrack->getPseudoRapidity()
+    //     << " nFitP="<<stiKalmanTrack->getFitPointCount() << " of " << stiKalmanTrack->getMaxPointCount()
     //     << " poolSize="<< mTrackData->size() << "  myW=" << t.weight << endl;
     //printf(" t.weight AA=%f\n", t.weight);
 
-    hA[1]->Fill(stiKalmanTrack.getChi2());
-    hA[2]->Fill(stiKalmanTrack.getFitPointCount());
-    hA[16]->Fill(stiKalmanTrack.getPt());
-    //  dumpKalmanNodes(&stiKalmanTrack);
+    hA[1]->Fill(stiKalmanTrack->getChi2());
+    hA[2]->Fill(stiKalmanTrack->getFitPointCount());
+    hA[16]->Fill(stiKalmanTrack->getPt());
+    //  dumpKalmanNodes(stiKalmanTrack);
     
     // ......... matcho various detectors ....................
-    if(mUseBtof) matchTrack2BTOF(&stiKalmanTrack, t, btofGeom);  // matching track to btofGeometry
-    if(mUseCtb)  matchTrack2CTB(&stiKalmanTrack, t);
-    matchTrack2BEMC(&stiKalmanTrack, t, 242); // middle of tower in Rxy
-    matchTrack2EEMC(&stiKalmanTrack, t, 288); // middle of tower in Z
+    if(mUseBtof) matchTrack2BTOF(stiKalmanTrack, t, btofGeom);  // matching track to btofGeometry
+    if(mUseCtb)  matchTrack2CTB(stiKalmanTrack, t);
+    matchTrack2BEMC(stiKalmanTrack, t, 242); // middle of tower in Rxy
+    matchTrack2EEMC(stiKalmanTrack, t, 288); // middle of tower in Z
     //.... all test done on this track .........
-    t.mother = &stiKalmanTrack;
+    t.mother = stiKalmanTrack;
     mTrackData.push_back(t); 
 
     hA[5]->Fill(t.rxyDca);
