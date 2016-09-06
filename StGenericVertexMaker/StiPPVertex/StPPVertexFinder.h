@@ -83,7 +83,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool   mDropPostCrossingTrack;  // enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; // set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT; // threshold for storing one track vertices
-  int    mBeamLineTracks; // activates writing them out + lot of QA histos, 
+  bool   mStudyBeamLineTracks; // activates writing them out + lot of QA histos, 
                           // use  BFC option: VtxSeedCalG to enable it, expert only
 
   // util
