@@ -15,7 +15,6 @@
 #include <TH2.h>
 #include <TFile.h>
 #include <TLine.h>
-#include <TCanvas.h> //tmp
 #include "TMinuit.h"
 
 #include <math_constants.h>

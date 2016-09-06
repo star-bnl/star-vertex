@@ -15,7 +15,6 @@
 #include "TH2.h"
 #include "TFile.h"
 #include "TLine.h"
-#include "TCanvas.h" //tmp
 
 #include "math_constants.h"
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
