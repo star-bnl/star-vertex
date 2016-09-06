@@ -67,12 +67,6 @@ class StGenericVertexFinder {
 
   StGenericVertexFinder(VertexFit_t fitMode=VertexFit_t::Unspecified);
 
- private:
-  std::vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
-
-  virtual void           UseVertexConstraint()=0;
-
- protected: //................................
   StPrimaryVertexOrder   mVertexOrderMethod; // will default to 0 i.e. orderByNumberOfDaughters
   bool                   mVertexConstrain;   // Use vertex constraint from db
   int                    mMode;              // used for any Finder behavior change
@@ -119,6 +113,11 @@ class StGenericVertexFinder {
   /// All measured parameters of the beamline. Updated whenever
   /// UseVertexConstraint(const vertexSeed_st&) is called
   static vertexSeed_st  sBeamline;
+
+ private:
+  std::vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
+
+  virtual void           UseVertexConstraint()=0;
 };
 
 #endif
