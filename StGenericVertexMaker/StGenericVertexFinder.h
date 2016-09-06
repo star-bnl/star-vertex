@@ -78,6 +78,11 @@ protected:
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 
+  /// Searches for vertex candidates and fills private `mVertexData` container
+  /// using the ROOT's TSpectrum peak finder applied to the distribution of
+  /// track DCAs along the `z` axis
+  std::vector<double> FindSeeds_TSpectrum();
+
   /// Returns x coordinate on the beamline (given by sBeamline) corresponding to
   /// the passed value of z.
   static double beamX(double z);

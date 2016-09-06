@@ -47,6 +47,11 @@ class StPPVertexFinder: public StGenericVertexFinder {
   /// container sDCAs
   void createTrackDcas(const VertexData &vertex) const;
 
+  /// Searches for vertex candidates and fills private `mVertexData` container
+  /// using the ROOT's TSpectrum peak finder applied to the distribution of
+  /// track DCAs along the `z` axis
+  void findSeeds_TSpectrum();
+
   enum {mxH=32};
   bool examinTrackDca(const StiKalmanTrack*, TrackData &t);
   void matchTrack2BTOF(const StiKalmanTrack*, TrackData &t, StBTofGeometry *geom);
