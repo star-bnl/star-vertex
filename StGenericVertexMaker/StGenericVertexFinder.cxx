@@ -36,11 +36,12 @@ vertexSeed_st StGenericVertexFinder::sBeamline;
 
 
 //______________________________________________________________________________
-StGenericVertexFinder::StGenericVertexFinder(VertexFit_t fitMode) :
+StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_t fitMode) :
   mVertexOrderMethod(orderByNumberOfDaughters),
   mVertexConstrain(false),
   mMode(0),
   mVertexFitMode(fitMode),
+  mSeedFinderType(seedFinder),
   mDebugLevel(0),
   mUseBtof(false),
   mUseCtb(false)

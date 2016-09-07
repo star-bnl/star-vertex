@@ -68,7 +68,8 @@
 //==========================================================
 //==========================================================
 
-StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) : StGenericVertexFinder(fitMode),
+StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
+  StGenericVertexFinder(SeedFinder_t::PPVLikelihood, fitMode),
   mDropPostCrossingTrack(true) // default PCT rejection on
 {
 
