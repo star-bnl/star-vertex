@@ -32,13 +32,15 @@ vertexSeed_st StGenericVertexFinder::sBeamline;
 
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder(VertexFit_t fitMode) :
-  mVertexConstrain(false), mMode(0), mVertexFitMode(fitMode), mDebugLevel(0)
+  mVertexOrderMethod(orderByNumberOfDaughters),
+  mVertexConstrain(false),
+  mMode(0),
+  mVertexFitMode(fitMode),
+  mDebugLevel(0),
+  mIsMC(false),
+  mUseBtof(false),
+  mUseCtb(false)
 {
-  
-  mIsMC	  =0;            	// flag minor differences between Data & M-C
-  mUseBtof=0;           	// default use btof = false
-  mUseCtb =0;            	// default use ctb = false
-  mVertexOrderMethod = orderByNumberOfDaughters;
 }
 
 
