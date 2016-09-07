@@ -35,6 +35,13 @@ StGenericVertexFinder::StDcaList&  StGenericVertexFinder::sDCAs()
 vertexSeed_st StGenericVertexFinder::sBeamline;
 
 
+
+StGenericVertexFinder::StGenericVertexFinder() :
+  StGenericVertexFinder(SeedFinder_t::Unspecified, VertexFit_t::Unspecified)
+{
+}
+
+
 //______________________________________________________________________________
 StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_t fitMode) :
   mVertexOrderMethod(orderByNumberOfDaughters),
