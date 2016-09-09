@@ -58,7 +58,6 @@
 
 static const char rcsid[] = "$Id: StZdcVertexMaker.cxx,v 1.9 2009/01/26 15:11:05 fisyak Exp $";
 
-ClassImp(StZdcVertexMaker)
 
 //_________________________________________________
 StZdcVertexMaker::StZdcVertexMaker(const char *name, const char *title):StMaker(name,title)

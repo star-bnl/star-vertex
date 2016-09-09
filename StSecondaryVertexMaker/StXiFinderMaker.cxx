@@ -22,7 +22,6 @@
 
 StSPtrVecXiVertex* vecXi=0;
 
-ClassImp(StXiFinderMaker)
 
 
 //_____________________________________________________________________________

@@ -29,7 +29,6 @@ static const int BLOCK=1024;
 
 StV0FinderMaker* StV0FinderMaker::mInstance = 0;
 
-ClassImp(StV0FinderMaker)
  
 //_____________________________________________________________________________
   StV0FinderMaker::StV0FinderMaker(const char *name):StMaker(name),
