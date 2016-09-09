@@ -7,7 +7,7 @@
 
 #include <St_base/StMessMgr.h>
 
-#include "StGenericVertexMaker/StiPPVertex/EemcHitList.h" 
+#include "StGenericVertexMaker/StiPPVertex/EemcHitList.h"
 
 #include "StChain/StMaker.h"
 #include "StEEmcUtil/database/StEEmcDb.h"

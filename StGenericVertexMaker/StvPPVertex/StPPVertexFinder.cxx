@@ -22,7 +22,7 @@
 
 #include "StGenericVertexMaker/StvPPVertex/StPPVertexFinder.h"
 #include "StGenericVertexMaker/StvPPVertex/TrackData.h"
-#include "StGenericVertexMaker/StvPPVertex/VertexData.h" 
+#include "StGenericVertexMaker/StvPPVertex/VertexData.h"
 #include "StGenericVertexMaker/StvPPVertex/Vertex3D.h"
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
