@@ -64,7 +64,7 @@ public:
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
   virtual int            IsFixed() const        {return 0;}
 
-protected: //................................
+protected:
 
   StGenericVertexFinder(VertexFit_t fitMode=VertexFit_t::Unspecified);
 

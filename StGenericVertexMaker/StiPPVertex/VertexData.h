@@ -15,8 +15,8 @@ class VertexData {
   int nUsedTrack; // # of tracks used to identify the vertex
   float Lmax; // maximum of the likelhood function.
   float gPtSum; // total tranverse momentum of used tracks.
-  int nBtof,nCtb,nBemc,nEemc,nTpc,nAnyMatch; // number of matched tracks - dongx
-  int nBtofV,nCtbV,nBemcV,nEemcV,nTpcV,nAnyVeto; // number of vetoed tracks - dongx
+  int nBtof,nCtb,nBemc,nEemc,nTpc,nAnyMatch; // number of matched tracks
+  int nBtofV,nCtbV,nBemcV,nEemcV,nTpcV,nAnyVeto; // number of vetoed tracks
   
   // methods
   VertexData();

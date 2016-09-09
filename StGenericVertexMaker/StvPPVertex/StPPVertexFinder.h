@@ -11,7 +11,7 @@
 #endif
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
-#include "StarClassLibrary/StPhysicalHelixD.hh" // dongx
+#include "StarClassLibrary/StPhysicalHelixD.hh"
 class StEventToolkit;
 class StGlobalTrack;
 class TGraphErrors;
@@ -33,7 +33,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
  private:
   enum {mxH=32};
   bool examinTrackDca(const StGlobalTrack*, TrackData &t);
-  void matchTrack2BTOF(const StGlobalTrack*, TrackData &t, StBTofGeometry *geom);  // dongx
+  void matchTrack2BTOF(const StGlobalTrack*, TrackData &t, StBTofGeometry *geom);
   void matchTrack2CTB(const StGlobalTrack*, TrackData &t);
   void matchTrack2EEMC(const StGlobalTrack*, TrackData &t, float z);
   void matchTrack2BEMC(const StGlobalTrack*, TrackData &t, float rxy);
@@ -60,9 +60,9 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMaxZradius;     // used in matching: tracks to zVertex
   int    mMinMatchTr;     // for valid vertex
   float  mMaxZrange;      // cut off for tracks Z_DCA
-  float  mDyBtof;         // BTOF delta y cut - dongx
-  float  mMinZBtof;       // BTOF local z min cut - dongx
-  float  mMaxZBtof;       // BTOF local z max cut - dongx
+  float  mDyBtof;         // BTOF delta y cut
+  float  mMinZBtof;       // BTOF local z min cut
+  float  mMaxZBtof;       // BTOF local z max cut
   float  mMinAdcBemc;     // BEMC towers with MIP response
   float  mMinAdcEemc;     // EEMC towers with MIP response
   float  mMinFitPfrac;    // nFit/nPossible
@@ -74,11 +74,11 @@ class StPPVertexFinder: public StGenericVertexFinder {
                           // use  BFC option: VtxSeedCalG to enable it, expert only
 
   // util
-  BtofHitList    *btofList;  // dongx
+  BtofHitList    *btofList;
   CtbHitList     *ctbList;
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
-  StBTofGeometry *btofGeom;  // dongx btofGeometry
+  StBTofGeometry *btofGeom;
   StEEmcDb       *eeDb;
   EEmcGeomSimple *geomE;
   
