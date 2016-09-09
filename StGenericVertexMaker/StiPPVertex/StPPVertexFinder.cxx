@@ -509,7 +509,6 @@ StPPVertexFinder::fit(StEvent* event) {
     hA[1]->Fill(stiKalmanTrack->getChi2());
     hA[2]->Fill(stiKalmanTrack->getFitPointCount());
     hA[16]->Fill(stiKalmanTrack->getPt());
-    //  dumpKalmanNodes(stiKalmanTrack);
     
     // ......... matcho various detectors ....................
     if(mUseBtof) matchTrack2BTOF(stiKalmanTrack, t, btofGeom);  // matching track to btofGeometry
@@ -531,7 +530,6 @@ StPPVertexFinder::fit(StEvent* event) {
     if(t.mBtof>0 || t.mCtb>0 || t.mBemc>0 || t.mEemc>0 || t.mTpc>0 ) nmAny++ ;
 
     hACorr->Fill(t.mBtof, t.mBemc);
-    //  t.print();
   }
 
   LOG_INFO << "\n"
@@ -1088,7 +1086,6 @@ StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track){
     if(det==0)       {LOG_INFO <<" noDet ";}
     else             {LOG_INFO <<" detActv="<<(!det || det->isActive(ktn.getY(), ktn.getZ()));}
     LOG_INFO << endm;
-    //    break; // tmp
   }
 }
 
@@ -1131,7 +1128,6 @@ StPPVertexFinder::examinTrackDca(const StiKalmanTrack* track, TrackData &t){
   t.dcaTrack.fitErr    = bmNode->fitErrs();
   t.dcaTrack.gChi2     = track1.getChi2();
   t.dcaTrack.nFitPoint = track1.getFitPointCount();
-  //  t.dcaTrack.print();
 
   return true;
 }
@@ -1174,11 +1170,6 @@ StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* track,TrackData &t,StBTo
         continue;
       }
       sensor->Master2Local(&global[0],&local[0]);
-//      LOG_INFO << "   Hit the TOF cell " << itray << " " << imodule << " " << icell << endm;
-//      LOG_INFO << "   position " << local[0] << " " << local[1] << " " << local[2] << endm;
-//      float yCenter = (icell-1-2.5)*3.45;  // cell center position;
-//      if(fabs(local[1]-yCenter)>mDyBtof) continue;
-//      if(icell==1||icell==6) continue;
       if(local[2]<mMinZBtof||local[2]>mMaxZBtof) continue;
       int iBin = btofList->cell2bin(itray, imodule, icell);
       iBinVec.push_back(iBin);
@@ -1228,7 +1219,6 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
       path=d2.first;
     }
     posCTB = hlx.at(path);
-    // printf(" punch Cylinder x,y,z=%.1f, %.1f, %.1f path.second=%.1f\n",posCTB.x(),posCTB.y(),posCTB.z(),path);
   }
 
   // official Sti node extrapolation
@@ -1242,16 +1232,13 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
       LOG_INFO <<"#e @OuterMostNode dump"<< *ouNode <<endm;
       return; 
     }
-    //1 cout<<"#e inCTB |P|="<<ctbNode->getP()<<" local x="<<xL(ctbNode)<<" y="<<yL(ctbNode)<<" +/- "<<eyL(ctbNode)<<" z="<<zL(ctbNode)<<" +/- "<<ezL(ctbNode)<<endl;
     
-    //    cout<<"#e @ctbNode g x:"<< ctbNode->x_g()<<" y:"<< ctbNode->y_g()<<" z:"<< ctbNode->z_g()<<" phi/deg="<<phi/3.1416*180<<endl;
     posCTB=StThreeVectorD( ctbNode->x_g(),ctbNode->y_g(),ctbNode->z_g());
   }
 
   float phi=atan2(posCTB.y(),posCTB.x());
   if(phi<0) phi+=2*C_PI;// now phi is [0,2Pi] as for CTB slats
   float eta=posCTB.pseudoRapidity();
-  //1 cout<<"#e @ctbNode xyz="<<posCTB<<" eta="<<eta<<" phi/deg="<<phi/3.1416*180<<" path/cm="<<path<<endl;
   if(fabs(eta)<1) hA[10]->Fill(posCTB.z());
 
   int iBin=ctbList->addTrack(eta,phi);
@@ -1291,14 +1278,12 @@ StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t, floa
   }
 
   StThreeVectorD posCyl = hlx.at(path);
-  // printf(" punch Cylinder x,y,z=%.1f, %.1f, %.1f path.second=%.1f\n",posCyl.x(),posCyl.y(),posCyl.z(),path);
 
 
   float phi=atan2(posCyl.y(),posCyl.x());
   if(phi<0) phi+=2*C_PI;// now phi is [0,2Pi] as for Cyl slats
   float eta=posCyl.pseudoRapidity();
   
-  // cout<<"#e @bemcNode xyz="<<posCyl<<" etaDet="<<eta<<" phi/deg="<<phi/3.1416*180<<" path/cm="<<path<<endl;
 
   if(fabs(eta)<1) hA[11]->Fill(posCyl.z());
   
@@ -1345,7 +1330,6 @@ StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* track,TrackData &t,float
    //                         const StThreeVectorD& n) const;
 
   double path = hlx.pathLength(rSmd,n);
-  //cout<<" EEMC match: path="<<path<<endl;
   if(path>maxPath) return; // too long extrapolation
 
   StThreeVectorD r = hlx.at(path);
@@ -1399,7 +1383,6 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
     // .........node is within TPC fiducial volume
     if(lastRxy<=rxy){
       LOG_WARN << "StPPVertexFinder::matchTrack2Membrane() \n the "<<in<<" node of the kalmanTrack below is out of order and is ignorred in (some) of vertex finder analysis"<<"\n  Z="<<z<<" rXY="<<rxy<<" last_rxy="<<lastRxy<<endm;
-      //dumpKalmanNodes(track);
       continue;
     }
     lastRxy=rxy;
@@ -1409,7 +1392,6 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
       if(lastZ*z<0) {             // track just crossed Z=0 plane
 	if(jz0>0) {
 	  LOG_WARN << "StPPVertexFinder::matchTrack2Membrane() \n the "<<in<<" node of the kalmanTrack crosses Z=0 for the 2nd time, this track has a strange list of nodes - continue"<<endm;
-	  //dumpKalmanNodes(track);
 	}
 	//assert(jz0==0); // only one crosss point is expected
 	jz0=hitPatt.size();
@@ -1425,9 +1407,7 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
       nPos++;
       if(hit && ktnp->getChi2() <=1000 ) nFit++;
     }
-    // cout<<"#m in="<<in<<" act="<<active<<" hit="<<hit<<" size="<<hitPatt.size()<<" jz0="<<jz0<<" z="<<z<<" Rxy="<<rxy<<endl; 
   }
-  // cout<<"#m nFit="<<nFit<<" of nPos="<<nPos<<endl;
 
   if(nFit<  mMinFitPfrac  * nPos) return false; // too short fragment of a track
 
