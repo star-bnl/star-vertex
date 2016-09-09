@@ -69,7 +69,6 @@
 //==========================================================
 
 StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) : StGenericVertexFinder(fitMode) {
-  LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
 
   mTotEve              = 0;
   HList=0;

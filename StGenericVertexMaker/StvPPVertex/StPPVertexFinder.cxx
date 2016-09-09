@@ -77,8 +77,6 @@ namespace StEvPPV {
 //==========================================================
 StPPVertexFinder::StPPVertexFinder() 
 {
-  LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
-
   mTotEve              = 0;
   HList=0;
   mToolkit =0;
