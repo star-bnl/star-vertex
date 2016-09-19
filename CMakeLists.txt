@@ -112,6 +112,7 @@ add_library(StSecondaryVertexMaker SHARED
 root_generate_linkdef_and_dictionary(
 	StVertexRootIO
 	HEADERS
+	StVertexRootIO/TPrimaryVertex.h
 	StVertexRootIO/TDecayVertex.h
 	StVertexRootIO/TDecayVertexContainers.h
 )
