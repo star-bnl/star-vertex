@@ -92,7 +92,9 @@ add_library(StGenericVertexMakerNoSti SHARED
 
 
 # Build StSecondaryVertexMaker library
-root_generate_linkdef_and_dictionary(StSecondaryVertexMaker HEADERS
+root_generate_linkdef_and_dictionary(
+	StSecondaryVertexMaker
+	HEADERS
 	StSecondaryVertexMaker/StKinkMaker.h
 	StSecondaryVertexMaker/StV0FinderMaker.h
 	StSecondaryVertexMaker/StXiFinderMaker.h
@@ -100,6 +102,7 @@ root_generate_linkdef_and_dictionary(StSecondaryVertexMaker HEADERS
 )
 
 add_library(StSecondaryVertexMaker SHARED
+	StSecondaryVertexMaker/DecayVertexFinder.cxx
 	StSecondaryVertexMaker/StKinkLocalTrack.cc
 	StSecondaryVertexMaker/StKinkMaker.cxx
 	StSecondaryVertexMaker/StV0FinderMaker.cxx
