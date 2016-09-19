@@ -19,6 +19,8 @@ void DecayVertexFinder::Find(const StMuDst &muDst, std::vector<TDecayVertex>& vt
    // Get a pointer to the class holding event-wise information
    StMuEvent &muEvent = *muDst.event();
 
+   //if ( std::fabs(primary_vtx.z()) > 70.0 ) return kStSkip;
+
    if ( muDst.numberOfGlobalTracks() < 2 )
    {
       std::cout << "DecayVertexFinder: not enough tracks" << std::endl;
@@ -63,6 +65,8 @@ void DecayVertexFinder::Find(const StMuDst &muDst, std::vector<TDecayVertex>& vt
          // Do not consider this pair of tracks if they are not consistent with both being pions
          if (std::fabs(ptra_nSigpi) > 3 && std::fabs(ntra_nSigpi) > 3) continue;
 
+         //std::cout << "DecayVertexFinder: Passed nSig " << std::endl;
+
          StPhysicalHelixD ptra_helix = ptra->helix();
          StPhysicalHelixD ntra_helix = ntra->helix();
 
@@ -74,18 +78,21 @@ void DecayVertexFinder::Find(const StMuDst &muDst, std::vector<TDecayVertex>& vt
          StThreeVectorD tdca = ptra_helix.at(s1) - ntra_helix.at(s2);
          double tdca2 = tdca.mag();  // closest distence between two daughters particle
 
+         //std::cout << "DecayVertexFinder: Passing tdca2 > 2: " << tdca2 << std::endl;
          if ( tdca2 > 2.0 ) continue;
 
          StThreeVectorD secondary_vtx = ( ptra_helix.at(s1) + ntra_helix.at(s2) ) / 2.0;
          StThreeVectorD primary_vtx   = muEvent.primaryVertexPosition();
          StThreeVectorD decay_length  = secondary_vtx - primary_vtx;  // V0_distance to Primary Vetex
 
+         //std::cout << "DecayVertexFinder: Passing decay_length.mag() < 0.7: " << decay_length.mag() << std::endl;
          if ( decay_length.mag() < 0.2 ) continue;
 
          StThreeVectorD ptra_p = ptra_helix.momentumAt(s1, muEvent.magneticField()*kilogauss);
          StThreeVectorD ntra_p = ntra_helix.momentumAt(s2, muEvent.magneticField()*kilogauss);
          StThreeVectorD tV0_p = ptra_p + ntra_p;
 
+         //std::cout << "DecayVertexFinder: Passing tV0_p.mag() < 1e-5: " << tV0_p.mag() << std::endl;
          if ( tV0_p.mag() < 1E-5 ) continue;
 
          double dot = tV0_p.dot(decay_length);
@@ -93,16 +100,21 @@ void DecayVertexFinder::Find(const StMuDst &muDst, std::vector<TDecayVertex>& vt
          // Calculate the DCA of decaying particle to the secondary vertex
          double tdcaV0 = sqrt(decay_length.mag2() - dot*dot / tV0_p.mag2());
 
+         //std::cout << "DecayVertexFinder: Passing tdcaV0 > 1.5: " << tdcaV0 << std::endl;
          if ( tdcaV0 > 1.5 ) continue;
 
          // Cosine?
          double tcrp = dot / (tV0_p.mag() * decay_length.mag());
 
+         //std::cout << "DecayVertexFinder: Passing tcrp < 0.9: " << tcrp << std::endl;
          if ( tcrp < 0.9 ) continue;
+
 
          AddSecondaryVertex(*ptra, ptra_p, *ntra, ntra_p, primary_vtx, secondary_vtx, vtxCont);
       }
    }
+
+   std::cout << "DecayVertexFinder: Found secondary vertices: " << vtxCont.size() << std::endl;
 }
 
 
@@ -132,6 +144,9 @@ void DecayVertexFinder::AddSecondaryVertex(const StMuTrack &ptra, const StThreeV
 
    StThreeVectorD decay_length = secondary_vtx - primary_vtx;
 
+   //if ( decay_length.mag() > 2.0 ) // lambda
+   //if ( decay_length.mag() > 0.7 ) // Kaon
+
    double Mp = 0;
    double Mn = 0;
 
@@ -144,6 +159,7 @@ void DecayVertexFinder::AddSecondaryVertex(const StMuTrack &ptra, const StThreeV
    // Do not add vertex if either of the daughters cannot be identified as a proton or a pion
    // OR when both of the daughers are protons
    if (!Mp || !Mn || (Mp == M_proton && Mn == M_proton) ) {
+      //std::cout << "DecayVertexFinder: Failed M: " << Mp << " " << Mn << std::endl;
       return;
    }
 
@@ -164,6 +180,7 @@ void DecayVertexFinder::AddSecondaryVertex(const StMuTrack &ptra, const StThreeV
       parent = DecayParticle_t::Lambda;
    else {
       // Cannot identify decaying particle
+      //std::cout << "DecayVertexFinder: Failed inv M: " << tV0_lv.m() << std::endl;
       return;
    }
 
@@ -195,6 +212,10 @@ void DecayVertexFinder::AddSecondaryVertex(const StMuTrack &ptra, const StThreeV
    vtx.tof_d2    = ntra.btofPidTraits().matchFlag();
    vtx.beta_d2   = ntra.btofPidTraits().beta();
 
+   //vtx.dca2_p   = tdca2;
+   //vtx.dcaV0_p  = tdcaV0;
+   //vtx.crp_p    = tcrp;
+
    vtx.dl_p      = decay_length.mag();
    vtx.V0x_p     = secondary_vtx.x();
    vtx.V0y_p     = secondary_vtx.y();
@@ -205,4 +226,6 @@ void DecayVertexFinder::AddSecondaryVertex(const StMuTrack &ptra, const StThreeV
    vtx.phi_p     = tV0_lv.phi();
 
    vtxCont.push_back(vtx);
+
+   //std::cout << "DecayVertexFinder: Added vertex" << std::endl;
 }
