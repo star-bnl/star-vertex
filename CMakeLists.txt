@@ -108,6 +108,17 @@ add_library(StSecondaryVertexMaker SHARED
 )
 
 
+# Build StVertexRootIO library
+root_generate_linkdef_and_dictionary(
+	StVertexRootIO
+	HEADERS
+	StVertexRootIO/TDecayVertex.h
+	StVertexRootIO/TDecayVertexContainers.h
+)
+
+add_library(StVertexRootIO SHARED StVertexRootIO_dict.cxx)
+
+
 # Build StZdcVertexMaker library
 root_generate_linkdef_and_dictionary(StZdcVertexMaker HEADERS StZdcVertexMaker/StZdcVertexMaker.h)
 
@@ -117,12 +128,12 @@ add_library(StZdcVertexMaker SHARED StZdcVertexMaker/StZdcVertexMaker.cxx StZdcV
 # A collective target to build all libraries in this project. Can be used to
 # build all specified targets from a parent project
 add_custom_target(star-vertex DEPENDS
-	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
+	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker StVertexRootIO
 )
 
 
 # Installation section
 install(TARGETS
-	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker
+	StGenericVertexMaker StGenericVertexMakerNoSti StSecondaryVertexMaker StZdcVertexMaker StVertexRootIO
 	DESTINATION "${STAR_ADDITIONAL_INSTALL_PREFIX}/lib" OPTIONAL
 )
