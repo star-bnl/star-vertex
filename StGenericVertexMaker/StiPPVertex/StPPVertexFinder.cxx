@@ -10,11 +10,7 @@
  ************************************************************/
    
 #include <St_base/StMessMgr.h>
-#include <TGraphErrors.h>
-#include <TF1.h>
-#include <TH2.h>
 #include <TFile.h>
-#include <TLine.h>
 #include "TMinuit.h"
 
 #include <math_constants.h>
