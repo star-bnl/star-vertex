@@ -10,8 +10,14 @@
  ************************************************************/
    
 #include <St_base/StMessMgr.h>
-#include <TFile.h>
+
+#include "TFile.h"
+#include "TH1D.h"
+#include "TH1F.h"
+#include "TH2F.h"
 #include "TMinuit.h"
+#include "TObjArray.h"
+#include "TObjectSet.h"
 
 #include <math_constants.h>
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
@@ -58,7 +64,6 @@
 #include "StEvent/StEmcCollection.h"
 #include "StEvent/StBTofCollection.h"
 #include "StBTofUtil/StBTofGeometry.h"
-#include "TObjectSet.h"
 
 //==========================================================
 //==========================================================
