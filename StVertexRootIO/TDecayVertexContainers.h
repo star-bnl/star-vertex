@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "StVertexRootIO/TDecayVertex.h"
+#include "StVertexRootIO/TPrimaryVertex.h"
 
 
 class TDecayVertexVec : public TObject
@@ -19,6 +20,9 @@ public:
    }
 
    std::vector<TDecayVertex>  mVertices;
+
+   TPrimaryVertex mPrimaryVertex;
+
 
    ClassDef(TDecayVertexVec, 1)
 };
