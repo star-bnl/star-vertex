@@ -435,10 +435,9 @@ StMinuitVertexFinder::fit(StEvent* event)
     Int_t n_bemc_match_tot = 0;
     Int_t n_cross_tot = 0;
 
-    StSPtrVecTrackNode& nodes = event->trackNodes();
-    UInt_t Nnodes = nodes.size();
-    for (UInt_t k = 0; k < Nnodes; k++) {
-      StGlobalTrack* g = ( StGlobalTrack*) nodes[k]->track(global);
+    for (const StTrackNode* stTrack : event->trackNodes())
+    {
+      StGlobalTrack* g = ( StGlobalTrack*) stTrack->track(global);
       if (!accept(g)) continue;
       StDcaGeometry* gDCA = g->dcaGeometry();
       if (! gDCA) continue;
