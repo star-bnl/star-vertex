@@ -54,19 +54,27 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
   mMinuit->SetPrintLevel(-1);
   mMinuit->SetMaxIterations(1000);
 
+  using ObjectiveFunc_t = void (*)(int&, double*, double&, double*, int);
+
+  ObjectiveFunc_t fcn_minuit;
+
   switch (mVertexFitMode)
   {
   case VertexFit_t::Beamline1D:
-     mMinuit->SetFCN(&StMinuitVertexFinder::fcn1D);
+     fcn_minuit = &StMinuitVertexFinder::fcn1D;
      break;
+
   case VertexFit_t::Beamline3D:
-     mMinuit->SetFCN(&StMinuitVertexFinder::Chi2Beamline3D);
+     fcn_minuit = &StMinuitVertexFinder::Chi2Beamline3D;
      break;
+
   case VertexFit_t::NoBeamline:
   default:
-     mMinuit->SetFCN(&StMinuitVertexFinder::fcn);
+     fcn_minuit = &StMinuitVertexFinder::fcn;
      break;
   }
+
+  mMinuit->SetFCN(fcn_minuit);
 
   mExternalSeedPresent = kFALSE;
   mRequireCTB = kFALSE;
