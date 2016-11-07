@@ -87,16 +87,20 @@ protected:
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 
+  /// All measured parameters of the beamline. Updated whenever
+  /// UseVertexConstraint(const vertexSeed_st&) is called
+  vertexSeed_st  mBeamline;
+
   /// Searches for vertex candidates and fills private `mVertexData` container
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
   std::vector<double> FindSeeds_TSpectrum();
 
-  /// Returns x coordinate on the beamline (given by sBeamline) corresponding to
+  /// Returns x coordinate on the beamline (given by mBeamline) corresponding to
   /// the passed value of z.
   static double beamX(double z);
 
-  /// Returns y coordinate on the beamline (given by sBeamline) corresponding to
+  /// Returns y coordinate on the beamline (given by mBeamline) corresponding to
   /// the passed value of z.
   static double beamY(double z);
 
@@ -122,10 +126,6 @@ protected:
   /// A static container with pointers to DCA states to be used in a vertex fit.
   /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
   static StDcaList&  sDCAs();
-
-  /// All measured parameters of the beamline. Updated whenever
-  /// UseVertexConstraint(const vertexSeed_st&) is called
-  static vertexSeed_st  sBeamline;
 
 private:
 

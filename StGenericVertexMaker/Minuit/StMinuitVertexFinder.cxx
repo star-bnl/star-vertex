@@ -807,10 +807,10 @@ void StMinuitVertexFinder::UseVertexConstraint() {
   // So, we'll keep it this way for backward compatibility
   if (mVertexFitMode != VertexFit_t::Beamline1D) return;
 
-  double mX0 = sBeamline.x0;
-  double mY0 = sBeamline.y0;
-  double mdxdz = sBeamline.dxdz;
-  double mdydz = sBeamline.dydz;
+  double mX0 = mBeamline.x0;
+  double mY0 = mBeamline.y0;
+  double mdxdz = mBeamline.dxdz;
+  double mdydz = mBeamline.dydz;
   LOG_INFO << "StMinuitVertexFinder::Using Constrained Vertex" << endm;
   StThreeVectorD origin(mX0,mY0,0.0);
   Double_t pt  = 88889999;   
