@@ -11,7 +11,7 @@
 #endif
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
-#include "StPhysicalHelixD.hh" // dongx
+#include "StPhysicalHelixD.hh"
 class StEventToolkit;
 class StGlobalTrack;
 class TGraphErrors;
@@ -33,7 +33,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
  private:
   enum {mxH=32};
   bool examinTrackDca(const StGlobalTrack*, TrackData &t);
-  void matchTrack2BTOF(const StGlobalTrack*, TrackData &t, StBTofGeometry *geom);  // dongx
+  void matchTrack2BTOF(const StGlobalTrack*, TrackData &t, StBTofGeometry *geom);
   void matchTrack2CTB(const StGlobalTrack*, TrackData &t);
   void matchTrack2EEMC(const StGlobalTrack*, TrackData &t, float z);
   void matchTrack2BEMC(const StGlobalTrack*, TrackData &t, float rxy);
@@ -60,9 +60,9 @@ class StPPVertexFinder: public StGenericVertexFinder {
   float  mMaxZradius;     // used in matching: tracks to zVertex
   int    mMinMatchTr;     // for valid vertex
   float  mMaxZrange;      // cut off for tracks Z_DCA
-  float  mDyBtof;         // BTOF delta y cut - dongx
-  float  mMinZBtof;       // BTOF local z min cut - dongx
-  float  mMaxZBtof;       // BTOF local z max cut - dongx
+  float  mDyBtof;         // BTOF delta y cut
+  float  mMinZBtof;       // BTOF local z min cut
+  float  mMaxZBtof;       // BTOF local z max cut
   float  mMinAdcBemc;     // BEMC towers with MIP response
   float  mMinAdcEemc;     // EEMC towers with MIP response
   float  mMinFitPfrac;    // nFit/nPossible
@@ -74,11 +74,11 @@ class StPPVertexFinder: public StGenericVertexFinder {
                           // use  BFC option: VtxSeedCalG to enable it, expert only
 
   // util
-  BtofHitList    *btofList;  // dongx
+  BtofHitList    *btofList;
   CtbHitList     *ctbList;
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
-  StBTofGeometry *btofGeom;  // dongx btofGeometry
+  StBTofGeometry *btofGeom;
   StEEmcDb       *eeDb;
   EEmcGeomSimple *geomE;
   
@@ -117,6 +117,74 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.2  2016/08/18 17:46:15  smirnovd
+ * Squashed commit of the following refactoring changes:
+ *
+ * Date:   Wed Jul 27 18:31:18 2016 -0400
+ *
+ *     Removed unused arguments in UseVertexConstraint()
+ *
+ *     In StiPPVertexFinder and StvPPVertexFinder this method does nothing
+ *
+ * Date:   Wed Jul 27 16:47:58 2016 -0400
+ *
+ *     Make old UseVertexConstraint private virtual and call it from its public replacement in the base class
+ *
+ *     also mark methods as private explicitly
+ *
+ * Date:   Wed Jul 27 16:52:02 2016 -0400
+ *
+ *     Removed unused private data member mWeight
+ *
+ * Date:   Wed Jul 27 16:50:42 2016 -0400
+ *
+ *     Prefer base class static beamline parameters rather than this class private members
+ *
+ * Date:   Wed Jul 27 16:21:49 2016 -0400
+ *
+ *     StPPVertexFinder: Got rid of unused private beamline parameters
+ *
+ *     The equivalent measurements are available from the base class
+ *     StGenericVertexFinder
+ *
+ * Date:   Wed Jul 27 16:19:19 2016 -0400
+ *
+ *     StPPVertexFinder: For beamline position use equivalent static methods from parent class
+ *
+ * Date:   Wed Jul 27 16:05:50 2016 -0400
+ *
+ *     StGenericVertexMaker: Assigning once is enough
+ *
+ * Date:   Mon Aug 15 10:43:49 2016 -0400
+ *
+ *     StGenericVertexFinder: Print out beamline parameters
+ *
+ *     Print beamline values as extracted from the database before any modification.
+ *
+ * Date:   Wed Jul 6 15:33:02 2016 -0400
+ *
+ *     Stylistic changes and minor refactoring
+ *
+ *     Whitespace and comments for improved readability
+ *     s/track/stiKalmanTrack/
+ *
+ * Date:   Wed Jul 6 15:28:16 2016 -0400
+ *
+ *     StPPVertexFinder: Switched to cleaner c++11 range loop syntax
+ *
+ * Date:   Wed Jul 6 15:22:14 2016 -0400
+ *
+ *     StPPVertexFinder: Minor c++ refactoring
+ *
+ *     - Removed unused counter
+ *     - c-style array to std::array
+ *
+ * Date:   Wed Jul 6 15:20:11 2016 -0400
+ *
+ *     Deleted commented out code
+ *
+ *     Removed unused #include's StMinuitVertexFinder
+ *
  * Revision 1.1  2013/08/16 22:19:56  perev
  * PPV with only StEvent dependency
  *
