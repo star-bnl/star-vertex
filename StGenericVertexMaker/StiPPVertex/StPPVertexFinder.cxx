@@ -829,7 +829,7 @@ StPPVertexFinder::evalVertexZ(VertexData &V) { // and tag used tracks
  * \author Dmitri Smirnov, BNL
  * \date April, 2016
  */
-void StPPVertexFinder::createTrackDcas(const VertexData &vertex) const
+void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
 {
    // Fill member array of pointers to StDcaGeometry objects for selected tracks
    // in mTrackData corresponding to this vertex. These will be used in static
@@ -874,7 +874,7 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex) const
  * \author Dmitri Smirnov, BNL
  * \date February, 2016
  */
-int StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
+int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 {
    createTrackDcas(vertex);
 
@@ -885,7 +885,7 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
    }
 
    // Recalculate vertex seed coordinates to be used as initial point in the fit
-   StThreeVectorD vertexSeed = StGenericVertexFinder::CalcVertexSeed(mDCAs());
+   StThreeVectorD vertexSeed = CalcVertexSeed(mDCAs);
 
    // For fits with beamline force the seed to be on the beamline
    if ( mVertexFitMode == VertexFit_t::Beamline1D ||

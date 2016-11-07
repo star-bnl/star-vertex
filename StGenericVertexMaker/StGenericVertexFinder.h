@@ -106,24 +106,24 @@ protected:
 
   /// Returns x coordinate on the beamline (given by mBeamline) corresponding to
   /// the passed value of z.
-  static double beamX(double z);
+  double beamX(double z) const;
 
   /// Returns y coordinate on the beamline (given by mBeamline) corresponding to
   /// the passed value of z.
-  static double beamY(double z);
+  double beamY(double z) const;
 
   /// Caclulates chi2 for the beamline and a point
-  static double CalcChi2Beamline(const StThreeVectorD& point);
+  double CalcChi2Beamline(const StThreeVectorD& point);
 
   /// Recalculates the vertex position from DCA measurements in the input list
   /// of DCAs
-  static StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
+  StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
 
   /// Caclulates total chi2 for the track DCAs stored in mDCAs and a point
   virtual double CalcChi2DCAs(const StThreeVectorD &point);
 
   /// Caclulates total chi2 for the beamline and track DCAs stored in mDCAs and a point
-  static double CalcChi2DCAsBeamline(const StThreeVectorD &point);
+  double CalcChi2DCAsBeamline(const StThreeVectorD &point);
 
   /// Just an interface to CalcChi2DCAsBeamline(...)
   static void fcnCalcChi2DCAsBeamline(int& npar, double* gin, double& f, double* par, int iflag)
