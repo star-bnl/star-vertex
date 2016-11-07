@@ -116,7 +116,7 @@ protected:
   static StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
 
   /// Caclulates total chi2 for the track DCAs stored in mDCAs and a point
-  static double CalcChi2DCAs(const StThreeVectorD &point);
+  virtual double CalcChi2DCAs(const StThreeVectorD &point);
 
   /// Caclulates total chi2 for the beamline and track DCAs stored in mDCAs and a point
   static double CalcChi2DCAsBeamline(const StThreeVectorD &point);

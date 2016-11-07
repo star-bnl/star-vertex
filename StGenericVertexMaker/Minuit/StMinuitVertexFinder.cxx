@@ -701,7 +701,7 @@ StMinuitVertexFinder::fit(StEvent* event)
     return 1;
 } 
 //________________________________________________________________________________
-Double_t StMinuitVertexFinder::Chi2atVertex(StThreeVectorD &vtx) {
+double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx) {
   Double_t f = 0;
   Double_t e;
   nCTBHits = 0;
@@ -738,19 +738,19 @@ void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par,
     Double_t x = beamX(z);
     Double_t y = beamY(z);
     StThreeVectorD vtx(x,y,z);
-    f = Chi2atVertex(vtx);
+    f = CalcChi2DCAs(vtx);
 }
 void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, Int_t iflag)
 {
   StThreeVectorD vtx(par);
-  f = Chi2atVertex(vtx);
+  f = CalcChi2DCAs(vtx);
 }
 
 
 void StMinuitVertexFinder::Chi2Beamline3D(int& npar, double* gin, double& f, double* par, Int_t iflag)
 {
   StThreeVectorD vtx(par);
-  f = Chi2atVertex(vtx);
+  f = CalcChi2DCAs(vtx);
 
   // Add to the chi2 with the beamline
   static double scale = 1./(mWidthScale*mWidthScale);
