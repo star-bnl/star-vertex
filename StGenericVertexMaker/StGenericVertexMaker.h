@@ -33,7 +33,9 @@ class StGenericVertexMaker : public StMaker
   Bool_t  usePCT;
   Bool_t  useBTOF;
   Bool_t  eval;
-  Bool_t  externalFindUse; /// Finder will by called externally (by StiMaker)
+  /// Finder will by called externally (by StiMaker). If set to true no finding
+  /// actually done
+  Bool_t  externalFindUse;
   Int_t   minTracks;
 
   TNtuple *mEvalNtuple;    /// Ntuple for evaluation purposes
