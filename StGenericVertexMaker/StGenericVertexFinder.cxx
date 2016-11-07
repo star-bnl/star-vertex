@@ -23,12 +23,6 @@
 
 // Initialize static variable with default values
 
-/// Pointers to DCA states to be used in a vertex fit
-StGenericVertexFinder::StDcaList&  StGenericVertexFinder::sDCAs()
-{
-   static StDcaList* sDCAs = new StDcaList();
-   return *sDCAs;
-}
 
 
 StGenericVertexFinder::StGenericVertexFinder() :
@@ -47,7 +41,8 @@ StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_
   mDebugLevel(0),
   mUseBtof(false),
   mUseCtb(false),
-  mBeamline()
+  mBeamline(),
+  mDCAs()
 {
 }
 
@@ -102,7 +97,7 @@ std::vector<double> StGenericVertexFinder::FindSeeds_TSpectrum()
    // The size of window in cm where the probability is averaged
    static double zWindow = 2;
 
-   for (const StDcaGeometry* trackDca : sDCAs())
+   for (const StDcaGeometry* trackDca : mDCAs)
    {
       double xyzp[6], covXyzp[21];
 
@@ -124,7 +119,7 @@ std::vector<double> StGenericVertexFinder::FindSeeds_TSpectrum()
       }
    }
 
-   int npeaks = tSpectrum.Search(&fVtx, 3, "nodraw", std::min(0.1, 5./sDCAs().size()) );
+   int npeaks = tSpectrum.Search(&fVtx, 3, "nodraw", std::min(0.1, 5./mDCAs.size()) );
 
    auto* peaks = tSpectrum.GetPositionX();
 
@@ -168,7 +163,7 @@ double StGenericVertexFinder::CalcChi2DCAs(const StThreeVectorD &point)
    // Initialize f with value for beamline
    double f = 0;
 
-   for (const StDcaGeometry* dca : sDCAs())
+   for (const StDcaGeometry* dca : mDCAs)
    {
       double err2;
       double dist = dca->thelix().Dca( &point.x(), &err2);
@@ -277,7 +272,7 @@ double StGenericVertexFinder::CalcChi2Beamline(const StThreeVectorD& point)
 
 
 /**
- * Estimates vertex position from track DCA states in sDCAs.
+ * Estimates vertex position from track DCA states in mDCAs.
  * The beam position is not taken into account.
  *
  * \author Dmitri Smirnov

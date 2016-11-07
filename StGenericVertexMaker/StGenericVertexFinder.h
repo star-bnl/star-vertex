@@ -91,6 +91,10 @@ protected:
   /// UseVertexConstraint(const vertexSeed_st&) is called
   vertexSeed_st  mBeamline;
 
+  /// A container with pointers to DCA states to be used in a vertex fit.
+  /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
+  StDcaList  mDCAs;
+
   /// Searches for vertex candidates and fills private `mVertexData` container
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
@@ -111,10 +115,10 @@ protected:
   /// of DCAs
   static StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
 
-  /// Caclulates total chi2 for the track DCAs stored in sDCAs and a point
+  /// Caclulates total chi2 for the track DCAs stored in mDCAs and a point
   static double CalcChi2DCAs(const StThreeVectorD &point);
 
-  /// Caclulates total chi2 for the beamline and track DCAs stored in sDCAs and a point
+  /// Caclulates total chi2 for the beamline and track DCAs stored in mDCAs and a point
   static double CalcChi2DCAsBeamline(const StThreeVectorD &point);
 
   /// Just an interface to CalcChi2DCAsBeamline(...)
@@ -122,10 +126,6 @@ protected:
   {
      f = CalcChi2DCAsBeamline( StThreeVectorD(par) );
   }
-
-  /// A static container with pointers to DCA states to be used in a vertex fit.
-  /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
-  static StDcaList&  sDCAs();
 
 private:
 
