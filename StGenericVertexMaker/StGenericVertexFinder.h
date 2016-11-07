@@ -22,8 +22,9 @@ class StEvent;
 class StDcaGeometry;
 
 
-class StGenericVertexFinder {
- public:
+class StGenericVertexFinder
+{
+public:
 
   // Alias for shorthand
   using StDcaList = std::vector<const StDcaGeometry*>;
@@ -64,7 +65,7 @@ class StGenericVertexFinder {
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
   virtual int            IsFixed() const        {return 0;}
 
- protected: //................................
+protected: //................................
 
   StGenericVertexFinder(VertexFit_t fitMode=VertexFit_t::Unspecified);
 
@@ -115,10 +116,11 @@ class StGenericVertexFinder {
   /// UseVertexConstraint(const vertexSeed_st&) is called
   static vertexSeed_st  sBeamline;
 
- private:
+private:
+
   std::vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
 
-  virtual void           UseVertexConstraint()=0;
+  virtual void  UseVertexConstraint() = 0;
 };
 
 #endif

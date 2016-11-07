@@ -41,6 +41,8 @@ StGenericVertexFinder::StGenericVertexFinder(VertexFit_t fitMode) :
   mUseCtb =0;            	// default use ctb = false
   mVertexOrderMethod = orderByNumberOfDaughters;
 }
+
+
 //______________________________________________________________________________
 StGenericVertexFinder::~StGenericVertexFinder()
 {
@@ -230,7 +232,7 @@ StThreeVectorD StGenericVertexFinder::CalcVertexSeed(const StDcaList &trackDcas)
 
    if (trackDcas.size() == 0) {
       LOG_WARN << "StGenericVertexFinder::CalcVertexSeed: Empty container with track DCAs. "
-	          "Returning default seed: StThreeVectorD(0, 0, 0)" << endm;
+                  "Returning default seed: StThreeVectorD(0, 0, 0)" << endm;
       return vertexSeed;
    }
 
