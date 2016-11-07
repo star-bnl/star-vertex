@@ -95,6 +95,10 @@ protected:
   /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
   StDcaList  mDCAs;
 
+  /// Static pointer to this base class allowing access to concrete
+  /// implementations from Minuit minimization function
+  static StGenericVertexFinder* sSelf;
+
   /// Searches for vertex candidates and fills private `mVertexData` container
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
@@ -124,7 +128,7 @@ protected:
   /// Just an interface to CalcChi2DCAsBeamline(...)
   static void fcnCalcChi2DCAsBeamline(int& npar, double* gin, double& f, double* par, int iflag)
   {
-     f = CalcChi2DCAsBeamline( StThreeVectorD(par) );
+     f = sSelf->CalcChi2DCAsBeamline( StThreeVectorD(par) );
   }
 
 private:

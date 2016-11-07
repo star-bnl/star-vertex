@@ -897,6 +897,9 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
 
    static TMinuit minuit(3);
 
+   // Make sure the global pointer points to valid object so Minuit uses correct data
+   StGenericVertexFinder::sSelf = this;
+
    minuit.SetFCN(&StGenericVertexFinder::fcnCalcChi2DCAsBeamline);
    minuit.SetPrintLevel(-1);
    minuit.SetMaxIterations(1000);

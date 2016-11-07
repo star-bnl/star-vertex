@@ -23,6 +23,8 @@
 
 // Initialize static variable with default values
 
+/// By default point to invalid object
+StGenericVertexFinder* StGenericVertexFinder::sSelf = nullptr;
 
 
 StGenericVertexFinder::StGenericVertexFinder() :

@@ -485,6 +485,9 @@ StMinuitVertexFinder::fit(StEvent* event)
     
     // Reset and clear Minuit parameters mStatusMin
     mMinuit->mnexcm("CLEar", 0, 0, mStatusMin);
+
+    // Make sure the global pointer points to valid object so Minuit uses correct data
+    StGenericVertexFinder::sSelf = this;
     
     // Set parameters and start values. We do constrain the parameters since it
     // harms the fit quality (see Minuit documentation).
@@ -743,26 +746,26 @@ double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx) {
 void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par, Int_t iflag)
 {
     Double_t z = par[0];
-    Double_t x = beamX(z);
-    Double_t y = beamY(z);
+    Double_t x = dynamic_cast<StMinuitVertexFinder*>(sSelf)->beamX(z);
+    Double_t y = dynamic_cast<StMinuitVertexFinder*>(sSelf)->beamY(z);
     StThreeVectorD vtx(x,y,z);
-    f = CalcChi2DCAs(vtx);
+    f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
 }
 void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, Int_t iflag)
 {
   StThreeVectorD vtx(par);
-  f = CalcChi2DCAs(vtx);
+  f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
 }
 
 
 void StMinuitVertexFinder::Chi2Beamline3D(int& npar, double* gin, double& f, double* par, Int_t iflag)
 {
   StThreeVectorD vtx(par);
-  f = CalcChi2DCAs(vtx);
+  f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
 
   // Add to the chi2 with the beamline
   static double scale = 1./(mWidthScale*mWidthScale);
-  f += scale*(1. - TMath::Exp(-StGenericVertexFinder::CalcChi2Beamline(vtx)/scale));
+  f += scale*(1. - TMath::Exp(-dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2Beamline(vtx)/scale));
 }
 
 
