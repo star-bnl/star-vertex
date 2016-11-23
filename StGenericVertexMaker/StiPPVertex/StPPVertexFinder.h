@@ -44,13 +44,14 @@ class StPPVertexFinder: public StGenericVertexFinder
   /// container mDCAs
   void createTrackDcas(const VertexData &vertex);
 
+  /// Searches for vertex candidates and fills private `mVertexData` container
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
   void findSeeds_TSpectrum();
 
   /// Searches for vertex candidates and fills private `mVertexData` container
   /// by building a likelihood distribution of track DCAs along the `z` axis
-  void findSeeds_PPVLikelihood();
+  void findSeeds_PPVLikelihood(std::string file_name_suffix="old");
 
   enum {mxH=32};
   bool examinTrackDca(const StiKalmanTrack*, TrackData &track);

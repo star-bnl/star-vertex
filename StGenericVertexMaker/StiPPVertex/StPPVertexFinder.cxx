@@ -95,6 +95,10 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   // needed only for  better errZ calculation
   hM = new TH1D("ppvM", "cumulative track multiplicity; Z /cm", nb, -zRange, zRange);
   hW = new TH1D("ppvW", "cumulative track weight; Z /cm", nb, -zRange, zRange);
+
+  HList.Add(hL);
+  HList.Add(hM);
+  HList.Add(hW);
 } 
 
 
@@ -252,13 +256,13 @@ void StPPVertexFinder::findSeeds_TSpectrum()
  * tracks already associated with a vertex are not considered in the next
  * iteration when a new likelihood histogram is built.
  */
-void StPPVertexFinder::findSeeds_PPVLikelihood()
+void StPPVertexFinder::findSeeds_PPVLikelihood(std::string file_name_suffix)
 {
   const float par_rankOffset = 1e6; // to separate class of vertices (approximately)
 
   int vertexID=0;
 
-  while(1)
+  do
   {
     if ( !buildLikelihoodZ() ) break;
 
@@ -266,7 +270,8 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
 
     if ( !findVertexZ(vertex) ) break;
 
-    bool trigV = evalVertexZ(vertex);   // vertex.print();
+    bool trigV = evalVertexZ(vertex);
+    vertex.print(std::cout);
 
     //bump up rank of 2+ track all vertices 
     if (vertex.nAnyMatch >= mMinMatchTr) vertex.Lmax += par_rankOffset;
@@ -281,7 +286,16 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
     }
 
     mVertexData.push_back(vertex);
-  }
+
+    TH1D* hL_clone = static_cast<TH1D*>(hL->Clone());
+    TString new_name = TString(hL->GetName()) + "_";
+    new_name += vertexID;
+    hL_clone->SetName(new_name);
+    HList.Add(hL_clone);
+
+  } while(1);
+
+  saveHisto("ppv_likelihood_" + file_name_suffix);
 }
 
 
@@ -565,7 +579,7 @@ void StPPVertexFinder::seed_fit_export()
 
    case SeedFinder_t::PPVLikelihood:
    default:
-     findSeeds_PPVLikelihood();
+     findSeeds_PPVLikelihood("new");
      break;
    }
   
