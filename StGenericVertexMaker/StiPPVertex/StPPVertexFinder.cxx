@@ -108,25 +108,16 @@ void StPPVertexFinder::Init()
   mToolkit = StiToolkit::instance();
   assert(mToolkit);          // internal error of Sti
   
-  initHisto();
-
-  LOG_INFO << "initiated histos" << endm;
-  
   // BTOF and/or CTB hits can be requested after the finder is constructed but
   // before the Init() is called. In this case we need to create the
   // corresponding hit lists if they are not available
   if (mUseBtof && !btofList) {
      btofList = new BtofHitList();
-     btofList->initHisto( &HList);
   }
 
   if (mUseCtb && !ctbList)  {
      ctbList  = new CtbHitList();
-     ctbList->initHisto(&HList);
   }
-
-  bemcList->initHisto(&HList);
-  eemcList->initHisto(&HList);
 
   LOG_INFO << "Finished Init" << endm;
 }
@@ -288,13 +279,6 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
       vertex.Lmax -= par_rankOffset; 
     }
 
-    {// ... more rank QA ...
-      float rank=vertex.Lmax;
-      if(rank>1e6)     hA[17]->Fill(log(rank-1e6)+10);
-      else if(rank>0)  hA[17]->Fill(log(rank));
-      else             hA[17]->Fill(log(rank+1e6)-10);
-    }
-
     mVertexData.push_back(vertex);
   }
 }
@@ -339,8 +323,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
   for (const TrackData &track : mTrackData) {
     if(  track.mTpc>0)   nTpcM++;
     else if (  track.mTpc<0) nTpcV++;
-    hA[9]->Fill(track.zDca);
-    hA[14]->Fill(track.ezDca);
     if(track.vertexID<=0) continue; // skip not used or pileup vertex
     k++;
     LOG_DEBUG 
@@ -353,9 +335,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
       << Form("    TPC %d",track.mTpc)
       <<endm;
   }
-  hA[6]->Fill(nTpcM);
-  hA[7]->Fill(nTpcV);
-  hA[15]->Fill(mTrackData.size());
 
   LOG_INFO << Form("PPVend  eveID=%d,  list of found %d vertices from pool of %d tracks\n",
                    eveID, mVertexData.size(), mTrackData.size()) << endm;
@@ -369,8 +348,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
 //==========================================================
 int StPPVertexFinder::fit(StEvent* event)
 {
-  hA[0]->Fill(1);
-
   mTotEve++;
   eveID=event->id();
 
@@ -379,9 +356,6 @@ int StPPVertexFinder::fit(StEvent* event)
            << "  eveID=" << eveID << endm;
 
   hL->SetTitle("Vertex likelihood, eveID=" + TString(eveID) );
-
-  hA[0]->Fill(2);
-
 
   // get BTOF info
   if(mUseBtof) {
@@ -426,8 +400,6 @@ int StPPVertexFinder::fit(StEvent* event)
      return 0 ;
    }
 
-  hA[0]->Fill(4);
-  
   //select reasonable tracks and add them to my list
   int kBtof=0,kCtb=0,kBemc=0, kEemc=0,kTpc=0;
   int nTracksMatchingAnyFastDetector=0;
@@ -451,9 +423,6 @@ int StPPVertexFinder::fit(StEvent* event)
 
     ntrk[6]++;
 
-    hA[1]->Fill(stiKalmanTrack->getChi2());
-    hA[2]->Fill(stiKalmanTrack->getFitPointCount());
-    hA[16]->Fill(stiKalmanTrack->getPt());
 
     // Match to various detectors
     if (mUseBtof) matchTrack2BTOF(stiKalmanTrack, track);  // matching track to btofGeometry
@@ -464,7 +433,6 @@ int StPPVertexFinder::fit(StEvent* event)
     // ...all test done on this track
     mTrackData.push_back(track); 
 
-    hA[5]->Fill(track.rxyDca);
 
     if (track.mBtof > 0) kBtof++;
     if (track.mCtb  > 0) kCtb++;
@@ -474,8 +442,6 @@ int StPPVertexFinder::fit(StEvent* event)
 
     if (track.mBtof>0 || track.mCtb>0 || track.mBemc>0 || track.mEemc>0 || track.mTpc>0)
        nTracksMatchingAnyFastDetector++;
-
-    hACorr->Fill(track.mBtof, track.mBemc);
   }
 
   if (mDebugLevel)
@@ -490,20 +456,16 @@ int StPPVertexFinder::fit(StEvent* event)
 
   if(mUseCtb) {
     ctbList ->print();
-    ctbList ->doHisto();
   }
 
   if(mUseBtof) {
     btofList->print();
-    btofList->doHisto();
   }
 
   bemcList->print();
   eemcList->print();
   LOG_INFO<< Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)<<endm;
 
-  bemcList->doHisto();
-  eemcList->doHisto();
 
   LOG_INFO << Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)
            << "PPV::fit() nEve=" << mTotEve << " , "
@@ -515,18 +477,6 @@ int StPPVertexFinder::fit(StEvent* event)
     seed_fit_export();
   } else {
     LOG_INFO << "StPPVertexFinder::fit() nEve=" << mTotEve << " Quit, to few matched tracks" << endm;
-  }
-
-  hA[0]->Fill(5);
-
-  if(kBemc)  hA[0]->Fill(6);
-  if(kEemc)  hA[0]->Fill(7);
-  
-  hA[4]->Fill(mVertexData.size());
-
-  for (const VertexData &V : mVertexData)
-  {
-    hA[3]->Fill(V.r.z());
   }
   
   return size();
@@ -634,9 +584,6 @@ void StPPVertexFinder::seed_fit_export()
      break;
    }
   
-   if(mVertexData.size()>0)  hA[0]->Fill(8);
-   if(mVertexData.size()>1)  hA[0]->Fill(9);
-
    // Refit vertex position for all cases (currently NoBeamline, Beamline1D, and
    // Beamline3D) except when the BeamlineNoFit option is specified. This is
    // done to keep backward compatible behavior when by default the vertex was
@@ -1066,7 +1013,6 @@ void StPPVertexFinder::saveHisto(TString fname)
   TFile f(outName, "recreate");
   assert(f.IsOpen());
   printf("%d histos are written  to '%s' ...\n", HList.GetEntries(), outName.Data());
-  HList.ls();
   HList.Write();
   f.Close();
 }
@@ -1326,8 +1272,6 @@ void StPPVertexFinder::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, Track
   if (phi < 0) phi += 2*M_PI; // now phi is [0,2Pi] as for Cyl slats
   float eta = posCyl.pseudoRapidity();
 
-  if(fabs(eta)<1) hA[11]->Fill(posCyl.z());
-  
   int   iBin      = bemcList->addTrack(eta, phi);
   bool  bemcMatch = bemcList->isMatched(iBin);
   bool  bemcVeto  = bemcList->isVetoed(iBin);
