@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.5 2016/08/18 17:46:15 smirnovd Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.7 2016/11/07 21:19:28 smirnovd Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -1213,6 +1213,14 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log: StPPVertexFinder.cxx,v $
+ * Revision 1.7  2016/11/07 21:19:28  smirnovd
+ * Added and reworded some doxygen and other comments
+ *
+ * Also cleaned up not-so-useful comments
+ *
+ * Revision 1.6  2016/11/07 21:19:14  smirnovd
+ * Moved log print statements out of constructors
+ *
  * Revision 1.5  2016/08/18 17:46:15  smirnovd
  * Squashed commit of the following refactoring changes:
  *

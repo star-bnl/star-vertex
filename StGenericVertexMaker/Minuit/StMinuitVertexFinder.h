@@ -88,7 +88,7 @@
  *  myvertex.UseVertexConstraint(x0,y0,dzdy,dydz,weight)
  *
  *
- *  $Id: StMinuitVertexFinder.h,v 1.21 2016/08/18 17:46:13 smirnovd Exp $
+ *  $Id: StMinuitVertexFinder.h,v 1.22 2016/11/04 20:24:00 smirnovd Exp $
  *
  */
 
