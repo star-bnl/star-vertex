@@ -21,6 +21,7 @@
 class StEvent;
 class StMuDst;
 class StDcaGeometry;
+class TClonesArray;
 
 
 class StGenericVertexFinder
@@ -63,6 +64,8 @@ public:
   virtual void           InitRun  (int runumber){ /* noop */;}
   virtual void           Clear();
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;}
+
+  void result(TClonesArray& stMuDstPrimaryVertices);
 
   void                   FillStEvent(StEvent*);
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
