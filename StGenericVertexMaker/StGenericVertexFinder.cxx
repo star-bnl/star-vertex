@@ -38,7 +38,6 @@ StGenericVertexFinder::StGenericVertexFinder(VertexFit_t fitMode) :
   mMode(0),
   mVertexFitMode(fitMode),
   mDebugLevel(0),
-  mIsMC(false),
   mUseBtof(false),
   mUseCtb(false)
 {
