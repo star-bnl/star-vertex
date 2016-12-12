@@ -25,6 +25,7 @@ class StiToolkit;
 class StEEmcDb;
 
 class EEmcGeomSimple;
+class StMuTrack;
 class StBTofGeometry; 
 
 class BtofHitList;  
@@ -56,10 +57,15 @@ class StPPVertexFinder: public StGenericVertexFinder
   bool examinTrackDca(const StiKalmanTrack*, TrackData &track);
   void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track, StBTofGeometry *geom);
   void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
+
   void matchTrack2EEMC(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2EEMC(const StMuTrack& muTrack, TrackData &track);
   void matchTrack2EEMC(const StPhysicalHelixD& helix, TrackData &track);
+
   void matchTrack2BEMC(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2BEMC(const StMuTrack& muTrack, TrackData &track);
   void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
+
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 

@@ -1188,6 +1188,12 @@ void StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* stiTrack, TrackData
 }
 
 
+void StPPVertexFinder::matchTrack2BEMC(const StMuTrack& muTrack, TrackData &track)
+{
+   matchTrack2BEMC(muTrack.outerHelix(), track);
+}
+
+
 void StPPVertexFinder::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
 {
   const double Rxy = 242.; // middle of tower in Rxy
@@ -1247,6 +1253,20 @@ void StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* stiTrack, TrackData
    //                         const StThreeVectorD& n) const;
 
   matchTrack2EEMC(phys_helix, track);
+}
+
+
+void StPPVertexFinder::matchTrack2EEMC(const StMuTrack& muTrack, TrackData &track)
+{
+   const double minEta = 0.7;
+
+   //direction of extrapolation must be toward West (Z+ axis)
+   if (muTrack.firstPoint().z() > muTrack.lastPoint().z()) return;
+   
+   // drop too steep tracks
+   if(muTrack.eta() < minEta) return;
+
+   matchTrack2EEMC(muTrack.outerHelix(), track);
 }
 
 
