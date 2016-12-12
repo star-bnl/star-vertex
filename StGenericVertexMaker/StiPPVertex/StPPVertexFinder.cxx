@@ -1173,8 +1173,6 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track
 //==========================================================
 void StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* stiTrack, TrackData &track)
 {
-  const double Rxy = 242.; // middle of tower in Rxy
-
   StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
   //alternative helix extrapolation:
@@ -1185,6 +1183,15 @@ void StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* stiTrack, TrackData
 		       ouNode->getPhase(),
 		       ou,
 		       ouNode->getHelicity());
+
+  matchTrack2BEMC(phys_helix, track);
+}
+
+
+void StPPVertexFinder::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
+{
+  const double Rxy = 242.; // middle of tower in Rxy
+
   pairD  d2;
   d2 = phys_helix.pathLength(Rxy);
   float path = d2.second;
@@ -1218,9 +1225,7 @@ void StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* stiTrack, TrackData
 //==========================================================
 void StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* stiTrack, TrackData &track)
 {
-  const double eemc_z_position = 288.; // middle of tower in Z
   const double minEta=0.7 ;// tmp cut
-  const double maxPath=200 ;// tmp, cut too long extrapolation
 
   StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
   StiKalmanTrackNode* inNode=stiTrack->getInnerMostNode();
@@ -1231,9 +1236,6 @@ void StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* stiTrack, TrackData
   // droop too steep tracks
   if(stiTrack->getPseudoRapidity()<minEta) return;
 
-  StThreeVectorD rSmd=StThreeVectorD(0,0,eemc_z_position);
-  StThreeVectorD n=StThreeVectorD(0,0,1);
-
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
   StPhysicalHelixD phys_helix(fabs(ouNode->getCurvature()),
@@ -1243,6 +1245,18 @@ void StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* stiTrack, TrackData
    // path length at intersection with plane
    // double       pathLength(const StThreeVectorD& r,
    //                         const StThreeVectorD& n) const;
+
+  matchTrack2EEMC(phys_helix, track);
+}
+
+
+void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
+{
+  const double eemc_z_position = 288.; // middle of tower in Z
+  const double maxPath=200 ;// tmp, cut too long extrapolation
+
+  StThreeVectorD rSmd=StThreeVectorD(0,0,eemc_z_position);
+  StThreeVectorD n=StThreeVectorD(0,0,1);
 
   double path = phys_helix.pathLength(rSmd,n);
   if(path>maxPath) return; // too long extrapolation
