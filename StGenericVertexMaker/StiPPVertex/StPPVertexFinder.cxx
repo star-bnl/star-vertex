@@ -1061,7 +1061,7 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
  */
 void StPPVertexFinder::exportVertices()
 {
-  for (const VertexData &V : mVertexData)
+  for (VertexData &V : mVertexData)
   {
     StThreeVectorD r(V.r.x(), V.r.y(), V.r.z());
 
@@ -1084,7 +1084,40 @@ void StPPVertexFinder::exportVertices()
     primV.setSumOfTrackPt(V.gPtSum);
     primV.setRanking(V.Lmax);
     primV.setFlag(1); //??? is it a right value?
-  
+
+    if (mStMuDst)
+    {
+       for (TrackData &track : mTrackData)
+       {
+          StThreeVectorF v_position(V.r.x(), V.r.y(), V.r.z());
+          StThreeVectorF dist = v_position - track.dca->origin();
+
+          // Calculate total error as fully correlated between DCA and vertex
+          //float total_err_perp = std::sqrt( V.er.Perp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
+          //float total_err_z    = std::sqrt( V.er.z()*V.er.z() + track.dca->errMatrix()[2] );
+
+          float total_err = V.er.Mag() + std::sqrt(track.dca->errMatrix()[0] + track.dca->errMatrix()[2]);
+
+          bool is_daughter = (track.vertexID == V.id || dist.mag()/total_err < 1);
+
+          if ( !is_daughter ) continue;
+
+          track.vertexID = V.id;
+
+          StMuTrack* stMuTrack = const_cast<StMuTrack*>( track.getMother<StMuTrack>() );
+          stMuTrack->setType(primary);
+
+          StTrack* primTrack = StMuDst::createStTrack(stMuTrack);
+          primV.addDaughter(primTrack);
+       }
+
+       primV.setIdTruth();
+       V.mIdTruth = primV.idTruth();
+
+       while ( !primV.daughters().empty() )
+          delete primV.daughters().back(), primV.daughters().pop_back();
+    }
+
     //..... add vertex to the list
     addVertex(primV);
   }
