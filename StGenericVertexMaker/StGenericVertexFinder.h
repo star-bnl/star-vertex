@@ -6,7 +6,7 @@
  * (pseudo) Base class for vertex finders
  *
  *
- * $Id: StGenericVertexFinder.h,v 1.43 2016/11/07 21:19:27 smirnovd Exp $
+ * $Id: StGenericVertexFinder.h,v 1.44 2016/12/12 16:42:30 smirnovd Exp $
  */
 
 #ifndef STAR_StGenericVertexFinder
@@ -45,7 +45,6 @@ public:
   virtual void           UsePCT(bool usePCT = true);
   virtual void           UseBTOF(bool useBTOF = true){mUseBtof=useBTOF;}
   virtual void           UseCTB (bool useCTB  = true){mUseCtb =useCTB ;}
-          void           setMC  (bool x=true)        {mIsMC   = x     ;}
   virtual void           CalibBeamLine(){ /* noop */;} // overload if useful
 
   virtual void           printInfo(ostream& = cout) const=0;
@@ -76,7 +75,6 @@ protected:
   VertexFit_t            mVertexFitMode;
 
   int                    mDebugLevel;
-  bool                   mIsMC;              // flag minor differences between Data & M-C
   bool                   mUseBtof;           // default use btof = false
   bool                   mUseCtb;            // default use ctb = false
 

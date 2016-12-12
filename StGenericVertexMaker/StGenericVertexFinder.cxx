@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: StGenericVertexFinder.cxx,v 1.36 2016/11/07 21:19:42 smirnovd Exp $
+ * $Id: StGenericVertexFinder.cxx,v 1.38 2016/12/12 17:18:14 smirnovd Exp $
  *
  * Author: Lee Barnby, April 2003
  *
@@ -36,7 +36,6 @@ StGenericVertexFinder::StGenericVertexFinder(VertexFit_t fitMode) :
   mMode(0),
   mVertexFitMode(fitMode),
   mDebugLevel(0),
-  mIsMC(false),
   mUseBtof(false),
   mUseCtb(false)
 {
