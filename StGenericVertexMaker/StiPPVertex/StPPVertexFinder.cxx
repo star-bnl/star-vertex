@@ -843,7 +843,7 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
       if (!track.mother) continue;
 
       // This code is adopted from StiStEventFiller::fillDca()
-      StiKalmanTrack tmpTrack = *track.mother;
+      StiKalmanTrack tmpTrack = *track.getMother<StiKalmanTrack>();
       StiKalmanTrackNode *tNode = tmpTrack.extrapolateToBeam();
 
       if (!tNode) continue;

@@ -34,7 +34,7 @@ class TrackData {
   int vertexID; /* >0 if assigned to a good vertex; 
 		   =0 free, not used for any vertex
 		*/
-  const StiKalmanTrack* mother; // oryginal track
+  const void* mother; // original track
 
   const StDcaGeometry* dca;
 
@@ -55,6 +55,10 @@ class TrackData {
   int eemcBin; // >=0 if track passed through ETOW tower
   // ........................methods
   TrackData();
+
+  template<class OriginalTrack_t>
+  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
+
   void scanNodes( vector<int> & hitPatt, int jz0);
   bool matchVertex(VertexData &V, float kSig) ;
 
