@@ -15,7 +15,6 @@
 #include "TH2.h"
 #include "TFile.h"
 #include "TLine.h"
-#include "TCanvas.h" //tmp
 
 #include "math_constants.h"
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
@@ -1178,6 +1177,14 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.8  2016/12/12 16:42:30  smirnovd
+ * Removed special treatment for MC data in PPV vertex finder
+ *
+ * Removed mIsMC flag in order to treat the simulated and real data in the same
+ * manner during vertex reconstruction. The flag caused confusion rather than being
+ * helpful in any way for the main VF task. As an additional benefit the users will
+ * not have to worry about setting the flag when running on simulated data.
+ *
  * Revision 1.7  2016/11/07 21:19:28  smirnovd
  * Added and reworded some doxygen and other comments
  *
