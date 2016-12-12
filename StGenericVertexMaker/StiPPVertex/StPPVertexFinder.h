@@ -97,8 +97,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   EEmcGeomSimple *geomE;
   
   void dumpKalmanNodes(const StiKalmanTrack *track);
-  //  void plotVertex(VertexData *);
-  //  void plotTracksDca();
   void initHisto();
 
   virtual void  UseVertexConstraint() {}
