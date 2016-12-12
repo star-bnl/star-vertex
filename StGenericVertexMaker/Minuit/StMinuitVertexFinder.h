@@ -110,7 +110,7 @@ public:
     virtual        ~StMinuitVertexFinder();
     Int_t           fit(StEvent*);       
     void            printInfo(ostream& = cout) const;
-    virtual void    InitRun  (Int_t runumber);
+    virtual void    InitRun  (Int_t runumber, const St_db_Maker* db_maker);
     void            Clear();
 
 

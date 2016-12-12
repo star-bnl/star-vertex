@@ -29,10 +29,12 @@ class EEmcGeomSimple;
 class StMuTrack;
 class StBTofGeometry; 
 
+class St_db_Maker;
 class BtofHitList;  
 class CtbHitList;
 class BemcHitList;
 class EemcHitList;
+
 
 class StPPVertexFinder: public StGenericVertexFinder
 {
@@ -137,7 +139,7 @@ public:
   virtual void UsePCT(bool x=true) { mDropPostCrossingTrack = !x; }
   virtual void Finish();
   virtual void Init();
-  virtual void InitRun(int runumber);
+  virtual void InitRun(int runumber, const St_db_Maker* db_maker);
   virtual void Clear(); 
   virtual void CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 

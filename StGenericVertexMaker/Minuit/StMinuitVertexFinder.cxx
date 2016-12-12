@@ -94,7 +94,10 @@ StMinuitVertexFinder::~StMinuitVertexFinder()
    mZImpact.clear();
 }
 //________________________________________________________________________________
-void StMinuitVertexFinder::InitRun(Int_t runumber) {
+void StMinuitVertexFinder::InitRun(Int_t runumber, const St_db_Maker* db_maker)
+{
+  StGenericVertexFinder::InitRun(runumber, db_maker);
+
   St_VertexCutsC *cuts = St_VertexCutsC::instance();
   mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack();
   mDcaZMax                     = cuts->DcaZMax();     // Note: best to use integer numbers

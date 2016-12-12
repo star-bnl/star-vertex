@@ -145,8 +145,10 @@ void StPPVertexFinder::Init()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::InitRun(int runnumber)
+void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
 {
+  StGenericVertexFinder::InitRun(runnumber, db_maker);
+
   LOG_INFO << "PPV InitRun() runNo="<<runnumber<<endm;
   St_db_Maker* mydb = (St_db_Maker*) StMaker::GetChain()->GetMaker("db");
 
