@@ -83,17 +83,17 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   btofGeom(nullptr),
   geomE(nullptr)
 {
-  UseCTB(true);                      // default CTB is in the data stream
+  mUseCtb = true;                      // default CTB is in the data stream
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
 
   // special histogram for finding the vertex, not to be saved
   int nb=5000;
   float zRange=250;// (cm)
+
   hL=new TH1D("ppvL","Vertex likelyhood; Z /cm",nb,-zRange,zRange);
   // needed only for  better errZ calculation
   hM=new TH1D("ppvM","cumulative track multiplicity; Z /cm",nb,-zRange,zRange);
   hW=new TH1D("ppvW","cumulative track weight; Z /cm",nb,-zRange,zRange);
-
 } 
 
 
@@ -354,9 +354,8 @@ void StPPVertexFinder::Clear()
 //======================================================
 void StPPVertexFinder::printInfo(ostream& os) const
 {
-  os << "StPPVertexFinder ver=1 - Fit Statistics:" << endl;
-
-  os << "StPPVertexFinder::result "<<mVertexData.size()<<" vertices found\n" << endl;
+  os << "StPPVertexFinder ver=1 - Fit Statistics:\n"
+     << "StPPVertexFinder::result " << mVertexData.size() << " vertices found" << std::endl;
 
   int nTpcM=0, nTpcV=0;
   int k=0;
