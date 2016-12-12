@@ -347,8 +347,6 @@ StPPVertexFinder::printInfo(ostream& os) const
   for (const VertexData &v : mVertexData)
     v.print(os);
 
-  float zGeant=999;
-  
   LOG_DEBUG<< Form("---- end of PPVertex Info\n")<<endm;
 
 }

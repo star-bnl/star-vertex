@@ -358,7 +358,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
     const VertexData *V=& mVertexData[i];
     V->print(os);
   }
-  float zGeant=999;
   
   LOG_DEBUG<< Form("---- end of PPVertex Info\n")<<endm;
 
@@ -1177,6 +1176,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.9  2016/12/12 17:17:00  smirnovd
+ * Removed unused #include "TCanvas.h"
+ *
  * Revision 1.8  2016/12/12 16:42:30  smirnovd
  * Removed special treatment for MC data in PPV vertex finder
  *
