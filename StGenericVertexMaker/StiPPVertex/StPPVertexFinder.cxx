@@ -524,51 +524,7 @@ int StPPVertexFinder::fit(StEvent* event)
   if(kBemc)  hA[0]->Fill(6);
   if(kEemc)  hA[0]->Fill(7);
 
-  // Select a method to find vertex candidates/seeds. The methods work using the
-  // `mTrackData` and `mDCAs` containers as input whereas the reconstructed
-  // vertices are put in the private container `mVertexData`
-  switch (mSeedFinderType)
-  {
-  case SeedFinder_t::TSpectrum:
-    findSeeds_TSpectrum();
-    break;
-
-  case SeedFinder_t::PPVLikelihood:
-  default:
-    findSeeds_PPVLikelihood();
-    break;
-  }
-  
-  if(mVertexData.size()>0)  hA[0]->Fill(8);
-  if(mVertexData.size()>1)  hA[0]->Fill(9);
-
-  // Refit vertex position for all cases (currently NoBeamline and Beamline3D)
-  // except when the Beamline1D option is specified. This is done to keep
-  // backward compatible behavior when by default the vertex was placed on the
-  // beamline
-  if (mVertexFitMode == VertexFit_t::Beamline1D)
-  {
-     for (VertexData &vertex : mVertexData) {
-        const double& z = vertex.r.Z();
-        vertex.r.SetXYZ( beamX(z), beamY(z), z);
-     }
-
-  } else
-  {
-     for (VertexData &vertex : mVertexData)
-     {
-        // When fitTracksToVertex fails it returns non-zero value. Just use the
-        // beam equation to set the best guess for vertex position. Works for no
-        // beamline case by setting vertex position to (0,0,0)
-        if ( fitTracksToVertex(vertex) ) {
-           const double& z = vertex.r.Z();
-           vertex.r.SetXYZ( beamX(z), beamY(z), z);
-        }
-     }
-  }
-
-  exportVertices();
-  printInfo();
+  seed_fit_export();
   
   hA[4]->Fill(mVertexData.size());
 
@@ -673,6 +629,14 @@ int StPPVertexFinder::Fit(const StMuDst& muDst)
    bemcList->print();
    eemcList->print();
 
+   seed_fit_export();
+
+   return size();
+}
+
+
+void StPPVertexFinder::seed_fit_export()
+{
    // Select a method to find vertex candidates/seeds. The methods work using the
    // `mTrackData` and `mDCAs` containers as input whereas the reconstructed
    // vertices are put in the private container `mVertexData`
@@ -687,26 +651,37 @@ int StPPVertexFinder::Fit(const StMuDst& muDst)
      findSeeds_PPVLikelihood();
      break;
    }
+  
+   if(mVertexData.size()>0)  hA[0]->Fill(8);
+   if(mVertexData.size()>1)  hA[0]->Fill(9);
 
    // Refit vertex position for all cases (currently NoBeamline and Beamline3D)
    // except when the Beamline1D option is specified. This is done to keep
    // backward compatible behavior when by default the vertex was placed on the
    // beamline
-   for (VertexData &V : mVertexData)
+   if (mVertexFitMode == VertexFit_t::Beamline1D)
    {
-      if (mVertexFitMode == VertexFit_t::Beamline1D)
+      for (VertexData &vertex : mVertexData) {
+         const double& z = vertex.r.Z();
+         vertex.r.SetXYZ( beamX(z), beamY(z), z);
+      }
+
+   } else
+   {
+      for (VertexData &vertex : mVertexData)
       {
-         V.r.SetX( beamX( V.r.Z() ));
-         V.r.SetY( beamY( V.r.Z() ));
-      } else {
-         fitTracksToVertex(V);
+         // When fitTracksToVertex fails it returns non-zero value. Just use the
+         // beam equation to set the best guess for vertex position. Works for no
+         // beamline case by setting vertex position to (0,0,0)
+         if ( fitTracksToVertex(vertex) ) {
+            const double& z = vertex.r.Z();
+            vertex.r.SetXYZ( beamX(z), beamY(z), z);
+         }
       }
    }
 
    exportVertices();
    printInfo();
-
-   return size();
 }
 
 

@@ -127,6 +127,9 @@ class StPPVertexFinder: public StGenericVertexFinder
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
   void initHisto();
 
+  /// A helper function to do common processing for StEvent and StMuDst cases
+  void seed_fit_export();
+
   virtual void  UseVertexConstraint() {}
 
 public:
