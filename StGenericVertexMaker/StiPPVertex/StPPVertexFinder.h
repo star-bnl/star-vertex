@@ -18,7 +18,6 @@
 class StiKalmanTrack;
 class TrackData;
 class VertexData;
-class TGraphErrors;
 class StEvent; 
 class StiToolkit;
 class StEEmcDb;

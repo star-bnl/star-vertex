@@ -11,7 +11,6 @@
 #include "StarRoot/TRSymMatrix.h"
 #include "StGenericVertexFinder.h"
 #include "StMessMgr.h"
-#include "StMaker.h"
 #include "StEvent/StDcaGeometry.h"
 #include "StEventTypes.h"
 
