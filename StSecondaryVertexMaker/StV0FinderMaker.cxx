@@ -31,7 +31,6 @@ static const int BLOCK=1024;
 
 StV0FinderMaker* StV0FinderMaker::mInstance = 0;
 
-ClassImp(StV0FinderMaker)
  
 //_____________________________________________________________________________
   StV0FinderMaker::StV0FinderMaker(const char *name):StMaker(name),
@@ -834,6 +833,9 @@ void StV0FinderMaker::ExpandVectors(unsigned short size) {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.35  2015/07/20 18:03:15  genevb
+// isnan => std::isnan
+//
 // Revision 1.34  2013/02/22 18:37:39  perev
 // Cleanu
 //

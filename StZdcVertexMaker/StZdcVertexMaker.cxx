@@ -14,6 +14,9 @@
  ***************************************************************************
  *
  * $Log$
+ * Revision 1.9  2009/01/26 15:11:05  fisyak
+ * Clean up access to Calibrations/trg/ZdcCalPars table
+ *
  * Revision 1.8  2007/04/28 17:57:28  perev
  * Redundant StChain.h removed
  *
@@ -55,7 +58,6 @@
 
 static const char rcsid[] = "$Id$";
 
-ClassImp(StZdcVertexMaker)
 
 //_________________________________________________
 StZdcVertexMaker::StZdcVertexMaker(const char *name, const char *title):StMaker(name,title)

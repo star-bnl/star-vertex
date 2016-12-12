@@ -22,7 +22,6 @@
 
 StSPtrVecXiVertex* vecXi=0;
 
-ClassImp(StXiFinderMaker)
 
 
 //_____________________________________________________________________________
@@ -655,6 +654,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.23  2008/04/03 19:58:36  fisyak
+// move parameters initialization from Init into InitRun
+//
 // Revision 1.22  2005/07/19 22:10:14  perev
 // STARFPE
 //
