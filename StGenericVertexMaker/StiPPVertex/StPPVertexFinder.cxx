@@ -1388,23 +1388,27 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid() || ktnp->getChi2()>1000 ) continue;
     StiHit* stihit=ktnp->getHit();
-    if(stihit){
-      StHit* sthit=(StHit*)stihit->stHit();
-      if(sthit){
-	if(sthit->detector()==kTpcId){
-	  StTpcHit* hit=(StTpcHit*) sthit;
-	  float r=hit->position().perp();
-	  if (r < RxyMin) continue;
-	  if (r > RxyMax) continue;
-	  float z=hit->position().z();
-	  if (fabs(z) > zMax) continue;
-	  if ((z < -zMembraneDepth && hit->sector() <= 12) ||
-	      (z >  zMembraneDepth && hit->sector() >  12)) {
-	    nWrongZHit++;
-	    if(nWrongZHit>=nWrongZHitCut) {return true;}
-	  }	
-	}
-      }
+
+    if (!stihit) continue;
+
+    StHit* sthit=(StHit*)stihit->stHit();
+
+    if (!sthit) continue;
+    if (sthit->detector() != kTpcId) continue;
+
+    StTpcHit* hit=(StTpcHit*) sthit;
+    float r=hit->position().perp();
+    if (r < RxyMin) continue;
+    if (r > RxyMax) continue;
+
+    float z=hit->position().z();
+    if (fabs(z) > zMax) continue;
+
+    if ((z < -zMembraneDepth && hit->sector() <= 12) ||
+        (z >  zMembraneDepth && hit->sector() >  12))
+    {
+      nWrongZHit++;
+      if (nWrongZHit >= nWrongZHitCut) {return true;}
     }
   }
   return false;
