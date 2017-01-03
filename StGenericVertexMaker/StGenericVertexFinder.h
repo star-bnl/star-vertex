@@ -38,7 +38,7 @@ public:
   virtual int            fit(StEvent*)=0;                     // fit the vertex
 
   StPrimaryVertex*       getVertex(int idx) const;
-  void                   addVertex(StPrimaryVertex*);
+  void                   addVertex(const StPrimaryVertex& vtx);
   int                    size() const;
           void           UseVertexConstraint(const vertexSeed_st& beamline);
           void           NoVertexConstraint();

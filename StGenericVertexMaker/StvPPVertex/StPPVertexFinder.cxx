@@ -809,7 +809,7 @@ void StPPVertexFinder::exportVertices(){
     primV.setFlag(1); //??? is it a right value?
   
     //..... add vertex to the list
-    addVertex(&primV);
+    addVertex(primV);
   }
   LOG_DEBUG << "StPPVertexFinder::exportVertices(), size="<<size()<<endm;
 }
@@ -1176,6 +1176,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.10  2016/12/12 18:44:21  smirnovd
+ * Removed unused local variable
+ *
  * Revision 1.9  2016/12/12 17:17:00  smirnovd
  * Removed unused #include "TCanvas.h"
  *

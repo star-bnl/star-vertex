@@ -74,9 +74,9 @@ StGenericVertexFinder::FillStEvent(StEvent* event){
 
 }
 //______________________________________________________________________________
-void StGenericVertexFinder::addVertex(StPrimaryVertex* vtx)
+void StGenericVertexFinder::addVertex(const StPrimaryVertex& vtx)
 {
-  mVertexList.push_back(*vtx);
+  mVertexList.push_back(vtx);
 }
 //______________________________________________________________________________
 void StGenericVertexFinder::UsePCT(bool usePCT)

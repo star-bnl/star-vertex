@@ -684,7 +684,7 @@ StMinuitVertexFinder::fit(StEvent* event)
       primV.setSumOfTrackPt(sum_pt);
 
       //..... add vertex to the list
-      addVertex(&primV);
+      addVertex(primV);
 
       old_vtx_z = XVertex.z();
     }

@@ -931,7 +931,7 @@ StPPVertexFinder::exportVertices(){
     primV.setFlag(1); //??? is it a right value?
   
     //..... add vertex to the list
-    addVertex(&primV);
+    addVertex(primV);
   }
   LOG_DEBUG << "StPPVertexFinder::exportVertices(), size="<<size()<<endm;
 }
