@@ -15,6 +15,11 @@
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 #include "StPhysicalHelixD.hh"
+
+class TH1F;
+class TH2F;
+class TH1D;
+
 class StiKalmanTrack;
 class TrackData;
 class VertexData;
@@ -92,7 +97,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
   StBTofGeometry *btofGeom;
-  StEEmcDb       *eeDb;
   EEmcGeomSimple *geomE;
   
   void dumpKalmanNodes(const StiKalmanTrack *track);
