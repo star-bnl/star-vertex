@@ -101,9 +101,9 @@ class StPPVertexFinder: public StGenericVertexFinder {
   virtual void  UseVertexConstraint() {}
   
 public:
-  void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}
+  virtual void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}
   void setDropPostCrossingTrack(bool x=true)	{mDropPostCrossingTrack=x;}
-  void Finish();
+  virtual void Finish();
 
   TH1F *hA[mxH];
   TH2F *hACorr;
@@ -114,7 +114,7 @@ public:
 
   // mandatory implementations
   virtual  ~StPPVertexFinder();
-  int       fit(StEvent*);        
+  virtual int       fit(StEvent*);        
   void      printInfo(ostream& = cout) const;
  
   // over-written method
