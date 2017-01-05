@@ -803,9 +803,9 @@ StPPVertexFinder::evalVertexZ(VertexData &V) { // and tag used tracks
 
   V.nUsedTrack = n1;  
 
-  bool validVertex = (V.nAnyMatch >= mMinMatchTr) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
+  V.isTriggered = (V.nAnyMatch >= mMinMatchTr) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
 
-  if (!validVertex) { // discrad vertex
+  if (!V.isTriggered) { // discrad vertex
     //no match tracks in this vertex, tag vertex ID in tracks differently
     //V.print(cout);
     LOG_DEBUG << "StPPVertexFinder::evalVertex Vid="<<V.id<<" rejected"<<endm;
