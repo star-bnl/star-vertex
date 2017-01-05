@@ -57,6 +57,10 @@ class TrackData {
   TrackData();
   void scanNodes( vector<int> & hitPatt, int jz0);
   bool matchVertex(VertexData &V, float kSig) ;
+
+  /// Calculates chi^2 at track DCA w.r.t. the vertex
+  double calcChi2DCA(const VertexData &V) const;
+
   float getTpcWeight();
   void updateAnyMatch(bool match, bool vet,int & mXXX);
   void print(ostream& os) const;

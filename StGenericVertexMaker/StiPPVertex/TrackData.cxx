@@ -41,6 +41,19 @@ TrackData::matchVertex(VertexData &V, float dzMax) {
 }
 
 
+double TrackData::calcChi2DCA(const VertexData &V) const
+{
+   double err2;
+   double vxyz[3];
+   V.r.GetXYZ(vxyz);
+
+   double dist = dca->thelix().Dca(vxyz, &err2);
+   double chi2 = dist*dist/err2;
+
+   return chi2;
+}
+
+
 //==========================================================
 //==========================================================
 void 
