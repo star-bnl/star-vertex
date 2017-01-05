@@ -921,6 +921,20 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &V) // and tag used tracks
  */
 void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
 {
+   // Consider muDst case
+   if (mStMuDst)
+   {
+      // Just clean the pointers owned by something else
+      mDCAs.clear();
+      
+      for (const TrackData & track : mTrackData) {
+         if (track.vertexID != vertex.id) continue;
+         mDCAs.push_back(track.dca);
+      }
+
+      return;
+   }
+
    // Fill member array of pointers to StDcaGeometry objects for selected tracks
    // in mTrackData corresponding to this vertex. These will be used in static
    // minimization function
