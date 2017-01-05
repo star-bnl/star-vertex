@@ -83,6 +83,7 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   eemcList(new EemcHitList()),
   mStMuDst(nullptr)
 {
+  mDebugLevel = 1;
   mUseCtb = true;                      // default CTB is in the data stream
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
 
@@ -426,7 +427,6 @@ int StPPVertexFinder::fit(StEvent* event)
   StiTrackContainer* stiTracks = mToolkit->getTrackContainer();
    if(stiTracks==0) {
      LOG_WARN <<"no STi tracks , skip eve"<<endm;
-     printInfo();
      return 0 ;
    }
 
@@ -481,14 +481,15 @@ int StPPVertexFinder::fit(StEvent* event)
     hACorr->Fill(track.mBtof, track.mBemc);
   }
 
-  LOG_INFO << "\n"
-           << Form("PPV:: # of input track          = %d\n", ntrk[0])
-           << Form("PPV:: dropped due to flag       = %d\n", ntrk[1])
-           << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
-           << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
-           << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
-           << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
-           << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
+  if (mDebugLevel)
+     LOG_INFO << "\n"
+              << Form("PPV:: # of input track          = %d\n", ntrk[0])
+              << Form("PPV:: dropped due to flag       = %d\n", ntrk[1])
+              << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
+              << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
+              << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
+              << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
+              << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
 
   if(mUseCtb) {
     ctbList ->print();
@@ -514,7 +515,6 @@ int StPPVertexFinder::fit(StEvent* event)
 
   if(nmAny < mMinMatchTr && mStoreUnqualifiedVertex <= 0) {
     LOG_INFO << "StPPVertexFinder::fit() nEve=" << mTotEve << " Quit, to few matched tracks" << endm;
-    printInfo();
     return 0;
   }
 
@@ -614,14 +614,15 @@ int StPPVertexFinder::Fit(const StMuDst& muDst)
       mTrackData.push_back(trk);
    }
 
-   LOG_INFO << "\n"
-            << Form("PPV:: # of input track          = %d\n", ntrk[0])
-            << Form("PPV:: dropped due to 'dummy'    = %d\n", ntrk[1])
-            << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
-            << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
-            << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
-            << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
-            << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
+   if (mDebugLevel)
+      LOG_INFO << "\n"
+               << Form("PPV:: # of input track          = %d\n", ntrk[0])
+               << Form("PPV:: dropped due to 'dummy'    = %d\n", ntrk[1])
+               << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
+               << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
+               << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
+               << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
+               << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
 
    //btofList->print();
    bemcList->print();
@@ -679,7 +680,9 @@ void StPPVertexFinder::seed_fit_export()
    }
 
    exportVertices();
-   printInfo();
+
+   if (mDebugLevel)
+      printInfo();
 }
 
 
@@ -1060,7 +1063,6 @@ void StPPVertexFinder::exportVertices()
     //..... add vertex to the list
     addVertex(primV);
   }
-  LOG_DEBUG << "StPPVertexFinder::exportVertices(), size="<<size()<<endm;
 }
 
 //-------------------------------------------------
