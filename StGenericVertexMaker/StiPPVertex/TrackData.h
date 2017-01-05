@@ -13,6 +13,7 @@ using namespace std;  // for vector
 
 class VertexData ;
 class StiKalmanTrack;
+class StDcaGeometry;
 
 class DcaTrack { // approximtion of track as stright line @ DCA to beamLine=0,0
  public:
@@ -34,6 +35,8 @@ class TrackData {
 		   =0 free, not used for any vertex
 		*/
   const StiKalmanTrack* mother; // oryginal track
+
+  const StDcaGeometry* dca;
 
   short mIdTruth;
   short mQuality;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <cmath>
 #include <St_base/StMessMgr.h>
+#include "StEvent/StDcaGeometry.h"
 
 #include "StGenericVertexMaker/StiPPVertex/TrackData.h"
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
@@ -18,6 +19,7 @@ TrackData::TrackData() {
   weight=1;
   zDca=ezDca=rxyDca=0;
   mother=0;
+  dca = nullptr;
   mIdTruth = 0;
   mQuality = 0;
   mIdParentVx = 0;
