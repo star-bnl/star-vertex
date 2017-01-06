@@ -24,8 +24,15 @@
 #include "StGenericVertexMaker/StiPPVertex/StPPVertexFinder.h"
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
-#include "StEvent/StTrack.h"
+#include "StEvent/StDcaGeometry.h"
 #include "StEvent/StEventTypes.h"
+#include "StEvent/StEnumerations.h"
+#include "StEvent/StTrack.h"
+#include "StMuDSTMaker/COMMON/StMuBTofHit.h"
+#include "StMuDSTMaker/COMMON/StMuDst.h"
+#include "StMuDSTMaker/COMMON/StMuTrack.h"
+#include "StMuDSTMaker/COMMON/StMuEmcCollection.h"
+#include "StMuDSTMaker/COMMON/StMuEmcUtil.h"
 
 #include <Sti/StiToolkit.h>
 #include <Sti/StiKalmanTrack.h>
@@ -81,7 +88,8 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   bemcList(new BemcHitList()),
   eemcList(nullptr),
   btofGeom(nullptr),
-  geomE(nullptr)
+  geomE(nullptr),
+  mStMuDst(nullptr)
 {
   mUseCtb = true;                      // default CTB is in the data stream
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
@@ -609,6 +617,131 @@ int StPPVertexFinder::fit(StEvent* event)
   
   return size();
 } 
+
+
+int StPPVertexFinder::Fit(const StMuDst& muDst)
+{
+   mTotEve++;
+
+   mStMuDst = &muDst;
+
+   // Similar to fit() we need to populate bemcList
+   StMuEmcCollection *muEmcCollection = muDst.muEmcCollection();
+
+   StMuEmcUtil muEmcUtil;
+
+   StEmcCollection* emcC = muEmcUtil.getEmc(muEmcCollection);
+
+   StEmcDetector* btow = emcC->detector(kBarrelEmcTowerId);
+   bemcList->build(btow, mMinAdcBemc);
+
+   StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId);
+   eemcList->build(etow, mMinAdcEemc);
+
+   // Access btof data from ... branch
+   //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
+   //btofList->build(*muBTofHits);
+
+   // Access array of all StDcaGeometry objects (i.e. tracks)
+   TObjArray*    globalTracks  = muDst.globalTracks();
+   TClonesArray* covGlobTracks = muDst.covGlobTrack();
+
+   //int nTracks = 0;
+   std::array<int, 7> ntrk{};
+
+   for (const TObject* obj : *globalTracks)
+   {
+      ntrk[0]++;
+
+      const StMuTrack& stMuTrack = static_cast<const StMuTrack&>(*obj);
+
+      if (stMuTrack.pt() < mMinTrkPt) { ntrk[2]++; continue; }
+
+      // Supposedly equivalent to isPostCrossingTrack()
+      if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
+
+      // Supposedly equivalent to DCA check with examinTrackDca()
+      if (stMuTrack.index2Cov() < 0) { ntrk[4]++; continue; }
+
+      StDcaGeometry* dca = static_cast<StDcaGeometry*>(covGlobTracks->At(stMuTrack.index2Cov()));
+
+      if ( std::fabs(dca->z()) > mMaxZrange ) { ntrk[4]++; continue; }
+      if ( std::fabs(dca->impact())  > mMaxTrkDcaRxy) { ntrk[4]++; continue; }
+
+      // Condition similar to one in matchTrack2Membrane
+      double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
+      if (fracFit2PossHits < mMinFitPfrac) { ntrk[5]++; continue; }  // kill if nFitP too small
+
+      ntrk[6]++;
+
+      TrackData trk;
+
+      trk.mother = &stMuTrack;
+      trk.dca    = dca;
+      trk.zDca   = dca->z();
+      trk.ezDca  = std::sqrt(dca->errMatrix()[2]);
+      trk.rxyDca = dca->impact();
+      trk.gPt    = dca->pt();
+      trk.mIdTruth = stMuTrack.idTruth();
+      trk.mQuality = stMuTrack.qaTruth();
+      trk.mIdParentVx = stMuTrack.idParentVx();
+
+      // Modify track weights
+      matchTrack2BEMC(stMuTrack, trk);
+      matchTrack2EEMC(stMuTrack, trk);
+      matchTrack2Membrane(stMuTrack, trk);
+
+      mTrackData.push_back(trk);
+   }
+
+   LOG_INFO << "\n"
+            << Form("PPV:: # of input track          = %d\n", ntrk[0])
+            << Form("PPV:: dropped due to 'dummy'    = %d\n", ntrk[1])
+            << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
+            << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
+            << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
+            << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
+            << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
+
+   //btofList->print();
+   bemcList->print();
+   eemcList->print();
+
+   // Select a method to find vertex candidates/seeds. The methods work using the
+   // `mTrackData` and `mDCAs` containers as input whereas the reconstructed
+   // vertices are put in the private container `mVertexData`
+   switch (mSeedFinderType)
+   {
+   case SeedFinder_t::TSpectrum:
+     findSeeds_TSpectrum();
+     break;
+
+   case SeedFinder_t::PPVLikelihood:
+   default:
+     findSeeds_PPVLikelihood();
+     break;
+   }
+
+   // Refit vertex position for all cases (currently NoBeamline and Beamline3D)
+   // except when the Beamline1D option is specified. This is done to keep
+   // backward compatible behavior when by default the vertex was placed on the
+   // beamline
+   for (VertexData &V : mVertexData)
+   {
+      if (mVertexFitMode == VertexFit_t::Beamline1D)
+      {
+         V.r.SetX( beamX( V.r.Z() ));
+         V.r.SetY( beamY( V.r.Z() ));
+      } else {
+         fitTracksToVertex(V);
+      }
+   }
+
+   exportVertices();
+   printInfo();
+
+   return size();
+}
 
 
 //==========================================================

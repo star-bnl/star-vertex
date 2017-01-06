@@ -19,6 +19,7 @@
 #include "StGenericVertexMaker/VertexFinderOptions.h"
 
 class StEvent;
+class StMuDst;
 class StDcaGeometry;
 
 
@@ -66,6 +67,8 @@ public:
   void                   FillStEvent(StEvent*);
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
   virtual int            IsFixed() const        {return 0;}
+
+  virtual int            Fit(const StMuDst& muDst) { return -1; }
 
 protected:
 

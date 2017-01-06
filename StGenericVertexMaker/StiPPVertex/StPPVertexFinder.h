@@ -24,6 +24,7 @@ class StEvent;
 class StiToolkit;
 class StEEmcDb;
 
+class StMuDst;
 class EEmcGeomSimple;
 class StMuTrack;
 class StBTofGeometry; 
@@ -123,6 +124,8 @@ class StPPVertexFinder: public StGenericVertexFinder
   EemcHitList    *eemcList;
   StBTofGeometry *btofGeom;
   EEmcGeomSimple *geomE;
+
+  const StMuDst* mStMuDst;
   
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
   void initHisto();
@@ -142,5 +145,6 @@ public:
 
   virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
+  virtual int Fit(const StMuDst& muDst);
   void printInfo(std::ostream& = std::cout) const;
 };
