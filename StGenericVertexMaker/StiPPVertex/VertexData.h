@@ -19,7 +19,7 @@ class VertexData {
   int nBtofV,nCtbV,nBemcV,nEemcV,nTpcV,nAnyVeto; // number of vetoed tracks
   
   // methods
-  VertexData();
+  VertexData(int vertexId=0);
   VertexData(const TVector3& position);
   void print(ostream& os) const;
 };
@@ -28,6 +28,9 @@ class VertexData {
 
 /*
  * $Log$
+ * Revision 1.5  2016/11/07 21:19:47  smirnovd
+ * VertexData: Added constructor to build vertex with coordinates
+ *
  * Revision 1.4  2016/11/07 21:19:27  smirnovd
  * Added and reworded some doxygen and other comments
  *

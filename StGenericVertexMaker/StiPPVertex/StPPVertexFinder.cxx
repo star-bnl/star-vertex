@@ -539,8 +539,7 @@ StPPVertexFinder::fit(StEvent* event) {
   int vertexID=0;
   while(1) {
     if(! buildLikelihoodZ() ) break;
-    VertexData V;
-    V.id = ++vertexID;
+    VertexData V(++vertexID);
     if(! findVertexZ(V)) break;
   
     bool trigV = evalVertexZ(V);   // V.print();
