@@ -105,8 +105,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   virtual void  UseVertexConstraint() {}
   
 public:
-  virtual void UsePCT(bool x=true)			{setDropPostCrossingTrack(!x);}
-  void setDropPostCrossingTrack(bool x=true)	{mDropPostCrossingTrack=x;}
+  virtual void UsePCT(bool x=true) { mDropPostCrossingTrack = !x; }
   virtual void Finish();
 
   TH1F *hA[mxH];
