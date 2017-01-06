@@ -16,7 +16,6 @@
 #include "TVector2.h"
 #include "tables/St_exi_exipar_Table.h"
 #include "PhysicalConstants.h"
-#include "math_constants.h"
 #include "phys_constants.h"
 
 
@@ -271,7 +270,7 @@ Bool_t StXiFinderMaker::UseV0() {
       epsOrigin.setY(-1.);
       epsMomentum.setX(-1.);
       epsMomentum.setY(-1.);
-      cstPsi=C_PI;
+      cstPsi=M_PI;
       cstOrigin.setX(2*xPvx.x());
       cstOrigin.setY(2*xPvx.y());
       }
@@ -595,7 +594,7 @@ Bool_t StXiFinderMaker::UseV0() {
               curvature_tmp = TMath::Abs(bcharge_tmp)*C_D_CURVATURE/pt_tmp;
               dip_tmp = atan(pXi.z()/pt_tmp);
               h_tmp = ((bcharge_tmp > 0) ? -1 : 1);
-              phase_tmp = atan2(pXi.y(),pXi.x())-(h_tmp*C_PI_2);
+              phase_tmp = atan2(pXi.y(),pXi.x())-(h_tmp*M_PI_2);
               origin_tmp.setX(xpp.x());
               origin_tmp.setY(xpp.y());
               origin_tmp.setZ(xpp.z());
@@ -654,6 +653,9 @@ Bool_t StXiFinderMaker::UseV0() {
 //_____________________________________________________________________________
 // $Id$
 // $Log$
+// Revision 1.24  2016/12/12 17:18:04  smirnovd
+// Removed outdated ClassImp ROOT macro
+//
 // Revision 1.23  2008/04/03 19:58:36  fisyak
 // move parameters initialization from Init into InitRun
 //
