@@ -41,7 +41,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
 
   /// Takes a list of vertex candidates/seeds and updates each vertex position
   /// by fitting tracks pointing to it
-  void fitTracksToVertex(VertexData &vertex) const;
+  int fitTracksToVertex(VertexData &vertex) const;
 
   /// Creates DCA states for selected tracks (mTrackData) and fills the static
   /// container sDCAs
