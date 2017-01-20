@@ -69,7 +69,10 @@ public:
 
 protected:
 
-  StGenericVertexFinder(SeedFinder_t seedFinder=SeedFinder_t::Unspecified, VertexFit_t fitMode=VertexFit_t::Unspecified);
+  /// Default initialization with unspecified seed finder and fitting mode
+  StGenericVertexFinder();
+
+  StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_t fitMode);
 
   StPrimaryVertexOrder   mVertexOrderMethod; // will default to 0 i.e. orderByNumberOfDaughters
   bool                   mVertexConstrain;   // Use vertex constraint from db
