@@ -964,14 +964,6 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex) const
 //-------------------------------------------------
 void 
 StPPVertexFinder::exportVertices(){
-  if ( mVertexFitMode != VertexFit_t::Beamline1D &&
-       mVertexFitMode != VertexFit_t::Beamline3D )
-  {
-    // code is not ready for reco w/o beamLine
-    LOG_FATAL << "StPPVertexFinder code is not ready for reco w/o beamLine" << endm;
-    assert(mVertexFitMode == VertexFit_t::Beamline1D ||
-           mVertexFitMode == VertexFit_t::Beamline3D);
-  }
 
   for (const VertexData &V : mVertexData)
   {
