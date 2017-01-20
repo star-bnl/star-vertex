@@ -605,7 +605,17 @@ StPPVertexFinder::fit(StEvent* event) {
   //............................................................
   // ...................... search for multiple vertices 
   //............................................................
-  findSeeds_PPVLikelihood();
+  switch (mSeedFinderType)
+  {
+  case SeedFinder_t::TSpectrum:
+    findSeeds_TSpectrum();
+    break;
+
+  case SeedFinder_t::PPVLikelihood:
+  default:
+    findSeeds_PPVLikelihood();
+    break;
+  }
   
   if(mVertexData.size()>0)  hA[0]->Fill(8);
   if(mVertexData.size()>1)  hA[0]->Fill(9);
