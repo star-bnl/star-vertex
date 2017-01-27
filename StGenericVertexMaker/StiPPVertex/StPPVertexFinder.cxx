@@ -518,12 +518,6 @@ StPPVertexFinder::fit(StEvent* event) {
 
     ntrk[6]++;
 
-    //cout << "\n#e gPt="<<stiKalmanTrack->getPt()
-    //     << " gEta="<<stiKalmanTrack->getPseudoRapidity()
-    //     << " nFitP="<<stiKalmanTrack->getFitPointCount() << " of " << stiKalmanTrack->getMaxPointCount()
-    //     << " poolSize="<< mTrackData->size() << "  myW=" << t.weight << endl;
-    //printf(" t.weight AA=%f\n", t.weight);
-
     hA[1]->Fill(stiKalmanTrack->getChi2());
     hA[2]->Fill(stiKalmanTrack->getFitPointCount());
     hA[16]->Fill(stiKalmanTrack->getPt());
