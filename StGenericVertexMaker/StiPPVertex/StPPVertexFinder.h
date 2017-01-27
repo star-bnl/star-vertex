@@ -59,8 +59,8 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool examinTrackDca(const StiKalmanTrack*, TrackData &t);
   void matchTrack2BTOF(const StiKalmanTrack*, TrackData &t, StBTofGeometry *geom);
   void matchTrack2CTB(const StiKalmanTrack*, TrackData &t);
-  void matchTrack2EEMC(const StiKalmanTrack*, TrackData &t, float z);
-  void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t, float rxy);
+  void matchTrack2EEMC(const StiKalmanTrack*, TrackData &t);
+  void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t);
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &t);
   bool isPostCrossingTrack(const StiKalmanTrack* track);
 
