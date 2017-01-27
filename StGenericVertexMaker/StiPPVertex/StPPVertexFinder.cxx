@@ -19,7 +19,6 @@
 #include "TObjArray.h"
 #include "TObjectSet.h"
 
-#include <math_constants.h>
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
 
 #include "StGenericVertexMaker/StiPPVertex/StPPVertexFinder.h"
