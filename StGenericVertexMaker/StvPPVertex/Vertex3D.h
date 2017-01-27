@@ -1,8 +1,5 @@
 #ifndef Vertex3D_h
 #define Vertex3D_h
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
 
 #include "StGenericVertexMaker/StvPPVertex/TrackData.h"
 using namespace std;  // for vector

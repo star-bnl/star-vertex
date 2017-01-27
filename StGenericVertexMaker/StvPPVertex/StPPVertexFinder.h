@@ -6,9 +6,7 @@
  * $Id: StPPVertexFinder.h,v 1.3 2016/11/07 21:19:28 smirnovd Exp $
  *
  */
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
+
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 #include "StarClassLibrary/StPhysicalHelixD.hh"

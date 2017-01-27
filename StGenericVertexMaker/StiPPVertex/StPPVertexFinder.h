@@ -6,9 +6,6 @@
  * $Id: StPPVertexFinder.h,v 1.38 2017/01/27 20:13:02 smirnovd Exp $
  *
  */
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
 
 #include <vector>
 

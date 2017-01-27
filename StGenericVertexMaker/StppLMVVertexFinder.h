@@ -7,9 +7,6 @@
  *
  */
 
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
 #include <vector>
 #include <StarClassLibrary/StThreeVectorD.hh>
 #include <StarClassLibrary/StPhysicalHelixD.hh>
