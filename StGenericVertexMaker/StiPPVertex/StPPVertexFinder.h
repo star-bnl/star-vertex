@@ -120,7 +120,7 @@ public:
   TH2F *hACorr;
   TH1D *hL ;      // likelyhood distribution
   TH1D *hM, *hW ; // cumulative track mult & weight distribution, for better errZ calculation
-  TObjArray * HList;
+  TObjArray HList;
   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline1D);
 
   // mandatory implementations
