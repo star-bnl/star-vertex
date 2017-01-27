@@ -448,10 +448,6 @@ StPPVertexFinder::fit(StEvent* event) {
 
   hA[0]->Fill(2);
 
-  if(mToolkit==0) {    
-   LOG_WARN <<"no Sti tool kit,  PPV is OFF"<<endm;
-   return 0;
-  }
 
  // get BTOF info
 
