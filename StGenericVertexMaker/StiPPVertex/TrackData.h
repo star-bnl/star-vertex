@@ -34,6 +34,10 @@ class TrackData {
 		   =0 free, not used for any vertex
 		*/
   const StiKalmanTrack* mother; // oryginal track
+
+  short mIdTruth;
+  short mQuality;
+  int   mIdParentVx;
   DcaTrack dcaTrack; // for 3D vertex reco
   float zDca, ezDca; // (cm) Z of track @ DCA to beam
   float rxyDca;

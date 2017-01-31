@@ -18,6 +18,9 @@ TrackData::TrackData() {
   weight=1;
   zDca=ezDca=rxyDca=0;
   mother=0;
+  mIdTruth = 0;
+  mQuality = 0;
+  mIdParentVx = 0;
 }
 
 
