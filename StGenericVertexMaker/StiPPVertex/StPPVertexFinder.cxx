@@ -31,6 +31,7 @@
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 #include "StMuDSTMaker/COMMON/StMuEmcCollection.h"
 #include "StMuDSTMaker/COMMON/StMuEmcUtil.h"
+#include "StMuDSTMaker/COMMON/StMuMcVertex.h"
 
 #include <Sti/StiToolkit.h>
 #include <Sti/StiKalmanTrack.h>
@@ -379,7 +380,17 @@ void StPPVertexFinder::printInfo(ostream& os) const
                    eveID, mVertexData.size(), mTrackData.size()) << endm;
 
   for (const VertexData &vertex : mVertexData)
+  {
     vertex.print(os);
+
+    // Display info about daughters
+    for (const TrackData &track : mTrackData)
+    {
+       if ( std::fabs(track.vertexID) != vertex.id) continue;
+
+       track.print(os);
+    }
+  }
 }
 
 
