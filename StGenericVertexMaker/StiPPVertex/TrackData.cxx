@@ -147,3 +147,18 @@ TrackData:: getTpcWeight(){
   if(mTpc<0) return Wveto;
   return Wdunno;
 }
+
+
+void TrackData::print(ostream& os) const
+{
+   os << Form("vertID=%d track@z0=%.2f +/- %.2f gPt=%.3f, rxyDca: %.3f, idTruth: %d, qaTruth: %d, idParentVx: %d",
+	      vertexID, zDca, ezDca, gPt, rxyDca, mIdTruth, mQuality, mIdParentVx);
+
+   if (dca) {
+      os << Form(" dca: (%5.3f, %5.3f, %5.3f) +/- (imp: %5.3f, %5.3f)",
+            dca->origin().x(), dca->origin().y(), dca->origin().z(),
+            std::sqrt( dca->errMatrix()[0] ), std::sqrt( dca->errMatrix()[2] ) );
+   }
+
+   os << endl;
+}

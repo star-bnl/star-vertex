@@ -56,6 +56,7 @@ class TrackData {
   bool matchVertex(VertexData &V, float kSig) ;
   float getTpcWeight();
   void updateAnyMatch(bool match, bool vet,int & mXXX);
+  void print(ostream& os) const;
 };
 #endif
 
