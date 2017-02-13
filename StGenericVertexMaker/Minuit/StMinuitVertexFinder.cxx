@@ -64,7 +64,7 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
      break;
 
   case VertexFit_t::Beamline3D:
-     fcn_minuit = &StMinuitVertexFinder::Chi2Beamline3D;
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAsBeamline;
      break;
 
   case VertexFit_t::NoBeamline:
@@ -757,15 +757,7 @@ void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, I
 }
 
 
-void StMinuitVertexFinder::Chi2Beamline3D(int& npar, double* gin, double& f, double* par, Int_t iflag)
-{
-  StThreeVectorD vtx(par);
-  f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
 
-  // Add to the chi2 with the beamline
-  static double scale = 100;
-  f += scale*(1. - TMath::Exp(-dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2Beamline(vtx)/scale));
-}
 
 
 bool
