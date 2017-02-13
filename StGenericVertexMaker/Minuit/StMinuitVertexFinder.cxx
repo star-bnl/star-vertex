@@ -26,7 +26,6 @@ std::vector<StPhysicalHelixD>   StMinuitVertexFinder::mHelices;
 std::vector<UShort_t>           StMinuitVertexFinder::mHelixFlags;
 std::vector<Double_t >          StMinuitVertexFinder::mSigma;
 std::vector<Double_t >          StMinuitVertexFinder::mZImpact;
-Double_t                   StMinuitVertexFinder::mWidthScale = 0.1; // 1./TMath::Sqrt(5.);
 Bool_t                     StMinuitVertexFinder::requireCTB;
 Int_t                      StMinuitVertexFinder::nCTBHits;
 //==========================================================
@@ -734,7 +733,7 @@ double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx) {
     Double_t chi2 = gDCA->thelix().Dca(&(vtx.x()),&err2);
     chi2*=chi2/err2;
     //EndVP
-    Double_t scale = 1./(mWidthScale*mWidthScale);
+    static double scale = 100;
     f += scale*(1. - TMath::Exp(-chi2/scale)); // robust potential
     //	f -= scale*TMath::Exp(-chi2/scale); // robust potential
     if((mHelixFlags[i] & kFlagCTBMatch) && e<3.0) nCTBHits++;
@@ -764,7 +763,7 @@ void StMinuitVertexFinder::Chi2Beamline3D(int& npar, double* gin, double& f, dou
   f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
 
   // Add to the chi2 with the beamline
-  static double scale = 1./(mWidthScale*mWidthScale);
+  static double scale = 100;
   f += scale*(1. - TMath::Exp(-dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2Beamline(vtx)/scale));
 }
 
@@ -808,7 +807,6 @@ StMinuitVertexFinder::printInfo(ostream& os) const
       os << "Chisquare .................... " << mBestVtx->chiSquared() << endl;
     }
     os << "min # of fit points for tracks . " << mMinNumberOfFitPointsOnTrack << endl;
-    os << "final potential width scale .... " << mWidthScale << endl;
 }
 
 

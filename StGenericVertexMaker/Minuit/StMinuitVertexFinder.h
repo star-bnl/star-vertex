@@ -178,7 +178,6 @@ private:
     //static std::vector<Bool_t>         mCTB;
     static Bool_t                   requireCTB;
     static Int_t                    nCTBHits;
-    static Double_t                 mWidthScale;
     Int_t                    mStatusMin;           // Minuit status flag 
     StThreeVectorD           mExternalSeed;
     Bool_t                   mExternalSeedPresent;
