@@ -60,7 +60,7 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
   switch (mVertexFitMode)
   {
   case VertexFit_t::Beamline1D:
-     fcn_minuit = &StMinuitVertexFinder::fcn1D;
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAsBeamline1D;
      break;
 
   case VertexFit_t::Beamline3D:
@@ -69,7 +69,7 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
 
   case VertexFit_t::NoBeamline:
   default:
-     fcn_minuit = &StMinuitVertexFinder::fcn;
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAs;
      break;
   }
 
@@ -740,24 +740,6 @@ double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx) {
   }
   return f;
 }
-//________________________________________________________________________________
-
-void StMinuitVertexFinder::fcn1D(int& npar, double* gin, double& f, double* par, Int_t iflag)
-{
-    Double_t z = par[0];
-    Double_t x = dynamic_cast<StMinuitVertexFinder*>(sSelf)->beamX(z);
-    Double_t y = dynamic_cast<StMinuitVertexFinder*>(sSelf)->beamY(z);
-    StThreeVectorD vtx(x,y,z);
-    f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
-}
-void StMinuitVertexFinder::fcn(int& npar, double* gin, double& f, double* par, Int_t iflag)
-{
-  StThreeVectorD vtx(par);
-  f = dynamic_cast<StMinuitVertexFinder*>(sSelf)->CalcChi2DCAs(vtx);
-}
-
-
-
 
 
 bool
@@ -832,7 +814,7 @@ void StMinuitVertexFinder::UseVertexConstraint() {
 
   //re-initilize minuit for 1D fitting
   mMinuit = new TMinuit(1);
-  mMinuit->SetFCN(&StMinuitVertexFinder::fcn1D);
+  mMinuit->SetFCN(&StGenericVertexFinder::fcnCalcChi2DCAsBeamline1D);
   mMinuit->SetPrintLevel(-1);
   mMinuit->SetMaxIterations(1000);
   mExternalSeedPresent = kFALSE;

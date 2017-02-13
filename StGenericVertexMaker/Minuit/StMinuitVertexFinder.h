@@ -145,8 +145,6 @@ private:
 
     virtual void UseVertexConstraint();
 
-    static void fcn(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
-    static void fcn1D(Int_t&, Double_t*, Double_t&, Double_t*, Int_t); // fit function
     virtual double CalcChi2DCAs(const StThreeVectorD &vtx);
     
     bool                   mUseITTF;          // Use only tracks with ITTF encoded method

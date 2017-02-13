@@ -125,7 +125,20 @@ protected:
   /// Caclulates total chi2 for the beamline and track DCAs stored in mDCAs and a point
   double CalcChi2DCAsBeamline(const StThreeVectorD &point);
 
-  /// Just an interface to CalcChi2DCAsBeamline(...)
+  // A static interface to CalcChi2DCAs(...)
+  static void fcnCalcChi2DCAs(int& npar, double* gin, double& f, double* par, Int_t iflag)
+  {
+     f = sSelf->CalcChi2DCAs( StThreeVectorD(par) );
+  }
+
+  /// A static interface to CalcChi2DCAs(...) with x and y fixed by beamline equation
+  static void fcnCalcChi2DCAsBeamline1D(int& npar, double* gin, double& f, double* par, Int_t iflag)
+  {
+     double z = par[0], x = sSelf->beamX(z), y = sSelf->beamY(z);
+     f = sSelf->CalcChi2DCAs( StThreeVectorD(x, y, z) );
+  }
+
+  /// A static interface to CalcChi2DCAsBeamline(...)
   static void fcnCalcChi2DCAsBeamline(int& npar, double* gin, double& f, double* par, int iflag)
   {
      f = sSelf->CalcChi2DCAsBeamline( StThreeVectorD(par) );
