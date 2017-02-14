@@ -6,9 +6,6 @@
  * $Id$
  *
  */
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
 
 #include <vector>
 
@@ -76,7 +73,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void saveHisto(TString fname);
   int  mTotEve;
   int  eveID;
-  uint  mAlgoSwitches; //binary, assign 1bit per change, use enum below
+  unsigned int  mAlgoSwitches; //binary, assign 1bit per change, use enum below
   enum {kSwitchOneHighPT=1}; 
 
   TH1F *hA[mxH];

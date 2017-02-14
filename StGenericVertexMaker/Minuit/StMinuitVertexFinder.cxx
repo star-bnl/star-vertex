@@ -841,6 +841,3 @@ void StMinuitVertexFinder::UseVertexConstraint() {
 Int_t  StMinuitVertexFinder::NCtbMatches() { 
   return nCTBHits;
 }
-Int_t  StMinuitVertexFinder::NCtbSlats() { 
-  return -777; // dum result, perhaps not needed at all,JB
-}

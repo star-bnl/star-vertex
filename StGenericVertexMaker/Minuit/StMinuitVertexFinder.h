@@ -119,7 +119,6 @@ public:
 
     // Added, not part of base-class  and used by the Minuit vertex finder
     Int_t           NCtbMatches();    // returns the number of tracks matched to CTB                                                               
-    Int_t           NCtbSlats();   // returns the number of CTB slats above threshold
     void            CTBforSeed(){   mRequireCTB = kTRUE;}
     void            NoCTBforSeed(){ mRequireCTB = kFALSE;}
     void            setExternalSeed(const StThreeVectorD&);

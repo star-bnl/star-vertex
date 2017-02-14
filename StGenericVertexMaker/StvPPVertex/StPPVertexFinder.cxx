@@ -129,7 +129,7 @@ void StPPVertexFinder::Init()
   LOG_INFO << "eeDb done" <<endm;
   geomE= new EEmcGeomSimple();
   // choose which 'stat' bits are fatal for mip detection
-  uint  killStatEEmc=EEMCSTAT_ONLPED | EEMCSTAT_STKBT|  EEMCSTAT_HOTHT |  EEMCSTAT_HOTJP | EEMCSTAT_JUMPED ;
+  unsigned int killStatEEmc=EEMCSTAT_ONLPED | EEMCSTAT_STKBT|  EEMCSTAT_HOTHT |  EEMCSTAT_HOTJP | EEMCSTAT_JUMPED ;
   eemcList =new EemcHitList(eeDb, killStatEEmc,geomE);
    
   HList=new TObjArray(0);   
@@ -327,7 +327,7 @@ void StPPVertexFinder::printInfo(ostream& os) const
   os << "StPPVertexFinder::result "<<mVertexData.size()<<" vertices found\n" << endl;
 
   int nTpcM=0, nTpcV=0;
-  uint i;
+  unsigned int i;
   int k=0;
   for(i=0;i<mTrackData.size();i++) {
     const TrackData *t=&mTrackData[i];
@@ -588,7 +588,7 @@ assert(event);
   printInfo();
   
   hA[4]->Fill(mVertexData.size());
-  uint i;
+  unsigned int i;
   for(i=0;i<mVertexData.size();i++) {
     VertexData *V=&mVertexData[i];
     hA[3]->Fill(V->r.z());
@@ -779,7 +779,7 @@ void StPPVertexFinder::exportVertices(){
     LOG_FATAL << "StPPVertexFinder code is not ready for reco w/o beamLine" << endm;
     assert(mVertexConstrain); 
   }
-  uint i;
+  unsigned int i;
   for(i=0;i<mVertexData.size();i++) {
     VertexData *V=&mVertexData[i];
     StThreeVectorD r(V->r.x(),V->r.y(),V->r.z());
@@ -1175,6 +1175,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.12  2017/01/06 21:01:49  smirnovd
+ * Use pi constant from standard library, s/C_PI/M_PI/
+ *
  * Revision 1.11  2017/01/03 22:17:37  smirnovd
  * [Stylistic] Changed public addVertex() to accept references
  *

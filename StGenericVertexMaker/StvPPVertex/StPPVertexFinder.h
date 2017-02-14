@@ -6,9 +6,7 @@
  * $Id$
  *
  */
-#ifdef __APPLE__
-#include <sys/types.h>
-#endif
+
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
 
 #include "StPhysicalHelixD.hh"
@@ -50,7 +48,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void saveHisto(TString fname);
   int  mTotEve;
   int  eveID;
-  uint  mAlgoSwitches; //binary, assign 1bit per change, use enum below
+  unsigned int  mAlgoSwitches; //binary, assign 1bit per change, use enum below
   enum {kSwitchOneHighPT=1}; 
 
   StEventToolkit *mToolkit;
@@ -117,6 +115,11 @@ public:
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.3  2016/11/07 21:19:28  smirnovd
+ * Added and reworded some doxygen and other comments
+ *
+ * Also cleaned up not-so-useful comments
+ *
  * Revision 1.2  2016/08/18 17:46:15  smirnovd
  * Squashed commit of the following refactoring changes:
  *
