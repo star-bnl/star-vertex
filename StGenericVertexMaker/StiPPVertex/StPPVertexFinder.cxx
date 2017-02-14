@@ -1003,7 +1003,6 @@ StPPVertexFinder::Finish() {
     
     TString tt="ppv";
     if(ioMk) {
-      assert(ioMk);
       const char *fname=ioMk->GetFileName();
       tt=strstr(fname,"st_");
       tt.ReplaceAll(".daq",".ppv");
