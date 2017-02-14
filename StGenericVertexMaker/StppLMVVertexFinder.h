@@ -48,7 +48,7 @@ class StppLMVVertexFinder: public StGenericVertexFinder , StCtbUtility {
     float  mMatchCtbMax_eta;
     float  mMatchCtbMax_phi;
     float  mDVtxMax;
-    uint   mMinMatchTr; // minimal # of tracks matched to CTB for valid vertex
+    unsigned int   mMinMatchTr; // minimal # of tracks matched to CTB for valid vertex
     float  mMaxZrange;// for tracks used by the vertex finder.
     int    mBLequivNtr;
     int    n1,n2,n3,n4,n5,n6; // private counters

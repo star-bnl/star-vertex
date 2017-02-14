@@ -127,7 +127,7 @@ StPPVertexFinder::Init() {
   LOG_INFO << "eeDb done" <<endm;
   geomE= new EEmcGeomSimple();
   // choose which 'stat' bits are fatal for mip detection
-  uint  killStatEEmc=EEMCSTAT_ONLPED | EEMCSTAT_STKBT|  EEMCSTAT_HOTHT |  EEMCSTAT_HOTJP | EEMCSTAT_JUMPED ;
+  unsigned int killStatEEmc=EEMCSTAT_ONLPED | EEMCSTAT_STKBT|  EEMCSTAT_HOTHT |  EEMCSTAT_HOTJP | EEMCSTAT_JUMPED ;
   eemcList =new EemcHitList(eeDb, killStatEEmc,geomE);
    
   initHisto();
