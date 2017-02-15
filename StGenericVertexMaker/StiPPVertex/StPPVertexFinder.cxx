@@ -72,7 +72,7 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mMinAdcBemc(8),
   mMinAdcEemc(5),
   mMinFitPfrac(0.51),
-  mFitPossWeighting(true),
+  mFitPossWeighting(false),
   mDropPostCrossingTrack(true), // default PCT rejection on
   mStoreUnqualifiedVertex(5),
   mCut_oneTrackPT(10.),
@@ -104,9 +104,6 @@ void StPPVertexFinder::Init()
 {
   assert(mTotEve==0); // can't be called twice
   LOG_INFO << Form("PPV-algo  switches=0x%0x,  following cuts have been activated:",mAlgoSwitches)<<endm;
-  //.. set various params 
-  mStoreUnqualifiedVertex=5; // extension requested by Akio, October 2008, set to 0 do disable it
-  mFitPossWeighting=false;          // default prior to 2012 
 
   //get pointer to Sti toolkit
   mToolkit = StiToolkit::instance();

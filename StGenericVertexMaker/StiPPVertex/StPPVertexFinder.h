@@ -93,7 +93,13 @@ class StPPVertexFinder: public StGenericVertexFinder
   float  mMinAdcBemc;             ///< BEMC towers with MIP response
   float  mMinAdcEemc;             ///< EEMC towers with MIP response
   float  mMinFitPfrac;            ///< nFit/nPossible
-  bool   mFitPossWeighting;       ///< Use nFit/nPossible in track weighting (ranking)
+
+  /// A flag whether to use nFit/nPossible in track weighting (ranking).
+  /// Introduced in 2012 for pp510 to differentiate between global track
+  /// quality, together with lowering the overall threshold from 0.7 to 0.51.
+  /// Set to false prior to 2012, true thereafter
+  bool   mFitPossWeighting;
+
   bool   mDropPostCrossingTrack;  ///< enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; ///< set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT;         ///< threshold for storing one track vertices.
