@@ -130,7 +130,7 @@ public:
 
   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline1D);
 
-  virtual ~StPPVertexFinder();
+  virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
   void printInfo(ostream& = cout) const;
 };
