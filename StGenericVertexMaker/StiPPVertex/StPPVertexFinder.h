@@ -38,11 +38,11 @@ class StPPVertexFinder: public StGenericVertexFinder {
 
   /// Takes a list of vertex candidates/seeds and updates each vertex position
   /// by fitting tracks pointing to it
-  int fitTracksToVertex(VertexData &vertex) const;
+  int fitTracksToVertex(VertexData &vertex);
 
-  /// Creates DCA states for selected tracks (mTrackData) and fills the static
-  /// container sDCAs
-  void createTrackDcas(const VertexData &vertex) const;
+  /// Creates DCA states for selected tracks (mTrackData) and fills the member
+  /// container mDCAs
+  void createTrackDcas(const VertexData &vertex);
 
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
