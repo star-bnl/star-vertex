@@ -31,7 +31,6 @@ class BtofHitList;
 class CtbHitList;
 class BemcHitList;
 class EemcHitList;
-class Vertex3D;
 
 class StPPVertexFinder: public StGenericVertexFinder
 {
@@ -71,7 +70,6 @@ class StPPVertexFinder: public StGenericVertexFinder
   /// A container with pre-selected tracks to be used in seed finding
   std::vector<TrackData>  mTrackData;
   std::vector<VertexData> mVertexData;
-  Vertex3D *vertex3D; // for stand alone 3D vertex reco
   int  mTotEve;
   int  eveID;
   unsigned int  mAlgoSwitches; ///< binary, assign 1bit per change, use enum below
@@ -101,8 +99,6 @@ class StPPVertexFinder: public StGenericVertexFinder
   int    mStoreUnqualifiedVertex; ///< set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT;         ///< threshold for storing one track vertices.
                                   ///< In GeV, used only if coresponding algoSwitch switch is ON.
-  bool   mStudyBeamLineTracks;    ///< activates writing them out + lot of QA histos,
-                                  ///< use  BFC option: VtxSeedCalG to enable it, expert only
 
   StiToolkit     *mToolkit;
   BtofHitList    *btofList;
