@@ -190,10 +190,6 @@ void StPPVertexFinder::InitRun(int runnumber)
     mMinMatchTr   = vtxCuts->MinTrack();    // required to accept vertex
     mFitPossWeighting = true;
   }
-  mMaxZrange    = 200;  // to accept Z_DCA of a track           
-  mMinZBtof     = -3.0; //
-  mMaxZBtof     = 3.0;  // -3.0<zLocal<3.0
-  mMinAdcEemc   = 5;    // chan, MIP @ 6-18 ADC depending on eta
 
   if(dateY<2006) {
     mMinAdcBemc   = 15;   // BTOW used calibration of maxt Et @ ~27Gev 
