@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StppLMVVertexFinder.cxx,v 1.31 2017/02/14 22:00:40 smirnovd Exp $
+ * $Id: StppLMVVertexFinder.cxx,v 1.32 2017/02/15 15:30:18 smirnovd Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -605,6 +605,27 @@ int  StppLMVVertexFinder::NCtbMatches() {
 
 /*
  * $Log: StppLMVVertexFinder.cxx,v $
+ * Revision 1.32  2017/02/15 15:30:18  smirnovd
+ * Refactoring design flaws by getting rid of static members
+ *
+ * For details see commits on master branch edbe287d..8166aa1e
+ *
+ * - StMinuitVertexFinder: Move static fit functions to base class
+ * - StMinuitVertexFinder: Use equivalent base class fit function for Beamline3D fits
+ * - StMinuitVertexFinder: Get rid of static mWidthScale
+ *     in favor of equivalent local variables.
+ *     To do: The scale should come from the database where it is actually already
+ *     defined. See Calibrations::rhic::vertexSeed::weight in DB
+ * - Converted functions from static to member + adjustments
+ * - Introduced self static pointer to vertex finder implementations
+ * - This is required by TMinuit relying on static fit functions.
+ * - StMinuitVertexFinder: Use common fit function type
+ * - Renamed Chi2AtVertex to virtual CalcChi2DCAs
+ *     The virtuality allows to keep backward compatibility with the previous
+ *     implementation of 1D fit with (forced) beamline in StMinuitVertexFinder.
+ * - Convert static sDCAs to mDCAs
+ * - Convert static sBeamline to mBeamline
+ *
  * Revision 1.31  2017/02/14 22:00:40  smirnovd
  * Squashed commit of the following clean-up changes:
  *

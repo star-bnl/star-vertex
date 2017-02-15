@@ -3,7 +3,7 @@
  * \author Jan Balewski, July 2004
  *
  *  StGenericVertexFinder implementation of PPV
- * $Id: StPPVertexFinder.h,v 1.39 2017/02/14 22:00:41 smirnovd Exp $
+ * $Id: StPPVertexFinder.h,v 1.40 2017/02/15 15:30:19 smirnovd Exp $
  *
  */
 
