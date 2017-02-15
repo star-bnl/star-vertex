@@ -67,7 +67,6 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mMaxZradius(3.),
   mMinMatchTr(5),
   mMaxZrange(200.),
-  mDyBtof(1.5),
   mMinZBtof(-3.),
   mMaxZBtof(3.),
   mMinAdcBemc(8),
@@ -192,7 +191,6 @@ void StPPVertexFinder::InitRun(int runnumber)
     mFitPossWeighting = true;
   }
   mMaxZrange    = 200;  // to accept Z_DCA of a track           
-  mDyBtof       = 1.5;  // |dy|<1.5 cm for local position - not used now
   mMinZBtof     = -3.0; //
   mMaxZBtof     = 3.0;  // -3.0<zLocal<3.0
   mMinAdcEemc   = 5;    // chan, MIP @ 6-18 ADC depending on eta
@@ -219,7 +217,6 @@ void StPPVertexFinder::InitRun(int runnumber)
     <<"\n MinMatchTr of prim tracks = " << mMinMatchTr
     <<"\n MaxZrange (cm)for glob tracks = " << mMaxZrange
     <<"\n MaxZradius (cm) for prim tracks &Likelihood  = " << mMaxZradius
-    <<"\n DeltaY (cm) for BTOF local posision = "<< mDyBtof
     <<"\n Min/Max Z position for BTOF hit = " << mMinZBtof<<" "<<mMaxZBtof   
     <<"\n MinAdcBemc for MIP = " << mMinAdcBemc
     <<"\n MinAdcEemc for MIP = " << mMinAdcEemc
