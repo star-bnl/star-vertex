@@ -22,10 +22,9 @@
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
 
 #include "StGenericVertexMaker/StiPPVertex/StPPVertexFinder.h"
-#include "StGenericVertexMaker/StiPPVertex/TrackData.h"
-#include "StGenericVertexMaker/StiPPVertex/VertexData.h"
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
+#include "StEvent/StTrack.h"
 #include "StEvent/StEventTypes.h"
 
 #include <Sti/StiToolkit.h>

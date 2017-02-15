@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
+#include "StGenericVertexMaker/StiPPVertex/TrackData.h"
+#include "StGenericVertexMaker/StiPPVertex/VertexData.h"
 
 #include "StarClassLibrary/StPhysicalHelixD.hh"
 
@@ -18,8 +20,6 @@ class TH2F;
 class TH1D;
 
 class StiKalmanTrack;
-class TrackData;
-class VertexData;
 class StEvent; 
 class StiToolkit;
 class StEEmcDb;
