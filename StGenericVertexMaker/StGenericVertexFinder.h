@@ -146,7 +146,8 @@ protected:
 
 private:
 
-  std::vector<StPrimaryVertex> mVertexList;      // Holds all found prim veritcess
+  /// Holds all found primary vertices
+  std::vector<StPrimaryVertex> mVertexList;
 
   virtual void  UseVertexConstraint() = 0;
 };
