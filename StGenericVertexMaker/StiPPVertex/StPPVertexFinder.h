@@ -33,7 +33,8 @@ class BemcHitList;
 class EemcHitList;
 class Vertex3D;
 
-class StPPVertexFinder: public StGenericVertexFinder {
+class StPPVertexFinder: public StGenericVertexFinder
+{
  private:
 
   /// Takes a list of vertex candidates/seeds and updates each vertex position
@@ -61,16 +62,16 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
-  /// A container with pre-selected tracks to be used in seed finding
-  std::vector<TrackData>  mTrackData;
-  std::vector<VertexData> mVertexData;
-  Vertex3D *vertex3D; // for stand alone 3D vertex reco
   bool buildLikelihoodZ();
   bool findVertexZ(VertexData &);
   bool evalVertexZ(VertexData &);
   void exportVertices(); 
-
   void saveHisto(TString fname);
+
+  /// A container with pre-selected tracks to be used in seed finding
+  std::vector<TrackData>  mTrackData;
+  std::vector<VertexData> mVertexData;
+  Vertex3D *vertex3D; // for stand alone 3D vertex reco
   int  mTotEve;
   int  eveID;
   unsigned int  mAlgoSwitches; ///< binary, assign 1bit per change, use enum below
@@ -84,18 +85,18 @@ class StPPVertexFinder: public StGenericVertexFinder {
   TObjArray HList;
 
   // params
-  double mMinTrkPt;            ///< ~ pT=0.16(GeV/c) == R=2 (m )in 2001
-  double mMaxTrkDcaRxy;        ///< DCA to nominal beam line for each track
-  float  mMaxZradius;          ///<  used in matching: tracks to zVertex
-  int    mMinMatchTr;          ///<  for valid vertex
-  float  mMaxZrange;           ///<  cut off for tracks Z_DCA
-  float  mDyBtof;              ///<  BTOF delta y cut
-  float  mMinZBtof;            ///<  BTOF local z min cut
-  float  mMaxZBtof;            ///<  BTOF local z max cut
-  float  mMinAdcBemc;          ///<  BEMC towers with MIP response
-  float  mMinAdcEemc;          ///<  EEMC towers with MIP response
-  float  mMinFitPfrac;         ///<  nFit/nPossible
-  bool   mFitPossWeighting;    ///< Use nFit/nPossible in track weighting (ranking)
+  double mMinTrkPt;               ///< ~ pT=0.16(GeV/c) == R=2 (m )in 2001
+  double mMaxTrkDcaRxy;           ///< DCA to nominal beam line for each track
+  float  mMaxZradius;             ///< used in matching: tracks to zVertex
+  int    mMinMatchTr;             ///< for valid vertex
+  float  mMaxZrange;              ///< cut off for tracks Z_DCA
+  float  mDyBtof;                 ///< BTOF delta y cut
+  float  mMinZBtof;               ///< BTOF local z min cut
+  float  mMaxZBtof;               ///< BTOF local z max cut
+  float  mMinAdcBemc;             ///< BEMC towers with MIP response
+  float  mMinAdcEemc;             ///< EEMC towers with MIP response
+  float  mMinFitPfrac;            ///< nFit/nPossible
+  bool   mFitPossWeighting;       ///< Use nFit/nPossible in track weighting (ranking)
   bool   mDropPostCrossingTrack;  ///< enable/disable post crossing tarck rejection
   int    mStoreUnqualifiedVertex; ///< set the max # of vertices, sorted by rank
   float  mCut_oneTrackPT;         ///< threshold for storing one track vertices.
@@ -103,7 +104,6 @@ class StPPVertexFinder: public StGenericVertexFinder {
   bool   mStudyBeamLineTracks;    ///< activates writing them out + lot of QA histos,
                                   ///< use  BFC option: VtxSeedCalG to enable it, expert only
 
-  // util
   StiToolkit     *mToolkit;
   BtofHitList    *btofList;
   CtbHitList     *ctbList;
@@ -116,21 +116,19 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void initHisto();
 
   virtual void  UseVertexConstraint() {}
-  
+
 public:
+
   virtual void UsePCT(bool x=true) { mDropPostCrossingTrack = !x; }
   virtual void Finish();
+  virtual void Init();
+  virtual void InitRun(int runumber);
+  virtual void Clear(); 
+  virtual void CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 
   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline1D);
 
-  // mandatory implementations
-  virtual  ~StPPVertexFinder();
-  virtual int       fit(StEvent*);        
-  void      printInfo(ostream& = cout) const;
- 
-  // over-written method
-  virtual void  Init();
-  virtual void  InitRun  (int runumber);
-  virtual void  Clear(); 
-  virtual void  CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
+  virtual ~StPPVertexFinder();
+  virtual int fit(StEvent*);
+  void printInfo(ostream& = cout) const;
 };

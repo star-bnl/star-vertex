@@ -112,15 +112,15 @@ protected:
   /// the passed value of z.
   double beamY(double z) const;
 
-  /// Caclulates chi2 for the beamline and a point
-  double CalcChi2Beamline(const StThreeVectorD& point);
-
   /// Recalculates the vertex position from DCA measurements in the input list
   /// of DCAs
   StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
 
   /// Caclulates total chi2 for the track DCAs stored in mDCAs and a point
   virtual double CalcChi2DCAs(const StThreeVectorD &point);
+
+  /// Caclulates chi2 for the beamline and a point
+  double CalcChi2Beamline(const StThreeVectorD& point);
 
   /// Caclulates total chi2 for the beamline and track DCAs stored in mDCAs and a point
   double CalcChi2DCAsBeamline(const StThreeVectorD &point);
