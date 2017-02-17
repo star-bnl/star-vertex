@@ -442,7 +442,7 @@ int StPPVertexFinder::fit(StEvent* event)
   {
     const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
 
-    TrackData track;
+    TrackDataT<StiKalmanTrack> track(*stiKalmanTrack);
 
     ntrk[0]++;
 
@@ -466,7 +466,6 @@ int StPPVertexFinder::fit(StEvent* event)
     matchTrack2EEMC(stiKalmanTrack, track);
 
     //.... all test done on this track .........
-    track.mother = stiKalmanTrack;
     mTrackData.push_back(track); 
 
     hA[5]->Fill(track.rxyDca);
@@ -596,9 +595,8 @@ int StPPVertexFinder::Fit(const StMuDst& muDst)
 
       ntrk[6]++;
 
-      TrackData trk;
+      TrackDataT<StMuTrack> trk(stMuTrack);
 
-      trk.mother = &stMuTrack;
       trk.dca    = dca;
       trk.zDca   = dca->z();
       trk.ezDca  = std::sqrt(dca->errMatrix()[2]);
