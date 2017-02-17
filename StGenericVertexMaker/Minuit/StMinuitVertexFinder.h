@@ -83,10 +83,7 @@
  * PP vertex finding:
  * For proton-proton (and presumable dAu) vertex finding, we only do a 
  * 1D fit and use the beamline constraint to get the x and y positions of the 
- * vertex.  To enable this mode, use:
- *
- *  myvertex.UseVertexConstraint(x0,y0,dzdy,dydz,weight)
- *
+ * vertex.
  *
  *  $Id$
  *
@@ -143,7 +140,7 @@ private:
     void    calculateRanks();
     Int_t   findSeeds();
 
-    virtual void UseVertexConstraint();
+    virtual void UseVertexConstraint() {}
 
     virtual double CalcChi2DCAs(const StThreeVectorD &vtx);
     

@@ -778,23 +778,6 @@ StMinuitVertexFinder::printInfo(ostream& os) const
 }
 
 
-void StMinuitVertexFinder::UseVertexConstraint() {
-
-  // Historically, this method was designed for a 1D fit with beamline
-  // So, we'll keep it this way for backward compatibility
-  if (mVertexFitMode != VertexFit_t::Beamline1D) return;
-
-  LOG_INFO << "StMinuitVertexFinder::Using Constrained Vertex" << endm;
-
-  //re-initilize minuit for 1D fitting
-  mMinuit = new TMinuit(1);
-  mMinuit->SetFCN(&StGenericVertexFinder::fcnCalcChi2DCAsBeamline1D);
-  mMinuit->SetPrintLevel(-1);
-  mMinuit->SetMaxIterations(1000);
-  mExternalSeedPresent = kFALSE;
-}
-
-
 Int_t  StMinuitVertexFinder::NCtbMatches() { 
   return nCTBHits;
 }
