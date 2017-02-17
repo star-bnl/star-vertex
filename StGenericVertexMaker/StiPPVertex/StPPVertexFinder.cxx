@@ -451,7 +451,7 @@ int StPPVertexFinder::fit(StEvent* event)
     if(mDropPostCrossingTrack &&
        isPostCrossingTrack(stiKalmanTrack))          {ntrk[3]++; continue;}  // kill if it has hits in wrong z
     if(!examinTrackDca(stiKalmanTrack, track))       {ntrk[4]++; continue;}  // drop from DCA
-    if(!matchTrack2Membrane(stiKalmanTrack, track))  {ntrk[5]++; continue;}  // kill if nFitP too small
+    if(!matchTrack2Membrane(track))                  {ntrk[5]++; continue;}  // kill if nFitP too small
 
     ntrk[6]++;
 
@@ -609,7 +609,7 @@ int StPPVertexFinder::Fit(const StMuDst& muDst)
       // Modify track weights
       matchTrack2BEMC(stMuTrack, trk);
       matchTrack2EEMC(stMuTrack, trk);
-      matchTrack2Membrane(stMuTrack, trk);
+      matchTrack2Membrane(trk);
 
       mTrackData.push_back(trk);
    }
@@ -1428,8 +1428,10 @@ void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, Track
 
 //==========================================================
 //==========================================================
-bool  
-StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* stiTrack,TrackData &track){
+bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
+{
+  const StiKalmanTrack* stiTrack = track.getMother();
+
   const double RxyMin=59, RxyMax=199, zMax=200;
   const double zMembraneDepth=1; // (cm) ignore signe change for nodes so close to membrane
 
@@ -1492,8 +1494,10 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* stiTrack,TrackData &
 }
 
 
-void StPPVertexFinder::matchTrack2Membrane(const StMuTrack& muTrack, TrackData &trk)
+void StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &trk)
 {
+   const StMuTrack& muTrack = *trk.getMother();
+
    // Code from matchTrack2Membrane
    if (mFitPossWeighting) { // introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51
       double fracFit2PossHits = static_cast<double>(muTrack.nHitsFit(kTpcId)) / muTrack.nHitsPoss(kTpcId);
