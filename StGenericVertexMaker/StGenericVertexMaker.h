@@ -58,7 +58,7 @@ class StGenericVertexMaker : public StMaker
   virtual void  Clear(const char* opt="");
   virtual Int_t Finish();
   virtual Int_t Make();
-  StGenericVertexFinder* GetGenericFinder(){return (StGenericVertexFinder*)theFinder;};
+  StGenericVertexFinder* GetGenericFinder(){return theFinder;}
 
   void UseBeamLine()            {SetAttr("BeamLine"       , kTRUE );}
   void DoNotUseBeamLine()       {SetAttr("BeamLine"       , kFALSE);}
