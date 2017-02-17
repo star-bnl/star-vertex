@@ -159,8 +159,6 @@ private:
     Float_t                mZMin;             // Min z of possible vertex positions
     Float_t                mZMax;             // Max z of possible vertex positions
 
-    StPhysicalHelixD*      mBeamHelix;        // Beam Line helix
-    
     enum                   {maxSeed=500};
 
     /// The number of vertex seeds found in current event
@@ -170,7 +168,6 @@ private:
     Int_t                  mBemcHit[120][20][2];  // modules, eta, sub
     static std::vector<StPhysicalHelixD> mHelices;
     static std::vector<UShort_t>         mHelixFlags;
-    static std::vector<Double_t>         mSigma;
     static std::vector<Double_t>         mZImpact;
     //static std::vector<Bool_t>         mCTB;
     static Bool_t                   requireCTB;
