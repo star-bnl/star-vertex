@@ -67,6 +67,8 @@ class StPPVertexFinder: public StGenericVertexFinder
   void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
 
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2Membrane(const StMuTrack& muTrack, TrackData &track);
+
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
   bool buildLikelihoodZ();

@@ -1371,6 +1371,68 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* stiTrack,TrackData &
 }
 
 
+void StPPVertexFinder::matchTrack2Membrane(const StMuTrack& muTrack, TrackData &trk)
+{
+   // Code from matchTrack2Membrane
+   if (mFitPossWeighting) { // introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51
+      double fracFit2PossHits = static_cast<double>(muTrack.nHitsFit(kTpcId)) / muTrack.nHitsPoss(kTpcId);
+      trk.weight *= fracFit2PossHits;
+   }
+
+   const StThreeVectorF& firstPoint = muTrack.firstPoint();
+   const StThreeVectorF& lastPoint  = muTrack.lastPoint();
+
+   // Require the track to be within TPC volume (approximately)
+   const float RxyMin = 59, RxyMax = 199, zMax = 200;
+
+   bool isTrackInside = firstPoint.perp() < RxyMin || lastPoint.perp() < RxyMin ||
+                        firstPoint.perp() > RxyMax || lastPoint.perp() > RxyMax ||
+                        std::fabs(firstPoint.z()) > zMax ||
+                        std::fabs(lastPoint.z())  > zMax;
+
+   // Require start and end to be on different sides of the z=0 plane
+   bool crossMembrane = firstPoint.z() * lastPoint.z() < 0;
+
+   if ( !isTrackInside || !crossMembrane) return;
+
+   // Find crossing point of the track with z=0 membrane then identify jz0
+   double t = firstPoint.z() / (firstPoint.z() - lastPoint.z());
+
+   double intersect_x = firstPoint.x() + t * (lastPoint.x() - firstPoint.x());
+   double intersect_y = firstPoint.y() + t * (lastPoint.y() - firstPoint.y());
+   //intersect_z = firstPoint.z() + t * (lastPoint.z() - firstPoint.z()); // == 0 (=z)
+
+   double intersect_r = std::sqrt(intersect_x*intersect_x + intersect_y*intersect_y);
+
+   // TPC padrow radii
+   const std::array<double, 45> padrow_radii
+   {
+      60.0,    64.8,    69.6,    74.4,    79.2,    84.0,    88.8,    93.6,    98.8,    104.0,
+      109.2,   114.4,   119.6,   127.195, 129.195, 131.195, 133.195, 135.195, 137.195, 139.195,
+      141.195, 143.195, 145.195, 147.195, 149.195, 151.195, 153.195, 155.195, 157.195, 159.195,
+      161.195, 163.195, 165.195, 167.195, 169.195, 171.195, 173.195, 175.195, 177.195, 179.195,
+      181.195, 183.195, 185.195, 187.195, 189.195
+   };
+
+   std::vector<int> hitPatt;
+   int jz0 = 0;
+
+   for (auto padrow_r : padrow_radii)
+   {
+      int curr_padrow_index = hitPatt.size();
+
+      if (intersect_r > padrow_r)
+         jz0 = curr_padrow_index;
+
+      int hit = muTrack.topologyMap().hasHitInRow(kTpcId, curr_padrow_index+1) ? 1 : 0;
+
+      hitPatt.push_back(hit);
+   }
+
+   trk.scanNodes(hitPatt, jz0); // if central membrane is crossed, scale weight inside
+}
+
+
 /**
  * Identifies tracks coming from post bunch crossing collisions.
  */
