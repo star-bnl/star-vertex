@@ -69,6 +69,18 @@ class TrackData {
   void updateAnyMatch(bool match, bool vet,int & mXXX);
   void print(ostream& os) const;
 };
+
+
+template<class OriginalTrack_t>
+class TrackDataT : public TrackData
+{
+public:
+
+  TrackDataT(const OriginalTrack_t &motherTrack) { mother = &motherTrack; }
+
+  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
+};
+
 #endif
 
 
