@@ -88,7 +88,7 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
 StMinuitVertexFinder::~StMinuitVertexFinder()
 {
    LOG_WARN << "Skipping delete Minuit in StMinuitVertexFinder::~StMinuitVertexFinder()" << endm;
-   //delete mMinuit;
+   delete mMinuit; mMinuit = nullptr;
    mHelices.clear();
    mHelixFlags.clear();
    mZImpact.clear();
