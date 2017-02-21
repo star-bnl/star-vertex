@@ -85,7 +85,7 @@
  * 1D fit and use the beamline constraint to get the x and y positions of the 
  * vertex.
  *
- *  $Id: StMinuitVertexFinder.h,v 1.26 2017/02/17 21:31:36 smirnovd Exp $
+ *  $Id: StMinuitVertexFinder.h,v 1.27 2017/02/21 21:34:21 smirnovd Exp $
  *
  */
 
