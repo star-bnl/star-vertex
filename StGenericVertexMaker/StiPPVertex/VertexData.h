@@ -11,6 +11,8 @@
 class VertexData {
  public:
   int id; // vertex ID assigned by PPV
+  bool isTriggered; ///< Indicates whether the vertex potentially belongs to triggered event
+  short mIdTruth;
   TVector3 r,er; // vertex position and its error
   int nUsedTrack; // # of tracks used to identify the vertex
   float Lmax; // maximum of the likelhood function.
@@ -28,6 +30,9 @@ class VertexData {
 
 /*
  * $Log$
+ * Revision 1.6  2017/01/06 21:01:58  smirnovd
+ * VertexData: Initialize vertexID in constructor
+ *
  * Revision 1.5  2016/11/07 21:19:47  smirnovd
  * VertexData: Added constructor to build vertex with coordinates
  *

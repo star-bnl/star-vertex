@@ -13,6 +13,7 @@ using namespace std;  // for vector
 
 class VertexData ;
 class StiKalmanTrack;
+class StDcaGeometry;
 
 class DcaTrack { // approximtion of track as stright line @ DCA to beamLine=0,0
  public:
@@ -33,7 +34,13 @@ class TrackData {
   int vertexID; /* >0 if assigned to a good vertex; 
 		   =0 free, not used for any vertex
 		*/
-  const StiKalmanTrack* mother; // oryginal track
+  const void* mother; // original track
+
+  const StDcaGeometry* dca;
+
+  short mIdTruth;
+  short mQuality;
+  int   mIdParentVx;
   DcaTrack dcaTrack; // for 3D vertex reco
   float zDca, ezDca; // (cm) Z of track @ DCA to beam
   float rxyDca;
@@ -48,16 +55,41 @@ class TrackData {
   int eemcBin; // >=0 if track passed through ETOW tower
   // ........................methods
   TrackData();
+
+  template<class OriginalTrack_t>
+  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
+
   void scanNodes( vector<int> & hitPatt, int jz0);
   bool matchVertex(VertexData &V, float kSig) ;
+
+  /// Calculates chi^2 at track DCA w.r.t. the vertex
+  double calcChi2DCA(const VertexData &V) const;
+
   float getTpcWeight();
   void updateAnyMatch(bool match, bool vet,int & mXXX);
+  void print(ostream& os) const;
 };
+
+
+template<class OriginalTrack_t>
+class TrackDataT : public TrackData
+{
+public:
+
+  TrackDataT(const OriginalTrack_t &motherTrack) { mother = &motherTrack; }
+
+  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
+};
+
 #endif
 
 
 /*
  * $Log$
+ * Revision 1.3  2010/09/10 21:08:35  rjreed
+ * Added function UseBOTF and bool mUseBtof to switch the use of the TOF on and off in vertex finding.  Default value is off (false).
+ * Added functions, and variables necessary to use the TOF in PPV for vertex finding.  Includes matching tracks to the TOF and changing the track weight based on its matched status with the TOF.
+ *
  * Revision 1.2  2009/07/09 21:29:03  balewski
  * allow export of prim tracks for 3D beam line fit (use VtxSeedCalG option),
  * oneTrack vertex thresholds was lowered form 15 to 10 GeV/c
