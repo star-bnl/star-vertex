@@ -16,6 +16,7 @@
 
 #include "StEvent/StPrimaryVertex.h"
 #include "tables/St_vertexSeed_Table.h"
+#include "StGenericVertexMaker/VertexFinderOptions.h"
 
 class StEvent;
 class StDcaGeometry;
@@ -30,10 +31,10 @@ public:
 
   /// Options used to define the type of vertex fit performed in a concrete
   /// implementation
-  enum class VertexFit_t : int { Unspecified, NoBeamline, Beamline1D, Beamline3D };
+  using VertexFit_t = star_vertex::VertexFit_t;
 
   /// Options to select vertex seed finder
-  enum class SeedFinder_t : int { Unspecified, MinuitVF, PPVLikelihood, TSpectrum };
+  using SeedFinder_t = star_vertex::SeedFinder_t;
 
   // virtual and '=0' ; those MUST be implemented
   virtual ~StGenericVertexFinder();                           // virtual destructor
