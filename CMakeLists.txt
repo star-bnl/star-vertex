@@ -35,9 +35,6 @@ include_directories(
 	${STAR_STI_DIR}
 	${STAR_BFCHAIN_DIR}
 	${STAR_MUDST_DIR}
-	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include
-	$ENV{STAR}/.$ENV{STAR_HOST_SYS}/include/tables
-	$ENV{STAR}/StRoot
 )
 
 
