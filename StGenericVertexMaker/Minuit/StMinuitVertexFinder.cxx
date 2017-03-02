@@ -736,8 +736,7 @@ double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx) {
 }
 
 
-bool
-StMinuitVertexFinder::accept(StTrack* track) const
+bool StMinuitVertexFinder::accept(StTrack* track) const
 {
     //
     //   Accept only tracks which fulfill certain
