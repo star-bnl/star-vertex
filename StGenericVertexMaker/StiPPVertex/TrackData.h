@@ -1,7 +1,7 @@
 #ifndef TrackData_h
 #define TrackData_h
 /***********************************************
- * $Id: TrackData.h,v 1.4 2017/02/21 21:34:22 smirnovd Exp $
+ * $Id: TrackData.h,v 1.5 2017/03/02 19:11:19 smirnovd Exp $
  ******************************************************
  */
 #include <TVector3.h>
@@ -94,6 +94,11 @@ public:
 
 /*
  * $Log: TrackData.h,v $
+ * Revision 1.5  2017/03/02 19:11:19  smirnovd
+ * Squashed commit of many assorted changes
+ *
+ * See a704cb55..cb1f57fa on master for details
+ *
  * Revision 1.4  2017/02/21 21:34:22  smirnovd
  * Enhanced proxy data structures for track and vertex
  *
