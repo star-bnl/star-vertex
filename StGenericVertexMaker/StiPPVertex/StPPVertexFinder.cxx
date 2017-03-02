@@ -1128,7 +1128,7 @@ StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* track,TrackData &t,StBTo
   // helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
-  StPhysicalHelixD hlx(fabs(ouNode->getCurvature()),
+  StPhysicalHelixD phys_helix(fabs(ouNode->getCurvature()),
                        ouNode->getDipAngle(),
                        ouNode->getPhase(),
                        ou,
@@ -1138,7 +1138,7 @@ StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* track,TrackData &t,StBTo
   PointVec crossVec;
 
   IntVec iBinVec;
-  if(geom->HelixCrossCellIds(hlx,idVec,pathVec,crossVec)) {
+  if(geom->HelixCrossCellIds(phys_helix,idVec,pathVec,crossVec)) {
     for(size_t i=0;i<idVec.size();i++) {
       int itray, imodule, icell;
       geom->DecodeCellId(idVec[i], icell, imodule, itray);
@@ -1189,20 +1189,20 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
     StiKalmanTrackNode * inNode = ouNode;
     StThreeVectorD in(inNode->getX(),inNode->getY(),inNode->getZ());
     in.rotateZ(inNode->getAlpha());
-    StPhysicalHelixD hlx(fabs(inNode->getCurvature()),
+    StPhysicalHelixD phys_helix(fabs(inNode->getCurvature()),
 			 inNode->getDipAngle(),
 			 inNode->getPhase(),
 			 in,
 			 inNode->getHelicity());
     pairD  d2;
-    d2 = hlx.pathLength(Rctb);
+    d2 = phys_helix.pathLength(Rctb);
     path=d2.second;
     if(d2.first>=0 || d2.second<=0) {
       LOG_DEBUG <<Form("WARN MatchTrk , unexpected solution for track crossing CTB\n")<<
 	Form(" d2.firts=%f, second=%f, try first", d2.first, d2.second)<<endm;
       path=d2.first;
     }
-    posCTB = hlx.at(path);
+    posCTB = phys_helix.at(path);
   }
 
   // official Sti node extrapolation
@@ -1248,13 +1248,13 @@ StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t){
   //alternative helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
-  StPhysicalHelixD hlx(fabs(ouNode->getCurvature()),
+  StPhysicalHelixD phys_helix(fabs(ouNode->getCurvature()),
 		       ouNode->getDipAngle(),
 		       ouNode->getPhase(),
 		       ou,
 		       ouNode->getHelicity());
   pairD  d2;
-  d2 = hlx.pathLength(Rxy);
+  d2 = phys_helix.pathLength(Rxy);
   float path = d2.second;
 
   if(d2.first>=0 || d2.second<=0) {
@@ -1263,7 +1263,7 @@ StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t){
     path=d2.first;
   }
 
-  StThreeVectorD posCyl = hlx.at(path);
+  StThreeVectorD posCyl = phys_helix.at(path);
 
 
   float phi=atan2(posCyl.y(),posCyl.x());
@@ -1308,7 +1308,7 @@ StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* track,TrackData &t){
 
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
-  StPhysicalHelixD hlx(fabs(ouNode->getCurvature()),
+  StPhysicalHelixD phys_helix(fabs(ouNode->getCurvature()),
 		       ouNode->getDipAngle(),ouNode->getPhase(),
 		       ou,ouNode->getHelicity());
 
@@ -1316,11 +1316,11 @@ StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* track,TrackData &t){
    // double       pathLength(const StThreeVectorD& r,
    //                         const StThreeVectorD& n) const;
 
-  double path = hlx.pathLength(rSmd,n);
+  double path = phys_helix.pathLength(rSmd,n);
   if(path>maxPath) return; // too long extrapolation
 
-  StThreeVectorD r = hlx.at(path);
-  double periodL=hlx. period();
+  StThreeVectorD r = phys_helix.at(path);
+  double periodL=phys_helix. period();
  
   if(periodL<2*path) {
     LOG_DEBUG <<Form(" Warn, long path fac=%.1f ",path/periodL)<<
