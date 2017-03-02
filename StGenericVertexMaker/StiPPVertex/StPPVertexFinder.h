@@ -53,13 +53,13 @@ class StPPVertexFinder: public StGenericVertexFinder {
   void findSeeds_PPVLikelihood();
 
   enum {mxH=32};
-  bool examinTrackDca(const StiKalmanTrack*, TrackData &t);
-  void matchTrack2BTOF(const StiKalmanTrack*, TrackData &t, StBTofGeometry *geom);
-  void matchTrack2CTB(const StiKalmanTrack*, TrackData &t);
-  void matchTrack2EEMC(const StiKalmanTrack*, TrackData &t);
-  void matchTrack2BEMC(const StiKalmanTrack*, TrackData &t);
-  bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &t);
-  bool isPostCrossingTrack(const StiKalmanTrack* track);
+  bool examinTrackDca(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track, StBTofGeometry *geom);
+  void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2EEMC(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2BEMC(const StiKalmanTrack*, TrackData &track);
+  bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
+  bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
   /// A container with pre-selected tracks to be used in seed finding
   std::vector<TrackData>  mTrackData;
@@ -112,7 +112,7 @@ class StPPVertexFinder: public StGenericVertexFinder {
   StBTofGeometry *btofGeom;
   EEmcGeomSimple *geomE;
   
-  void dumpKalmanNodes(const StiKalmanTrack *track);
+  void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
   void initHisto();
 
   virtual void  UseVertexConstraint() {}

@@ -388,22 +388,22 @@ StPPVertexFinder::printInfo(ostream& os) const
 
   int nTpcM=0, nTpcV=0;
   int k=0;
-  for (const TrackData &t : mTrackData) {
-    if(  t.mTpc>0)   nTpcM++;
-    else if (  t.mTpc<0) nTpcV++;
-    hA[9]->Fill(t.zDca);
-    hA[14]->Fill(t.ezDca);
-    if(t.vertexID<=0) continue; // skip not used or pileup vertex
+  for (const TrackData &track : mTrackData) {
+    if(  track.mTpc>0)   nTpcM++;
+    else if (  track.mTpc<0) nTpcV++;
+    hA[9]->Fill(track.zDca);
+    hA[14]->Fill(track.ezDca);
+    if(track.vertexID<=0) continue; // skip not used or pileup vertex
     k++;
     LOG_DEBUG 
       <<
       Form("%d track@z0=%.2f +/- %.2f gPt=%.3f vertID=%d match:  bin,Fired,Track:\n",
-	   k,t.zDca,t.ezDca,t.gPt,t.vertexID)
-      << Form("    Btof %3d,%d,%d",t.btofBin,btofList->getFired(t.btofBin),btofList->getTrack(t.btofBin))
-      << Form("    CTB  %3d,%d,%d",t.ctbBin,ctbList->getFired(t.ctbBin),ctbList->getTrack(t.ctbBin))
-      << Form("    Bemc %3d,%d,%d",t.bemcBin,bemcList->getFired(t.bemcBin),bemcList->getTrack(t.bemcBin))
-      << Form("    Eemc %3d,%d,%d",t.eemcBin,eemcList->getFired(t.eemcBin),eemcList->getTrack(t.eemcBin))
-      << Form("    TPC %d",t.mTpc)
+	   k,track.zDca,track.ezDca,track.gPt,track.vertexID)
+      << Form("    Btof %3d,%d,%d",track.btofBin,btofList->getFired(track.btofBin),btofList->getTrack(track.btofBin))
+      << Form("    CTB  %3d,%d,%d",track.ctbBin,ctbList->getFired(track.ctbBin),ctbList->getTrack(track.ctbBin))
+      << Form("    Bemc %3d,%d,%d",track.bemcBin,bemcList->getFired(track.bemcBin),bemcList->getTrack(track.bemcBin))
+      << Form("    Eemc %3d,%d,%d",track.eemcBin,eemcList->getFired(track.eemcBin),eemcList->getTrack(track.eemcBin))
+      << Form("    TPC %d",track.mTpc)
       <<endm;
   }
   hA[6]->Fill(nTpcM);
@@ -484,8 +484,8 @@ StPPVertexFinder::fit(StEvent* event) {
   }
 
   //get the Sti track container...
-  StiTrackContainer* tracks = mToolkit->getTrackContainer();
-   if(tracks==0) {
+  StiTrackContainer* stiTracks = mToolkit->getTrackContainer();
+   if(stiTracks==0) {
      LOG_WARN <<"no STi tracks , skip eve"<<endm;
      printInfo();  
      return 0 ;				       
@@ -499,19 +499,19 @@ StPPVertexFinder::fit(StEvent* event) {
 
   std::array<int, 7> ntrk{};
 
-  for (const StiTrack* stiTrack : *tracks)
+  for (const StiTrack* stiTrack : *stiTracks)
   {
     const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
 
-    TrackData t;
+    TrackData track;
 
     ntrk[0]++;
     if(stiKalmanTrack->getFlag() <0)             {ntrk[1]++; continue;}
     if(stiKalmanTrack->getPt() < mMinTrkPt)      {ntrk[2]++; continue;}
     if(mDropPostCrossingTrack &&
        isPostCrossingTrack(stiKalmanTrack))      {ntrk[3]++; continue;}  // kill if it has hits in wrong z
-    if(!examinTrackDca(stiKalmanTrack, t))       {ntrk[4]++; continue;}  // drop from DCA
-    if(!matchTrack2Membrane(stiKalmanTrack, t))  {ntrk[5]++; continue;}  // kill if nFitP too small
+    if(!examinTrackDca(stiKalmanTrack, track))       {ntrk[4]++; continue;}  // drop from DCA
+    if(!matchTrack2Membrane(stiKalmanTrack, track))  {ntrk[5]++; continue;}  // kill if nFitP too small
 
     ntrk[6]++;
 
@@ -520,25 +520,25 @@ StPPVertexFinder::fit(StEvent* event) {
     hA[16]->Fill(stiKalmanTrack->getPt());
     
     // ......... matcho various detectors ....................
-    if(mUseBtof) matchTrack2BTOF(stiKalmanTrack, t, btofGeom);  // matching track to btofGeometry
-    if(mUseCtb)  matchTrack2CTB(stiKalmanTrack, t);
-    matchTrack2BEMC(stiKalmanTrack, t); // middle of tower in Rxy
-    matchTrack2EEMC(stiKalmanTrack, t); // middle of tower in Z
+    if(mUseBtof) matchTrack2BTOF(stiKalmanTrack, track, btofGeom);  // matching track to btofGeometry
+    if(mUseCtb)  matchTrack2CTB(stiKalmanTrack, track);
+    matchTrack2BEMC(stiKalmanTrack, track); // middle of tower in Rxy
+    matchTrack2EEMC(stiKalmanTrack, track); // middle of tower in Z
     //.... all test done on this track .........
-    t.mother = stiKalmanTrack;
-    mTrackData.push_back(t); 
+    track.mother = stiKalmanTrack;
+    mTrackData.push_back(track); 
 
-    hA[5]->Fill(t.rxyDca);
+    hA[5]->Fill(track.rxyDca);
 
-    if( t.mBtof>0 ) kBtof++;
-    if( t.mCtb>0 )  kCtb++;   
-    if( t.mBemc>0)  kBemc++;   
-    if( t.mEemc>0)  kEemc++;
-    if( t.mTpc>0 )  kTpc++;
+    if( track.mBtof>0 ) kBtof++;
+    if( track.mCtb>0 )  kCtb++;   
+    if( track.mBemc>0)  kBemc++;   
+    if( track.mEemc>0)  kEemc++;
+    if( track.mTpc>0 )  kTpc++;
  
-    if(t.mBtof>0 || t.mCtb>0 || t.mBemc>0 || t.mEemc>0 || t.mTpc>0 ) nmAny++ ;
+    if(track.mBtof>0 || track.mCtb>0 || track.mBemc>0 || track.mEemc>0 || track.mTpc>0 ) nmAny++ ;
 
-    hACorr->Fill(t.mBtof, t.mBemc);
+    hACorr->Fill(track.mBtof, track.mBemc);
   }
 
   LOG_INFO << "\n"
@@ -665,18 +665,18 @@ StPPVertexFinder::buildLikelihoodZ(){
   double *Wa=hW->GetArray(); // track weight histogram 
   
   // Loop over pre-selected tracks only
-  for (const TrackData &t : mTrackData) {
+  for (const TrackData &track : mTrackData) {
     // Skip tracks already assigned to a vertex
-    if(t.vertexID!=0) continue;
+    if(track.vertexID!=0) continue;
 
-    if(t.anyMatch) n1++;
-    float z0   = t.zDca;  // z coordinate at DCA
-    float ez   = t.ezDca; // error on z coordinate at DCA
+    if(track.anyMatch) n1++;
+    float z0   = track.zDca;  // z coordinate at DCA
+    float ez   = track.ezDca; // error on z coordinate at DCA
     float ez2  = ez*ez;
     int   j1   = hL->FindBin(z0-mMaxZradius-.1);
     int   j2   = hL->FindBin(z0+mMaxZradius+.1);
     float base = dzMax2/2/ez2;
-    float totW = t.weight;
+    float totW = track.weight;
 
     for (int j=j1; j<=j2; j++) {
       float z  = hL->GetBinCenter(j);
@@ -759,39 +759,39 @@ StPPVertexFinder::evalVertexZ(VertexData &V) { // and tag used tracks
   LOG_DEBUG << "StPPVertexFinder::evalVertex Vid="<<V.id<<" start ..."<<endm;
   int n1=0, nHiPt=0;
   
-  for (TrackData &t : mTrackData)
+  for (TrackData &track : mTrackData)
   {
     // Skip tracks already matched to a vertex
-    if(t.vertexID != 0) continue;
+    if(track.vertexID != 0) continue;
 
     // Do not match tracks to vertex V if they are too far in Z
     // (i.e. |delta_z| > (mMaxZradius + sigma_z))
-    if(! t.matchVertex(V, mMaxZradius)) continue;
+    if(! track.matchVertex(V, mMaxZradius)) continue;
 
     // Otherwise, this track belongs to this vertex
     n1++;
-    t.vertexID  = V.id;
-    V.gPtSum   += t.gPt;
-    if (mStudyBeamLineTracks) vertex3D->addTrack(&t);
-    if( t.gPt>mCut_oneTrackPT && ( t.mBemc>0|| t.mEemc>0) ) nHiPt++;
+    track.vertexID  = V.id;
+    V.gPtSum   += track.gPt;
+    if (mStudyBeamLineTracks) vertex3D->addTrack(&track);
+    if( track.gPt>mCut_oneTrackPT && ( track.mBemc>0|| track.mEemc>0) ) nHiPt++;
 
-    if(  t.mTpc>0)       V.nTpc++;
-    else if (  t.mTpc<0) V.nTpcV++;
+    if(  track.mTpc>0)       V.nTpc++;
+    else if (  track.mTpc<0) V.nTpcV++;
 
-    if(  t.mBtof>0)       V.nBtof++;
-    else if (  t.mBtof<0) V.nBtofV++;
+    if(  track.mBtof>0)       V.nBtof++;
+    else if (  track.mBtof<0) V.nBtofV++;
 
-    if(  t.mCtb>0)       V.nCtb++;
-    else if (  t.mCtb<0) V.nCtbV++;
+    if(  track.mCtb>0)       V.nCtb++;
+    else if (  track.mCtb<0) V.nCtbV++;
 
-    if(  t.mBemc>0)       V.nBemc++;
-    else if (  t.mBemc<0) V.nBemcV++;
+    if(  track.mBemc>0)       V.nBemc++;
+    else if (  track.mBemc<0) V.nBemcV++;
 
-    if(  t.mEemc>0)       V.nEemc++;
-    else if (  t.mEemc<0) V.nEemcV++;
+    if(  track.mEemc>0)       V.nEemc++;
+    else if (  track.mEemc<0) V.nEemcV++;
 
-    if( t.anyMatch)     V.nAnyMatch++;
-    else if (t.anyVeto) V.nAnyVeto++;
+    if( track.anyMatch)     V.nAnyMatch++;
+    else if (track.anyVeto) V.nAnyVeto++;
   } 
 
   V.nUsedTrack = n1;  
@@ -802,9 +802,9 @@ StPPVertexFinder::evalVertexZ(VertexData &V) { // and tag used tracks
     //no match tracks in this vertex, tag vertex ID in tracks differently
     //V.print(cout);
     LOG_DEBUG << "StPPVertexFinder::evalVertex Vid="<<V.id<<" rejected"<<endm;
-    for (TrackData &t : mTrackData) {
-      if(t.vertexID!=V.id) continue;
-      t.vertexID=-V.id;
+    for (TrackData &track : mTrackData) {
+      if(track.vertexID!=V.id) continue;
+      track.vertexID=-V.id;
     }
     return false;
   }
@@ -1085,10 +1085,10 @@ StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track){
 //==========================================================
 //==========================================================
 bool  
-StPPVertexFinder::examinTrackDca(const StiKalmanTrack* track, TrackData &t){
+StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData &track){
   
   // .......... test DCA to beam .............
-  StiKalmanTrackNode * bmNode = track->getInnerMostNode();
+  StiKalmanTrackNode * bmNode = stiTrack->getInnerMostNode();
   if (!bmNode) 		return 0;
   if (!bmNode->isDca()) return 0;
 
@@ -1097,21 +1097,21 @@ StPPVertexFinder::examinTrackDca(const StiKalmanTrack* track, TrackData &t){
   if(rxy>mMaxTrkDcaRxy) return false;
   if( fabs(bmNode->z_g())> mMaxZrange )   return false ; 
  
-  t.zDca   = bmNode->getZ();
-  t.ezDca  = sqrt(bmNode->getCzz());
-  t.rxyDca = rxy;
-  t.gPt    = bmNode->getPt();
+  track.zDca   = bmNode->getZ();
+  track.ezDca  = sqrt(bmNode->getCzz());
+  track.rxyDca = rxy;
+  track.gPt    = bmNode->getPt();
 
   //...... record more detals for 3D vertex reco
-  t.dcaTrack.R.SetXYZ(bmNode->x_g(),bmNode->y_g(),bmNode->z_g());
+  track.dcaTrack.R.SetXYZ(bmNode->x_g(),bmNode->y_g(),bmNode->z_g());
   // approximation below: use sigX=sigY, I do not want to deal wih rotations in X-Y plane, Jan B.
-  t.dcaTrack.sigYloc = sqrt(bmNode->getCyy());
-  t.dcaTrack.sigZ    = sqrt(bmNode->getCzz());
+  track.dcaTrack.sigYloc = sqrt(bmNode->getCyy());
+  track.dcaTrack.sigZ    = sqrt(bmNode->getCzz());
   StThreeVectorF const globP3 = bmNode->getGlobalMomentumF();
-  t.dcaTrack.gP.SetXYZ(globP3.x(),globP3.y(),globP3.z());
-  t.dcaTrack.fitErr    = bmNode->fitErrs();
-  t.dcaTrack.gChi2     = track->getChi2();
-  t.dcaTrack.nFitPoint = track->getFitPointCount();
+  track.dcaTrack.gP.SetXYZ(globP3.x(),globP3.y(),globP3.z());
+  track.dcaTrack.fitErr    = bmNode->fitErrs();
+  track.dcaTrack.gChi2     = stiTrack->getChi2();
+  track.dcaTrack.nFitPoint = stiTrack->getFitPointCount();
 
   return true;
 }
@@ -1120,9 +1120,9 @@ StPPVertexFinder::examinTrackDca(const StiKalmanTrack* track, TrackData &t){
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* track,TrackData &t,StBTofGeometry* geom){
+StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack,TrackData &track,StBTofGeometry* geom){
 
-  StiKalmanTrackNode* ouNode=track->getOuterMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
   StThreeVectorD posTOF;
   // helix extrapolation:
@@ -1169,18 +1169,18 @@ StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* track,TrackData &t,StBTo
 
   LOG_DEBUG << " ** BTOF ** match/veto/weight = " << btofMatch << " " << btofVeto << " " << btofW << endm;
 
-  t.updateAnyMatch(btofMatch,btofVeto,t.mBtof);
-  t.weight*=btofW;
-  t.btofBin= iBinVec.size() ? iBinVec[0] : -1;
+  track.updateAnyMatch(btofMatch,btofVeto,track.mBtof);
+  track.weight*=btofW;
+  track.btofBin= iBinVec.size() ? iBinVec[0] : -1;
 }
 
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
+StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track){
   const double Rctb=213.6; // (cm) radius of the CTB 
 
-  StiKalmanTrackNode* ouNode=track->getOuterMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
   StThreeVectorD posCTB;
   float path=-1;
@@ -1207,12 +1207,12 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
 
   // official Sti node extrapolation
   if(0){
-    StiKalmanTrack track2=*track;
+    StiKalmanTrack track2=*stiTrack;
     StiKalmanTrackNode* ctbNode=track2.extrapolateToRadius(Rctb);
 
     if(ctbNode==0)  { 
       LOG_INFO <<"#e @ctbNode NULL"<<endm;
-      LOG_INFO <<"#e @track dump"<< *track << endm;
+      LOG_INFO <<"#e @track dump"<< *stiTrack << endm;
       LOG_INFO <<"#e @OuterMostNode dump"<< *ouNode <<endm;
       return; 
     }
@@ -1231,19 +1231,19 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* track,TrackData &t){
   bool  ctbVeto =ctbList->isVetoed(iBin);
   float ctbW    =ctbList->getWeight(iBin);
   
-  t.updateAnyMatch(ctbMatch,ctbVeto,t.mCtb);
-  t.weight*=ctbW;
-  t.ctbBin=iBin;
+  track.updateAnyMatch(ctbMatch,ctbVeto,track.mCtb);
+  track.weight*=ctbW;
+  track.ctbBin=iBin;
 }
 
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t){
+StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* stiTrack,TrackData &track){
   
   const double Rxy = 242.; // middle of tower in Rxy
 
-  StiKalmanTrackNode* ouNode=track->getOuterMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
   //alternative helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
@@ -1278,9 +1278,9 @@ StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t){
   bool  bemcVeto =bemcList->isVetoed(iBin);
   float bemcW    =bemcList->getWeight(iBin);
 
-  t.updateAnyMatch(bemcMatch,bemcVeto,t.mBemc);
-  t.weight*=bemcW;
-  t.bemcBin=iBin;
+  track.updateAnyMatch(bemcMatch,bemcVeto,track.mBemc);
+  track.weight*=bemcW;
+  track.bemcBin=iBin;
 
 }
 
@@ -1288,20 +1288,20 @@ StPPVertexFinder::matchTrack2BEMC(const StiKalmanTrack* track,TrackData &t){
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* track,TrackData &t){
+StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* stiTrack,TrackData &track){
 
   const double eemc_z_position = 288.; // middle of tower in Z
   const double minEta=0.7 ;// tmp cut
   const double maxPath=200 ;// tmp, cut too long extrapolation
 
-  StiKalmanTrackNode* ouNode=track->getOuterMostNode();
-  StiKalmanTrackNode* inNode=track->getInnerMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
+  StiKalmanTrackNode* inNode=stiTrack->getInnerMostNode();
 
   //direction of extrapolation must be toward West (Z+ axis)
   if(inNode->getZ()> ouNode->getZ()) return;
   
   // droop too steep tracks
-  if(track->getPseudoRapidity()<minEta) return;
+  if(stiTrack->getPseudoRapidity()<minEta) return;
 
   StThreeVectorD rSmd=StThreeVectorD(0,0,eemc_z_position);
   StThreeVectorD n=StThreeVectorD(0,0,1);
@@ -1336,16 +1336,16 @@ StPPVertexFinder::matchTrack2EEMC(const StiKalmanTrack* track,TrackData &t){
   bool  eemcVeto =eemcList->isVetoed(iBin);
   float eemcW    =eemcList->getWeight(iBin);
 
-  t.updateAnyMatch(eemcMatch,eemcVeto,t.mEemc);
-  t.weight*=eemcW;
-  t.eemcBin=iBin;
+  track.updateAnyMatch(eemcMatch,eemcVeto,track.mEemc);
+  track.weight*=eemcW;
+  track.eemcBin=iBin;
 
 }
 
 //==========================================================
 //==========================================================
 bool  
-StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
+StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* stiTrack,TrackData &track){
   const double RxyMin=59, RxyMax=199, zMax=200;
   const double zMembraneDepth=1; // (cm) ignore signe change for nodes so close to membrane
 
@@ -1358,7 +1358,7 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 
   int jz0=0;
   StiKTNBidirectionalIterator it;
-  for (it=track->begin();it!=track->end();it++) {
+  for (it=stiTrack->begin();it!=stiTrack->end();it++) {
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid()) continue;
     //if(ktnp->getHit() && ktnp->getChi2() >1000) continue; // ---> those track need to be counted as npossiblehit, commented out
@@ -1399,9 +1399,9 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
   if(nFit<  mMinFitPfrac  * nPos) return false; // too short fragment of a track
 
   if( mFitPossWeighting)
-    t.weight*=1.*nFit/nPos;// introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51, Jan
+    track.weight*=1.*nFit/nPos;// introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51, Jan
   
-  t.scanNodes(hitPatt,jz0); // if central membrane is crossed, scale weight inside
+  track.scanNodes(hitPatt,jz0); // if central membrane is crossed, scale weight inside
 
 
   return true;
@@ -1411,13 +1411,13 @@ StPPVertexFinder::matchTrack2Membrane(const StiKalmanTrack* track,TrackData &t){
 /**
  * Identifies tracks coming from post bunch crossing collisions.
  */
-bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* track){
+bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* stiTrack){
   const float RxyMin=59, RxyMax=199, zMax=200;
   const float zMembraneDepth=1.0; 
   const int   nWrongZHitCut=2;
   int nWrongZHit=0;
   StiKTNBidirectionalIterator it;
-  for (it=track->begin();it!=track->end();it++) {
+  for (it=stiTrack->begin();it!=stiTrack->end();it++) {
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid() || ktnp->getChi2()>1000 ) continue;
     StiHit* stihit=ktnp->getHit();
