@@ -72,6 +72,7 @@ class StPPVertexFinder: public StGenericVertexFinder
   std::vector<VertexData> mVertexData;
   int  mTotEve;
   int  eveID;
+  int  nBadVertex;
   unsigned int  mAlgoSwitches; ///< binary, assign 1bit per change, use enum below
                                ///< default is 0, as for 2008 pp data production
   enum {kSwitchOneHighPT=1}; 
