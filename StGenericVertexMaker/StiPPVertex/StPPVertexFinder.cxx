@@ -108,8 +108,8 @@ void StPPVertexFinder::Init()
   mToolkit = StiToolkit::instance();
   assert(mToolkit);          // internal error of Sti
   
-  ctbList  = new CtbHitList;
-  btofList = new BtofHitList;
+  if (mUseBtof) btofList = new BtofHitList();
+  if (mUseCtb)  ctbList  = new CtbHitList();
   
   initHisto();
 
@@ -169,10 +169,9 @@ void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
   // Unfortunately, forced to remove const...
   St_db_Maker* st_db_maker = const_cast<St_db_Maker*>(db_maker);
 
-  if (mUseBtof)
-    btofList->initRun(st_db_maker);
+  if (mUseBtof) btofList->initRun(st_db_maker);
+  if (mUseCtb)  ctbList->initRun();
 
-  ctbList->initRun(); 
   bemcList->initRun(st_db_maker);
   eemcList->initRun(st_db_maker);
   
