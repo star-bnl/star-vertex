@@ -541,7 +541,7 @@ int StPPVertexFinder::fit(StEvent* event)
 } 
 
 
-int StPPVertexFinder::Fit(const StMuDst& muDst)
+int StPPVertexFinder::fit(const StMuDst& muDst)
 {
    mTotEve++;
 

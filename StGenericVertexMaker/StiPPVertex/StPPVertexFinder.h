@@ -145,6 +145,6 @@ public:
 
   virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
-  virtual int Fit(const StMuDst& muDst);
+  virtual int fit(const StMuDst& muDst);
   void printInfo(std::ostream& = std::cout) const;
 };

@@ -74,7 +74,7 @@ public:
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}
   virtual int            IsFixed() const        {return 0;}
 
-  virtual int            Fit(const StMuDst& muDst) { return -1; }
+  virtual int            fit(const StMuDst& muDst) { return -1; }
 
 protected:
 
