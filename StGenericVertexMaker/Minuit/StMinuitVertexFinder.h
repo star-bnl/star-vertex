@@ -104,6 +104,7 @@ class TMinuit;
 class StMinuitVertexFinder: public StGenericVertexFinder
 {
 public:
+
     StMinuitVertexFinder(VertexFit_t fitMode=VertexFit_t::NoBeamline);
 
     // mandatory implementations
@@ -131,6 +132,7 @@ public:
     void            SetMinimumTracks(Int_t n) {mMinTrack = n;}
 
 private:
+
     enum  {kFlagDcaz = 1, kFlagCTBMatch = 2, kFlagBEMCMatch = 4, kFlagCrossMembrane = 8};
 
     bool    accept(StTrack*) const;   // track filter

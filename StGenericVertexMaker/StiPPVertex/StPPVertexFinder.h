@@ -24,7 +24,6 @@ class StEvent;
 class StiToolkit;
 
 class StMuDst;
-class StMuTrack;
 
 class St_db_Maker;
 class BtofHitList;  
@@ -122,6 +121,7 @@ class StPPVertexFinder: public StGenericVertexFinder
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
 
+  /// A pointer to muDST event
   const StMuDst* mStMuDst;
   
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
