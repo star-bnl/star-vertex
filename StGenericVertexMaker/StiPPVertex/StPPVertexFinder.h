@@ -56,7 +56,7 @@ class StPPVertexFinder: public StGenericVertexFinder
 
   enum {mxH=32};
   bool examinTrackDca(const StiKalmanTrack*, TrackData &track);
-  void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track, StBTofGeometry *geom);
+  void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track);
   void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
 
   void matchTrack2EEMC(const StiKalmanTrack*, TrackData &track);

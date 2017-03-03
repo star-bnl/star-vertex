@@ -3,6 +3,7 @@
 
 #include "StGenericVertexMaker/StiPPVertex/ScintHitList.h"
 #include <vector>
+
 #ifndef ST_NO_NAMESPACES
 using std::vector;
 #endif
@@ -16,12 +17,16 @@ typedef vector<Int_t, allocator<Int_t> >  IntVec;
 
 class StBTofTables;
 class StBTofCollection;
+class StBTofGeometry;
+
 
 class BtofHitList : public ScintHitList {
  private:
   enum {mxTray=120,mxModule=32,mxCell=6};
   int tmc2bin[mxTray][mxModule][mxCell]; // map {t,m,c}--> my bin
   StBTofTables *myTable;
+
+  StBTofGeometry* geometry;
 
  public:
   BtofHitList();
@@ -37,6 +42,8 @@ class BtofHitList : public ScintHitList {
   float getWeight(IntVec ibinVec);
   virtual   int etaBin(float eta);
   virtual float bin2EtaLeft(int iEta);
+
+  StBTofGeometry* Geometry() { return geometry; }
 };
 
 #endif

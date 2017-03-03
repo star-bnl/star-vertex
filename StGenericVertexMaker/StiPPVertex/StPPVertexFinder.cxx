@@ -480,7 +480,7 @@ int StPPVertexFinder::fit(StEvent* event)
     hA[16]->Fill(stiKalmanTrack->getPt());
 
     // ......... matcho various detectors ....................
-    if (mUseBtof) matchTrack2BTOF(stiKalmanTrack, track, btofGeom);  // matching track to btofGeometry
+    if (mUseBtof) matchTrack2BTOF(stiKalmanTrack, track);  // matching track to btofGeometry
     if (mUseCtb)  matchTrack2CTB(stiKalmanTrack, track);
     matchTrack2BEMC(stiKalmanTrack, track);
     matchTrack2EEMC(stiKalmanTrack, track);
@@ -1219,8 +1219,10 @@ bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData 
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData &track, StBTofGeometry* geom)
+void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData &track)
 {
+  StBTofGeometry* geom = btofList->Geometry();
+
   StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
   StThreeVectorD posTOF;
