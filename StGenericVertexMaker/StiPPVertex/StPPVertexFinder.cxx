@@ -166,12 +166,15 @@ void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
     mMinAdcBemc   = 8;    // BTOW used calibration of maxt Et @ ~60Gev 
   }
 
+  // Unfortunately, forced to remove const...
+  St_db_Maker* st_db_maker = const_cast<St_db_Maker*>(db_maker);
+
   if (mUseBtof)
-    btofList->initRun();
+    btofList->initRun(st_db_maker);
 
   ctbList->initRun(); 
-  bemcList->initRun();
-  eemcList->initRun();
+  bemcList->initRun(st_db_maker);
+  eemcList->initRun(st_db_maker);
   
   LOG_INFO 
     << "PPV::cuts "

@@ -18,6 +18,7 @@ typedef vector<Int_t, allocator<Int_t> >  IntVec;
 class StBTofTables;
 class StBTofCollection;
 class StBTofGeometry;
+class St_db_Maker;
 
 
 class BtofHitList : public ScintHitList {
@@ -32,7 +33,7 @@ class BtofHitList : public ScintHitList {
   BtofHitList();
   virtual  ~BtofHitList();
   void clear();
-  void initRun();
+  void initRun(St_db_Maker* db_maker);
   void build(StBTofCollection *btofColl);
   int  cell2bin(int tray, int module, int cell);
   int  addBtofTrack(int tray, int module, int cell);

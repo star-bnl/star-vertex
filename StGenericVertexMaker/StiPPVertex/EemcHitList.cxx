@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include <St_base/StMessMgr.h>
+#include "St_db_Maker/St_db_Maker.h"
 
 #include "StGenericVertexMaker/StiPPVertex/EemcHitList.h"
 
@@ -44,7 +45,7 @@ EemcHitList::EemcHitList(StEEmcDb* x, unsigned int y, EEmcGeomSimple *z) :
 //==========================================================
 //==========================================================
 void
-EemcHitList::initRun(){
+EemcHitList::initRun(St_db_Maker* db_maker){
   gMessMgr->Message("","D") <<" EemcHitList::initRun()"<<endm;
   ScintHitList::initRun();
 
@@ -54,6 +55,8 @@ EemcHitList::initRun(){
     for(sub=0;sub<MaxSubSec;sub++)
       for(etaB=0;etaB<MaxEtaBins;etaB++) 
 	name2bin[sec][sub][etaB]=-1;
+
+  eeDb->loadTables(db_maker);
 
   // fill in new association
   int nB=0,nA=0;

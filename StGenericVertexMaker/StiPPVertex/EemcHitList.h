@@ -7,6 +7,8 @@
 class StEmcDetector;
 class StEEmcDb;
 class EEmcGeomSimple;
+class St_db_Maker;
+
 
 class EemcHitList : public ScintHitList {
  private:
@@ -23,7 +25,7 @@ class EemcHitList : public ScintHitList {
  EemcHitList(StEEmcDb* x=nullptr, unsigned int y=EEMCSTAT_ONLPED|EEMCSTAT_STKBT|EEMCSTAT_HOTHT|EEMCSTAT_HOTJP|EEMCSTAT_JUMPED, EEmcGeomSimple *z=nullptr);
   virtual  ~EemcHitList();
   void clear();
-  void initRun();
+  void initRun(St_db_Maker* db_maker);
   void build( StEmcDetector*det, float adcMin);
   virtual  int etaBin(float eta);
   virtual float bin2EtaLeft(int iEta);
