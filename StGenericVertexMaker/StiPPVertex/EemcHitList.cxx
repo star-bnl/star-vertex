@@ -25,9 +25,9 @@
 //==========================================================
 EemcHitList::EemcHitList(StEEmcDb* x, unsigned int y, EEmcGeomSimple *z) :
   ScintHitList(-M_PI/60.,M_PI/30,60, 999,999,8,(char *) "Eemc",4,0.75) {
-  eeDb=x; 
+  eeDb = x ? x : new StEEmcDb();
   killStatEEmc=y ;
-  geomE=z;
+  geomE = z ? z : new EEmcGeomSimple();
   assert(eeDb);
   assert(geomE);
   assert(nEta<=MaxEtaBins);

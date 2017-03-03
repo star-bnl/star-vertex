@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include "StGenericVertexMaker/StiPPVertex/ScintHitList.h"
 #include "StEEmcUtil/EEfeeRaw/EEdims.h"
+#include "StEEmcUtil/database/cstructs/eemcConstDB.hh"
 class StEmcDetector;
 class StEEmcDb;
 class EEmcGeomSimple;
@@ -19,7 +20,7 @@ class EemcHitList : public ScintHitList {
   unsigned int killStatEEmc;
  
  public:
- EemcHitList(StEEmcDb* x, unsigned int y, EEmcGeomSimple *z);
+ EemcHitList(StEEmcDb* x=nullptr, unsigned int y=EEMCSTAT_ONLPED|EEMCSTAT_STKBT|EEMCSTAT_HOTHT|EEMCSTAT_HOTJP|EEMCSTAT_JUMPED, EEmcGeomSimple *z=nullptr);
   virtual  ~EemcHitList();
   void clear();
   void initRun();

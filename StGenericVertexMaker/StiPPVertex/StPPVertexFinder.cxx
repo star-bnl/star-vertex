@@ -44,11 +44,6 @@
 #include <StIOMaker/StIOMaker.h> // to save  local histos 
 #include <StBFChain/StBFChain.h>
 
-#include <StEEmcUtil/database/StEEmcDb.h>
-#include <StEEmcUtil/database/EEmcDbItem.h>
-#include <StEEmcUtil/database/cstructs/eemcConstDB.hh>
-#include <StEEmcUtil/EEmcGeom/EEmcGeomSimple.h>
-
 #include "StGenericVertexMaker/StiPPVertex/BtofHitList.h"
 #include "StGenericVertexMaker/StiPPVertex/CtbHitList.h"
 #include "StGenericVertexMaker/StiPPVertex/BemcHitList.h"
@@ -86,9 +81,8 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   btofList(nullptr),
   ctbList(nullptr),
   bemcList(new BemcHitList()),
-  eemcList(nullptr),
+  eemcList(new EemcHitList()),
   btofGeom(nullptr),
-  geomE(nullptr),
   mStMuDst(nullptr)
 {
   mUseCtb = true;                      // default CTB is in the data stream
@@ -119,16 +113,6 @@ void StPPVertexFinder::Init()
   ctbList  = new CtbHitList;
   btofList = new BtofHitList;
   
-
-  // access EEMC-DB
-  StEEmcDb *eeDb = (StEEmcDb*)StMaker::GetChain()->GetDataSet("StEEmcDb");
-  assert(eeDb); // eemcDB must be in the chain, fix it,JB
-  LOG_INFO << "eeDb done" <<endm;
-  geomE= new EEmcGeomSimple();
-  // choose which 'stat' bits are fatal for mip detection
-  unsigned int killStatEEmc=EEMCSTAT_ONLPED | EEMCSTAT_STKBT|  EEMCSTAT_HOTHT |  EEMCSTAT_HOTJP | EEMCSTAT_JUMPED ;
-  eemcList =new EemcHitList(eeDb, killStatEEmc,geomE);
-   
   initHisto();
 
   LOG_INFO << "initiated histos" << endm;
@@ -346,7 +330,7 @@ void StPPVertexFinder::Clear()
   if (btofList) btofList->clear();
   if (ctbList)  ctbList->clear();
   bemcList->clear();
-  if (eemcList) eemcList->clear();
+  eemcList->clear();
 
   mTrackData.clear();
   mVertexData.clear();

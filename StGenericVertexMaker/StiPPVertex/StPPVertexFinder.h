@@ -22,10 +22,8 @@ class TH1D;
 class StiKalmanTrack;
 class StEvent; 
 class StiToolkit;
-class StEEmcDb;
 
 class StMuDst;
-class EEmcGeomSimple;
 class StMuTrack;
 class StBTofGeometry; 
 
@@ -125,7 +123,6 @@ class StPPVertexFinder: public StGenericVertexFinder
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
   StBTofGeometry *btofGeom;
-  EEmcGeomSimple *geomE;
 
   const StMuDst* mStMuDst;
   
