@@ -362,14 +362,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
 
 }
 
-//======================================================
-//======================================================
-void StPPVertexFinder::CalibBeamLine()
-{
-  LOG_INFO << "StPPVertexFinder::CalibBeamLine: activated saving high quality prim tracks for 3D fit of the beamLine"<<endm;
-  mBeamLineTracks=1; 
-}
-
 
 //==========================================================
 //==========================================================

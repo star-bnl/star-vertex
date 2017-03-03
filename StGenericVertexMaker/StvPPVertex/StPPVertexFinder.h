@@ -108,7 +108,6 @@ public:
   virtual void  Init();
   virtual void  InitRun  (int runumber);
   virtual void  Clear(); 
-  virtual void  CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 };
 }// end namespace StEvPPV
 
