@@ -25,7 +25,6 @@ class StiToolkit;
 
 class StMuDst;
 class StMuTrack;
-class StBTofGeometry; 
 
 class St_db_Maker;
 class BtofHitList;  
@@ -122,7 +121,6 @@ class StPPVertexFinder: public StGenericVertexFinder
   CtbHitList     *ctbList;
   BemcHitList    *bemcList;
   EemcHitList    *eemcList;
-  StBTofGeometry *btofGeom;
 
   const StMuDst* mStMuDst;
   

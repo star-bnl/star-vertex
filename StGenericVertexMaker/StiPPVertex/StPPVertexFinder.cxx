@@ -17,7 +17,6 @@
 #include "TH2F.h"
 #include "TMinuit.h"
 #include "TObjArray.h"
-#include "TObjectSet.h"
 
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
 
@@ -82,7 +81,6 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   ctbList(nullptr),
   bemcList(new BemcHitList()),
   eemcList(new EemcHitList()),
-  btofGeom(nullptr),
   mStMuDst(nullptr)
 {
   mUseCtb = true;                      // default CTB is in the data stream
@@ -137,25 +135,6 @@ void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
   St_db_Maker* mydb = (St_db_Maker*) StMaker::GetChain()->GetMaker("db");
 
   int dateY=mydb->GetDateTime().GetYear();
-  
- // Initialize BTOF geometry
-  if (mUseBtof){ // only add btof if it is required
-    TObjectSet *geom = (TObjectSet *) mydb->GetDataSet("btofGeometry");
-    if (geom)   btofGeom = (StBTofGeometry *) geom->GetObject();
-    if (btofGeom) {
-      LOG_INFO << " Found btofGeometry ... " << endm;
-    } else {
-      btofGeom = new StBTofGeometry("btofGeometry","btofGeometry in VertexFinder");
-      geom = new TObjectSet("btofGeometry",btofGeom);
-      LOG_INFO << " Create a new btofGeometry ... " << endm;
-      mydb->AddConst(geom);
-    } 
-    if(btofGeom && !btofGeom->IsInitDone()) {
-      LOG_INFO << " BTofGeometry initialization ... " << endm;
-      TVolume *starHall = (TVolume *)mydb->GetDataSet("HALL");
-      btofGeom->Init(mydb, starHall);
-    }
-  }
 
   //.. set various params 
   // It is not clear why one would hard code cuts for any specific run or

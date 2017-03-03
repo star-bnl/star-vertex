@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <cmath>
 
+#include "TObjectSet.h"
+
 #include <St_base/StMessMgr.h>
 
 #include "StGenericVertexMaker/StiPPVertex/BtofHitList.h"
@@ -40,6 +42,23 @@ BtofHitList::initRun() {
   StMaker*mk=(StMaker*)StMaker::GetChain()->GetMaker("GenericVertex");
   assert(mk);
   myTable->loadTables(mk);
+
+  // Initialize BTOF geometry
+  TObjectSet *geom = (TObjectSet *) mk->GetDataSet("btofGeometry");
+  if (geom)   geometry = (StBTofGeometry *) geom->GetObject();
+  if (geometry) {
+    LOG_INFO << " Found btofGeometry ... " << endm;
+  } else {
+    geometry = new StBTofGeometry("btofGeometry","btofGeometry in VertexFinder");
+    geom = new TObjectSet("btofGeometry",geometry);
+    LOG_INFO << " Create a new btofGeometry ... " << endm;
+    mk->AddConst(geom);
+  } 
+  if(geometry && !geometry->IsInitDone()) {
+    LOG_INFO << " BTofGeometry initialization ... " << endm;
+    TVolume *starHall = (TVolume *)mk->GetDataSet("HALL");
+    geometry->Init(mk, starHall);
+  }
 
 
   int nB=0; int nA=0;
