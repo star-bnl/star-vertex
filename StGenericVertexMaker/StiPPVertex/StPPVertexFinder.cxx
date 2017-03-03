@@ -132,9 +132,8 @@ void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
   StGenericVertexFinder::InitRun(runnumber, db_maker);
 
   LOG_INFO << "PPV InitRun() runNo="<<runnumber<<endm;
-  St_db_Maker* mydb = (St_db_Maker*) StMaker::GetChain()->GetMaker("db");
 
-  int dateY=mydb->GetDateTime().GetYear();
+  int dateY = db_maker->GetDateTime().GetYear();
 
   //.. set various params 
   // It is not clear why one would hard code cuts for any specific run or
