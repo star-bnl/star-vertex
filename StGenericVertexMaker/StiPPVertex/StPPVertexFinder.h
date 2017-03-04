@@ -24,7 +24,9 @@ class StEvent;
 class StiToolkit;
 class StEEmcDb;
 
+class StMuDst;
 class EEmcGeomSimple;
+class StMuTrack;
 class StBTofGeometry; 
 
 class BtofHitList;  
@@ -56,9 +58,18 @@ class StPPVertexFinder: public StGenericVertexFinder
   bool examinTrackDca(const StiKalmanTrack*, TrackData &track);
   void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track, StBTofGeometry *geom);
   void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
+
   void matchTrack2EEMC(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2EEMC(const StMuTrack& muTrack, TrackData &track);
+  void matchTrack2EEMC(const StPhysicalHelixD& helix, TrackData &track);
+
   void matchTrack2BEMC(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2BEMC(const StMuTrack& muTrack, TrackData &track);
+  void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
+
   bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
+  void matchTrack2Membrane(const StMuTrack& muTrack, TrackData &track);
+
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
   bool buildLikelihoodZ();
@@ -113,6 +124,8 @@ class StPPVertexFinder: public StGenericVertexFinder
   EemcHitList    *eemcList;
   StBTofGeometry *btofGeom;
   EEmcGeomSimple *geomE;
+
+  const StMuDst* mStMuDst;
   
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
   void initHisto();
@@ -132,5 +145,6 @@ public:
 
   virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
+  virtual int Fit(const StMuDst& muDst);
   void printInfo(std::ostream& = std::cout) const;
 };
