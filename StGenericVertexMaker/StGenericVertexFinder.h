@@ -23,6 +23,7 @@ class StEvent;
 class StMuDst;
 class StDcaGeometry;
 class TClonesArray;
+class St_db_Maker;
 
 
 class StGenericVertexFinder
@@ -62,7 +63,7 @@ public:
           void           SetDebugLevel(Int_t level) {mDebugLevel=level;}
   virtual void           Init(){ /* noop */;}
   virtual void           Finish(){ /* noop */;}
-  virtual void           InitRun  (int runumber){ /* noop */;}
+  virtual void           InitRun(int runumber, const St_db_Maker* db_maker);
   virtual void           Clear();
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;}
 
