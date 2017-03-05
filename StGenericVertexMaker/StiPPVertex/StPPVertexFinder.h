@@ -66,8 +66,8 @@ class StPPVertexFinder: public StGenericVertexFinder
   void matchTrack2BEMC(const StMuTrack& muTrack, TrackData &track);
   void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
 
-  bool matchTrack2Membrane(const StiKalmanTrack*, TrackData &track);
-  void matchTrack2Membrane(const StMuTrack& muTrack, TrackData &track);
+  bool matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track);
+  void matchTrack2Membrane(TrackDataT<StMuTrack> &track);
 
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
@@ -126,6 +126,9 @@ class StPPVertexFinder: public StGenericVertexFinder
   
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
   void initHisto();
+
+  /// A helper function to do common processing for StEvent and StMuDst cases
+  void seed_fit_export();
 
   virtual void  UseVertexConstraint() {}
 
