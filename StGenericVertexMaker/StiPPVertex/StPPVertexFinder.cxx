@@ -61,6 +61,7 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mAlgoSwitches(kSwitchOneHighPT),
   hA{}, hACorr(nullptr), hL(nullptr), hM(nullptr), hW(nullptr),
   HList(),
+  ntrk{},
   mMinTrkPt(0.2),
   mMaxTrkDcaRxy(3.),
   mMaxZradius(3.),
@@ -304,6 +305,8 @@ void StPPVertexFinder::Clear()
   eveID = -1;
   nBadVertex = 0;
 
+  ntrk.fill(0);
+
   // the clear below is not needed but cleans up stale result
   hL->Reset();
   hM->Reset();
@@ -315,6 +318,22 @@ void StPPVertexFinder::Clear()
 //======================================================
 void StPPVertexFinder::printInfo(ostream& os) const
 {
+  LOG_INFO << "\n"
+           << Form("PPV:: # of input track          = %d\n", ntrk[0])
+           << Form("PPV:: dropped due to flag/dummy = %d\n", ntrk[1])
+           << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
+           << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
+           << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
+           << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
+           << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
+
+  if(mUseBtof) btofList->print();
+  if(mUseCtb)  ctbList->print();
+
+  bemcList->print();
+  eemcList->print();
+
+
   os << "StPPVertexFinder ver=1 - Fit Statistics:\n"
      << "StPPVertexFinder::result " << mVertexData.size() << " vertices found" << std::endl;
 
@@ -327,9 +346,15 @@ void StPPVertexFinder::printInfo(ostream& os) const
     k++;
     LOG_DEBUG 
       << Form("%d track@z0=%.2f +/- %.2f gPt=%.3f vertID=%d match:  bin,Fired,Track:\n",
-              k,track.zDca,track.ezDca,track.gPt,track.vertexID)
-      << Form("    Btof %3d,%d,%d",track.btofBin,btofList->getFired(track.btofBin),btofList->getTrack(track.btofBin))
-      << Form("    CTB  %3d,%d,%d",track.ctbBin,ctbList->getFired(track.ctbBin),ctbList->getTrack(track.ctbBin))
+              k,track.zDca,track.ezDca,track.gPt,track.vertexID);
+
+    if (mUseBtof) LOG_DEBUG 
+      << Form("    Btof %3d,%d,%d",track.btofBin,btofList->getFired(track.btofBin),btofList->getTrack(track.btofBin));
+
+    if (mUseCtb) LOG_DEBUG 
+      << Form("    CTB  %3d,%d,%d",track.ctbBin,ctbList->getFired(track.ctbBin),ctbList->getTrack(track.ctbBin));
+
+    LOG_DEBUG 
       << Form("    Bemc %3d,%d,%d",track.bemcBin,bemcList->getFired(track.bemcBin),bemcList->getTrack(track.bemcBin))
       << Form("    Eemc %3d,%d,%d",track.eemcBin,eemcList->getFired(track.eemcBin),eemcList->getTrack(track.eemcBin))
       << Form("    TPC %d",track.mTpc)
@@ -404,8 +429,6 @@ int StPPVertexFinder::fit(StEvent* event)
   int kBtof=0,kCtb=0,kBemc=0, kEemc=0,kTpc=0;
   int nTracksMatchingAnyFastDetector=0;
 
-  std::array<int, 7> ntrk{};
-
   for (const StiTrack* stiTrack : *stiTracks)
   {
     const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
@@ -443,29 +466,6 @@ int StPPVertexFinder::fit(StEvent* event)
     if (track.mBtof>0 || track.mCtb>0 || track.mBemc>0 || track.mEemc>0 || track.mTpc>0)
        nTracksMatchingAnyFastDetector++;
   }
-
-  if (mDebugLevel)
-     LOG_INFO << "\n"
-              << Form("PPV:: # of input track          = %d\n", ntrk[0])
-              << Form("PPV:: dropped due to flag       = %d\n", ntrk[1])
-              << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
-              << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
-              << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
-              << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
-              << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
-
-  if(mUseCtb) {
-    ctbList ->print();
-  }
-
-  if(mUseBtof) {
-    btofList->print();
-  }
-
-  bemcList->print();
-  eemcList->print();
-  LOG_INFO<< Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)<<endm;
-
 
   LOG_INFO << Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)
            << "PPV::fit() nEve=" << mTotEve << " , "
@@ -510,7 +510,6 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
    TObjArray*    globalTracks  = muDst.globalTracks();
    TClonesArray* covGlobTracks = muDst.covGlobTrack();
 
-   std::array<int, 7> ntrk{};
 
    for (const TObject* obj : *globalTracks)
    {
@@ -546,20 +545,6 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
       mTrackData.push_back(track);
    }
-
-   if (mDebugLevel)
-      LOG_INFO << "\n"
-               << Form("PPV:: # of input track          = %d\n", ntrk[0])
-               << Form("PPV:: dropped due to 'dummy'    = %d\n", ntrk[1])
-               << Form("PPV:: dropped due to pt         = %d\n", ntrk[2])
-               << Form("PPV:: dropped due to PCT check  = %d\n", ntrk[3])
-               << Form("PPV:: dropped due to DCA check  = %d\n", ntrk[4])
-               << Form("PPV:: dropped due to NHit check = %d\n", ntrk[5])
-               << Form("PPV:: # of track after all cuts = %d",   ntrk[6]) << endm;
-
-   //btofList->print();
-   bemcList->print();
-   eemcList->print();
 
    seed_fit_export();
 
@@ -611,8 +596,7 @@ void StPPVertexFinder::seed_fit_export()
 
    exportVertices();
 
-   if (mDebugLevel)
-      printInfo();
+   if (mDebugLevel) printInfo();
 }
 
 
