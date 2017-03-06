@@ -64,7 +64,7 @@ public:
           void           SetDebugLevel(Int_t level) {mDebugLevel=level;}
   virtual void           Init(){ /* noop */;}
   virtual void           Finish(){ /* noop */;}
-  virtual void           InitRun(int runumber, const St_db_Maker* db_maker);
+  virtual void           InitRun(int run_number, const St_db_Maker* db_maker);
   virtual void           Clear();
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;}
 

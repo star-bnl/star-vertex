@@ -133,11 +133,9 @@ void StPPVertexFinder::Init()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
+void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 {
-  StGenericVertexFinder::InitRun(runnumber, db_maker);
-
-  LOG_INFO << "PPV InitRun() runNo="<<runnumber<<endm;
+  StGenericVertexFinder::InitRun(run_number, db_maker);
 
   int dateY = db_maker->GetDateTime().GetYear();
 
@@ -146,7 +144,7 @@ void StPPVertexFinder::InitRun(int runnumber, const St_db_Maker* db_maker)
   // a period since they can be set in the database. Here we'll assume that for
   // Runs 5 to 12 the PPV cuts are optimized and there is no need to access the
   // values from the database.
-  if (runnumber >= 6000000 && runnumber < 13000000) {
+  if (run_number >= 6000000 && run_number < 13000000) {
     // old defaults, pre-Run12
     // (important if we want to reprocess old data with different cuts!)
     LOG_INFO << "PPV InitRun() using old, hardwired cuts" << endm;

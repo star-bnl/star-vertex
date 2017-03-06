@@ -64,9 +64,9 @@ StMinuitVertexFinder::~StMinuitVertexFinder()
    mZImpact.clear();
 }
 //________________________________________________________________________________
-void StMinuitVertexFinder::InitRun(Int_t runumber, const St_db_Maker* db_maker)
+void StMinuitVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 {
-  StGenericVertexFinder::InitRun(runumber, db_maker);
+  StGenericVertexFinder::InitRun(run_number, db_maker);
 
   St_VertexCutsC *cuts = St_VertexCutsC::instance();
   mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack();

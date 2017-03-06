@@ -137,7 +137,7 @@ public:
   virtual void UsePCT(bool x=true) { mDropPostCrossingTrack = !x; }
   virtual void Finish();
   virtual void Init();
-  virtual void InitRun(int runumber, const St_db_Maker* db_maker);
+  virtual void InitRun(int run_number, const St_db_Maker* db_maker);
   virtual void Clear(); 
   virtual void CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 

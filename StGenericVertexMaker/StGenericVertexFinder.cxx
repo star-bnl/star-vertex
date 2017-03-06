@@ -184,8 +184,10 @@ StPrimaryVertex* StGenericVertexFinder::getVertex(int idx) const
 }
 
 
-void StGenericVertexFinder::InitRun(int runumber, const St_db_Maker* db_maker)
+void StGenericVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 {
+   LOG_INFO << "StGenericVertexFinder::InitRun(run_number=" << run_number << ")" << endm;
+
    // Check if all necessary conditions satisfied
    bool prerequisites = db_maker && star_vertex::requiresBeamline(mVertexFitMode);
 
