@@ -75,6 +75,15 @@ void StMinuitVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
   mRImpactMax                  = cuts->RImpactMax();
   mZMin                        = cuts->ZMin();        // note: best to use integer numbers
   mZMax                        = cuts->ZMax();        // note: best to use integer numbers
+
+
+  //St_VertexCutsC* vtxCuts = St_VertexCutsC::instance();
+  //mMaxTrkDcaRxy = vtxCuts->RImpactMax();
+  //mMinTrkPt     = vtxCuts->MinTrackPt();
+  //mMinFitPfrac  = vtxCuts->MinFracOfPossFitPointsOnTrack();
+  //mMaxZradius   = vtxCuts->DcaZMax();  //+sigTrack, to match tracks to Zvertex
+  //mMinMatchTr   = vtxCuts->MinTrack();    // required to accept vertex
+
   if (mZMin == mZMax) {
     // historical defaults
     mZMin = -200.0;
