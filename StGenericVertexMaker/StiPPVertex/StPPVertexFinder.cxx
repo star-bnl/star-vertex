@@ -362,8 +362,6 @@ void StPPVertexFinder::printInfo(ostream& os) const
 
   for (const VertexData &v : mVertexData)
     v.print(os);
-
-  LOG_DEBUG<< Form("---- end of PPVertex Info\n")<<endm;
 }
 
 //======================================================
@@ -790,7 +788,6 @@ bool StPPVertexFinder::findVertexZ(VertexData &V)
 bool  StPPVertexFinder::evalVertexZ(VertexData &V) // and tag used tracks
 {
   // returns true if vertex is accepted accepted
-  LOG_DEBUG << "StPPVertexFinder::evalVertex Vid="<<V.id<<" start ..."<<endm;
   int n1=0, nHiPt=0;
   
   for (TrackData &track : mTrackData)
