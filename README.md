@@ -41,21 +41,25 @@ as:
 Release History
 ===============
 
-Highlighted features of the past and future releases.
+Notable features of the past and future releases.
 
-__v3.x__
+__v3.1-rc__
 
 * Add primary track association when reconstruct from `muDst`
   * Support for `MinuitVF`
 * New seed finder based on `TSpectrum`
+* Consolidate track selection in `PPV` and `MinuitVF`
 * Get rid of debugging histograms in production code
+* Remove dependence on StMessMgr
 
 
-__v3.0-rc__
+__v3.0__   `2017-03-16`
 
 * Vertex reconstruction using `muDst` trees and `PPV` vertex finder
-* Common approach to fitting in `PPV` and `MinuitVF`
-* Consolidate track selection in `PPV` and `MinuitVF`
+  * Primary track are within three sigma from the vertex in transverse and
+  longitudinal directions. The sigma is defined as the total uncorrelated
+  uncertainty of the track and vertex
+* Common approach to vertex fitting in `PPV` and `MinuitVF`
 * Unified selection of seeding and fitting algorithms:
   * `SeedFinder: MinuitVF, PPVLikelihood, TSpectrum`
   * `VertexFit: NoBeamline, Beamline1D, Beamline3D`
