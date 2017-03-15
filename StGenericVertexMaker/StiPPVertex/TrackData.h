@@ -87,7 +87,8 @@ class TrackDataT : public TrackData
 {
 public:
 
-  TrackDataT(const OriginalTrack_t &motherTrack) { mother = &motherTrack; }
+  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr) :
+    TrackData(&motherTrack, trackDca) { }
 
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
 };
@@ -97,6 +98,9 @@ public:
 
 /*
  * $Log$
+ * Revision 1.6  2017/03/15 22:56:44  smirnovd
+ * TrackData: Introduce deligating constructor
+ *
  * Revision 1.5  2017/03/02 19:11:19  smirnovd
  * Squashed commit of many assorted changes
  *
