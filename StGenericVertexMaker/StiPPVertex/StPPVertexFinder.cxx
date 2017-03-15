@@ -539,10 +539,6 @@ int StPPVertexFinder::fit(StEvent* event)
     hA[3]->Fill(V.r.z());
   }
   
-  if(mVertexData.size()<=0) {
-    return 0; // no vertex
-  }
-  
   return size();
 } 
 
