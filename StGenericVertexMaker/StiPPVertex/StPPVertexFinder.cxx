@@ -375,7 +375,7 @@ int StPPVertexFinder::fit(StEvent* event)
     if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
     if (mDropPostCrossingTrack &&
         isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
-    if (!examinTrackDca(stiKalmanTrack, track)) { ntrk[4]++; continue; }  // drop from DCA
+    if (!examinTrackDca(track))                 { ntrk[4]++; continue; }  // drop from DCA
     if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
 
 
@@ -383,7 +383,7 @@ int StPPVertexFinder::fit(StEvent* event)
     if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
     if (mUseBTOFmatchOnly && (track.mBtof <= 0)) { ntrk[6]++; continue; }
 
-    if (mUseCtb)  matchTrack2CTB(stiKalmanTrack, track);
+    if (mUseCtb)  matchTrack2CTB(track);
     matchTrack2BEMC(track);
     matchTrack2EEMC(track);
 
@@ -1043,8 +1043,10 @@ void StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track)
 
 //==========================================================
 //==========================================================
-bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData &track)
+bool StPPVertexFinder::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
 {
+  const StiKalmanTrack* stiTrack = track.getMother();
+
   // .......... test DCA to beam .............
   StiKalmanTrackNode * bmNode = stiTrack->getInnerMostNode();
 
@@ -1141,8 +1143,10 @@ void StPPVertexFinder::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, Track
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track)
+StPPVertexFinder::matchTrack2CTB(TrackDataT<StiKalmanTrack> &track)
 {
+  const StiKalmanTrack* stiTrack = track.getMother();
+
   const double Rctb = 213.6; // (cm) radius of the CTB 
 
   StiKalmanTrackNode* ouNode = stiTrack->getOuterMostNode();

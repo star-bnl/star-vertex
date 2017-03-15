@@ -56,8 +56,8 @@ class StPPVertexFinder: public StGenericVertexFinder
   void findSeeds_PPVLikelihood();
 
   enum {mxH=32};
-  bool examinTrackDca(const StiKalmanTrack*, TrackData &track);
-  void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
+  bool examinTrackDca(TrackDataT<StiKalmanTrack> &track);
+  void matchTrack2CTB(TrackDataT<StiKalmanTrack> &track);
 
   void matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track);
   void matchTrack2EEMC(TrackDataT<StMuTrack> &track);
