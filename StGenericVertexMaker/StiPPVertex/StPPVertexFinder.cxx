@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.106 2017/03/15 22:56:30 smirnovd Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.107 2017/03/15 22:56:37 smirnovd Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -536,10 +536,6 @@ int StPPVertexFinder::fit(StEvent* event)
   for (const VertexData &V : mVertexData)
   {
     hA[3]->Fill(V.r.z());
-  }
-  
-  if(mVertexData.size()<=0) {
-    return 0; // no vertex
   }
   
   return size();
