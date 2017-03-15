@@ -62,7 +62,10 @@ public:
   int bemcBin; // >=0 if track passed through BTOW tower
   int eemcBin; // >=0 if track passed through ETOW tower
   // ........................methods
-  TrackData();
+
+  TrackData() : TrackData(nullptr, nullptr) { }
+
+  TrackData(const void* motherTrack, const StDcaGeometry* motherDca);
 
   template<class OriginalTrack_t>
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
@@ -94,6 +97,11 @@ public:
 
 /*
  * $Log$
+ * Revision 1.5  2017/03/02 19:11:19  smirnovd
+ * Squashed commit of many assorted changes
+ *
+ * See a704cb55..cb1f57fa on master for details
+ *
  * Revision 1.4  2017/02/21 21:34:22  smirnovd
  * Enhanced proxy data structures for track and vertex
  *
