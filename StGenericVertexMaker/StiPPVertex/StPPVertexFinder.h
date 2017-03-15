@@ -58,12 +58,12 @@ class StPPVertexFinder: public StGenericVertexFinder
   void matchTrack2BTOF(const StiKalmanTrack*, TrackData &track);
   void matchTrack2CTB(const StiKalmanTrack*, TrackData &track);
 
-  void matchTrack2EEMC(const StiKalmanTrack*, TrackData &track);
-  void matchTrack2EEMC(const StMuTrack& muTrack, TrackData &track);
+  void matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track);
+  void matchTrack2EEMC(TrackDataT<StMuTrack> &track);
   void matchTrack2EEMC(const StPhysicalHelixD& helix, TrackData &track);
 
-  void matchTrack2BEMC(const StiKalmanTrack*, TrackData &track);
-  void matchTrack2BEMC(const StMuTrack& muTrack, TrackData &track);
+  void matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track);
+  void matchTrack2BEMC(TrackDataT<StMuTrack> &track);
   void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
 
   bool matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track);
