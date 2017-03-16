@@ -510,18 +510,17 @@ int StPPVertexFinder::fit(StEvent* event)
            << nTracksMatchingAnyFastDetector << " traks with good DCA, matching: BTOF="
            << kBtof << " CTB=" << kCtb << " BEMC=" << kBemc << " EEMC=" << kEemc << endm;
 
-
-  if(nTracksMatchingAnyFastDetector < mMinMatchTr && mStoreUnqualifiedVertex <= 0) {
+  if (nTracksMatchingAnyFastDetector >= mMinMatchTr || mStoreUnqualifiedVertex > 0)
+  {
+    seed_fit_export();
+  } else {
     LOG_INFO << "StPPVertexFinder::fit() nEve=" << mTotEve << " Quit, to few matched tracks" << endm;
-    return 0;
   }
 
   hA[0]->Fill(5);
 
   if(kBemc)  hA[0]->Fill(6);
   if(kEemc)  hA[0]->Fill(7);
-
-  seed_fit_export();
   
   hA[4]->Fill(mVertexData.size());
 
