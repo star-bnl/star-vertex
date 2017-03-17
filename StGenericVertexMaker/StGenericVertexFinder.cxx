@@ -171,9 +171,9 @@ void StGenericVertexFinder::InitRun(int runumber, const St_db_Maker* db_maker)
 
    if (!vSeed) {
       LOG_FATAL << "Vertex fit w/ beamline requested but 'Calibrations/rhic/vertexSeed' table not found" << endm;
+   } else {
+     UseVertexConstraint(*vSeed);
    }
-
-   UseVertexConstraint(*vSeed);
 }
 
 
