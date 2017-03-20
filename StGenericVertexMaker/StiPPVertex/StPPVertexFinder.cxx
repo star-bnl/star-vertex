@@ -647,11 +647,11 @@ void StPPVertexFinder::seed_fit_export()
    if(mVertexData.size()>0)  hA[0]->Fill(8);
    if(mVertexData.size()>1)  hA[0]->Fill(9);
 
-   // Refit vertex position for all cases (currently NoBeamline and Beamline3D)
-   // except when the Beamline1D option is specified. This is done to keep
-   // backward compatible behavior when by default the vertex was placed on the
-   // beamline
-   if (mVertexFitMode == VertexFit_t::Beamline1D)
+   // Refit vertex position for all cases (currently NoBeamline, Beamline1D, and
+   // Beamline3D) except when the BeamlineNoFit option is specified. This is
+   // done to keep backward compatible behavior when by default the vertex was
+   // placed on the beamline
+   if (mVertexFitMode == VertexFit_t::BeamlineNoFit)
    {
       for (VertexData &vertex : mVertexData) {
          const double& z = vertex.r.Z();

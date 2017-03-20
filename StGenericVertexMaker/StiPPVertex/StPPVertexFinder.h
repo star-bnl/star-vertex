@@ -141,7 +141,7 @@ public:
   virtual void Clear(); 
   virtual void CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 
-  StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline1D);
+  StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::BeamlineNoFit);
 
   virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
