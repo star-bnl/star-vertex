@@ -880,9 +880,14 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
    double y_hi = vertexSeed.y() + mMaxTrkDcaRxy;
    double z_hi = vertexSeed.z() + mMaxZradius;
 
-   mMinuit->mnparm(0, "x", vertexSeed.x(), step[0], x_lo, x_hi, minuitStatus);
-   mMinuit->mnparm(1, "y", vertexSeed.y(), step[1], y_lo, y_hi, minuitStatus);
-   mMinuit->mnparm(2, "z", vertexSeed.z(), step[2], z_lo, z_hi, minuitStatus);
+   if (mVertexFitMode == VertexFit_t::Beamline1D)
+   {
+      mMinuit->mnparm(0, "z", vertexSeed.z(), step[2], z_lo, z_hi, minuitStatus);
+   } else {
+      mMinuit->mnparm(0, "x", vertexSeed.x(), step[0], x_lo, x_hi, minuitStatus);
+      mMinuit->mnparm(1, "y", vertexSeed.y(), step[1], y_lo, y_hi, minuitStatus);
+      mMinuit->mnparm(2, "z", vertexSeed.z(), step[2], z_lo, z_hi, minuitStatus);
+   }
 
    mMinuit->mnexcm("minimize", 0, 0, minuitStatus);
 
@@ -900,14 +905,22 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
    mMinuit->mnstat(chisquare, fedm, errdef, npari, nparx, minuitStatus);
    mMinuit->mnhess();
 
+   // The default dimension 9=3*3 should work for 1D case (npar = 1) as well
    double emat[9];
    /* 0 1 2
       3 4 5
       6 7 8 */
    mMinuit->mnemat(emat, 3);
 
-   vertex.r.SetXYZ(mMinuit->fU[0], mMinuit->fU[1], mMinuit->fU[2]);
-   vertex.er.SetXYZ( std::sqrt(emat[0]), std::sqrt(emat[4]), std::sqrt(emat[8]) );
+   if (mVertexFitMode == VertexFit_t::Beamline1D)
+   {
+      const double& z = mMinuit->fU[0];
+      vertex.r.SetXYZ( beamX(z), beamY(z), z);
+      vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, std::sqrt(emat[0]) );
+   } else {
+      vertex.r.SetXYZ(mMinuit->fU[0], mMinuit->fU[1], mMinuit->fU[2]);
+      vertex.er.SetXYZ( std::sqrt(emat[0]), std::sqrt(emat[4]), std::sqrt(emat[8]) );
+   }
 
    return 0;
 }
