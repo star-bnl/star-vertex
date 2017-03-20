@@ -14,6 +14,8 @@
 
 #include <vector>
 
+#include "TMinuit.h"
+
 #include "StEvent/StPrimaryVertex.h"
 #include "tables/St_vertexSeed_Table.h"
 #include "StGenericVertexMaker/VertexFinderOptions.h"
@@ -102,6 +104,8 @@ protected:
   /// A container with pointers to DCA states to be used in a vertex fit.
   /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
   StDcaList  mDCAs;
+
+  TMinuit*  mMinuit;
 
   /// Static pointer to this base class allowing access to concrete
   /// implementations from Minuit minimization function

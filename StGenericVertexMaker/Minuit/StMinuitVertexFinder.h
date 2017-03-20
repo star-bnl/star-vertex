@@ -174,5 +174,4 @@ private:
     StPrimaryVertex         *mBestVtx;    // pointer to best vertex of this event
     Float_t                  mBestRank;   // store rank of best vertex
     Float_t                  mCTBSum;
-    TMinuit*                 mMinuit;
 };

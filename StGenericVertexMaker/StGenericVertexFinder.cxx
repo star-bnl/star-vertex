@@ -49,12 +49,40 @@ StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_
   mBeamline(),
   mDCAs()
 {
+  using ObjectiveFunc_t = void (*)(int&, double*, double&, double*, int);
+
+  ObjectiveFunc_t fcn_minuit;
+  // The number of free fit parameters, i.e. vertex position x, y, and z
+  int nFitParams = 3;
+
+  switch (mVertexFitMode)
+  {
+  case VertexFit_t::Beamline1D:
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAsBeamline1D;
+     nFitParams = 1; // Fit for only z coordinate of the vertex
+     break;
+
+  case VertexFit_t::Beamline3D:
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAsBeamline;
+     break;
+
+  case VertexFit_t::NoBeamline:
+  default:
+     fcn_minuit = &StGenericVertexFinder::fcnCalcChi2DCAs;
+     break;
+  }
+
+  mMinuit = new TMinuit(nFitParams);
+  mMinuit->SetPrintLevel(-1);
+  mMinuit->SetMaxIterations(1000);
+  mMinuit->SetFCN(fcn_minuit);
 }
 
 
 //______________________________________________________________________________
 StGenericVertexFinder::~StGenericVertexFinder()
 {
+  delete mMinuit; mMinuit = nullptr;
 }
 
 
