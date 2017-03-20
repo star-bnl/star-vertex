@@ -917,6 +917,8 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 {
    createTrackDcas(vertex);
 
+   bool fitRequiresBeamline = star_vertex::requiresBeamline(mVertexFitMode);
+
    if (mDCAs.size() == 0) {
       LOG_WARN << "StPPVertexFinder::fitTracksToVertex: At least one track is required. "
                << "This vertex (id = " << vertex.id << ") coordinates will not be updated" << endm;
@@ -927,8 +929,7 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
    StThreeVectorD vertexSeed = CalcVertexSeed(mDCAs);
 
    // For fits with beamline force the seed to be on the beamline
-   if ( mVertexFitMode == VertexFit_t::Beamline1D ||
-        mVertexFitMode == VertexFit_t::Beamline3D )
+   if ( fitRequiresBeamline )
    {
       vertexSeed.setX( beamX(vertexSeed.z()) );
       vertexSeed.setY( beamY(vertexSeed.z()) );
