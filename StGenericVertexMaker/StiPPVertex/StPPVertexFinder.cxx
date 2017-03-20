@@ -847,9 +847,13 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 
    bool fitRequiresBeamline = star_vertex::requiresBeamline(mVertexFitMode);
 
-   if (mDCAs.size() == 0) {
-      LOG_WARN << "StPPVertexFinder::fitTracksToVertex: At least one track is required. "
-               << "This vertex (id = " << vertex.id << ") coordinates will not be updated" << endm;
+   bool prerequisites = mDCAs.size() > 1 || (mDCAs.size() > 0 && fitRequiresBeamline);
+
+   if ( !prerequisites )
+   {
+      LOG_WARN << "StPPVertexFinder::fitTracksToVertex: At least two tracks required "
+               << "OR one with beam line. This vertex (id = " << vertex.id
+               << ") coordinates will not be updated" << endm;
       return 5;
    }
 
