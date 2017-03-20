@@ -49,6 +49,7 @@ __v3.2-rc__
 * Seed finder based on `TSpectrum`
 * Consolidate track selection in `PPV` and `MinuitVF`
 * Remove dependence on StMessMgr
+* Wrap `vertexSeed_st` struct in a more user friendly `BeamLine` type
 
 
 __v3.1-rc__
