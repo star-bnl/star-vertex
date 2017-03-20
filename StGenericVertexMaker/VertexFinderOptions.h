@@ -11,7 +11,7 @@ namespace star_vertex {
 /// implementation
 enum class VertexFit_t : int
 {
-   Unspecified, NoBeamline, Beamline1D, Beamline3D
+   Unspecified, NoBeamline, BeamlineNoFit, Beamline1D, Beamline3D
 };
 
 /// Options to select vertex seed finder

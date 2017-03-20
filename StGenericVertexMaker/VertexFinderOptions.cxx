@@ -16,6 +16,10 @@ std::istream& operator>>(std::istream &in, VertexFit_t &vertex_fit)
    {
       vertex_fit = VertexFit_t::NoBeamline;
    }
+   else if (token == "BEAMLINENOFIT")
+   {
+      vertex_fit = VertexFit_t::BeamlineNoFit;
+   }
    else if (token == "BEAMLINE1D")
    {
       vertex_fit = VertexFit_t::Beamline1D;
@@ -68,6 +72,9 @@ std::ostream& operator<<(std::ostream &out, const VertexFit_t &vertex_fit)
    {
    case VertexFit_t::NoBeamline:
       out << "NoBeamline";
+      break;
+   case VertexFit_t::BeamlineNoFit:
+      out << "BeamlineNoFit";
       break;
    case VertexFit_t::Beamline1D:
       out << "Beamline1D";
