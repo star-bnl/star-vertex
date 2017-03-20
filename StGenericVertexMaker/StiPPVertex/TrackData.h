@@ -87,8 +87,7 @@ class TrackDataT : public TrackData
 {
 public:
 
-  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr) :
-    TrackData(&motherTrack, trackDca) { }
+  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr);
 
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
 };
@@ -98,6 +97,9 @@ public:
 
 /*
  * $Log$
+ * Revision 1.7  2017/03/15 22:56:50  smirnovd
+ * TrackDataT: Added specialization for template constructor
+ *
  * Revision 1.6  2017/03/15 22:56:44  smirnovd
  * TrackData: Introduce deligating constructor
  *
