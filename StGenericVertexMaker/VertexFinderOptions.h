@@ -21,6 +21,9 @@ enum class SeedFinder_t : int
 };
 
 
+bool requiresBeamline(VertexFit_t& vertex_fit);
+
+
 std::istream& operator>>(std::istream &in, VertexFit_t &vertex_fit);
 std::istream& operator>>(std::istream &in, SeedFinder_t &seed_finder);
 

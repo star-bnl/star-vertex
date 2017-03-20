@@ -5,6 +5,20 @@
 namespace star_vertex {
 
 
+bool requiresBeamline(VertexFit_t& vertex_fit)
+{
+   switch(vertex_fit)
+   {
+   case VertexFit_t::BeamlineNoFit:
+   case VertexFit_t::Beamline1D:
+   case VertexFit_t::Beamline3D:
+      return true;
+   default:
+      return false;
+   }
+}
+
+
 std::istream& operator>>(std::istream &in, VertexFit_t &vertex_fit)
 {
    std::string token;
