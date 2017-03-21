@@ -5,6 +5,7 @@
 
 #include "StGenericVertexMaker/StiPPVertex/TrackData.h"
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
+#include "StMuDSTMaker/COMMON/StMuTrack.h"
 
 
 

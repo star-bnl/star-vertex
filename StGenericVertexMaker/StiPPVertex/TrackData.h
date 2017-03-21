@@ -1,7 +1,7 @@
 #ifndef TrackData_h
 #define TrackData_h
 /***********************************************
- * $Id: TrackData.h,v 1.7 2017/03/15 22:56:50 smirnovd Exp $
+ * $Id: TrackData.h,v 1.9 2017/03/21 15:15:01 smirnovd Exp $
  ******************************************************
  */
 #include <TVector3.h>
@@ -104,6 +104,11 @@ TrackDataT<StMuTrack>::TrackDataT(const StMuTrack &motherTrack, const StDcaGeome
 
 /*
  * $Log: TrackData.h,v $
+ * Revision 1.9  2017/03/21 15:15:01  smirnovd
+ * Revert "TrackDataT: Removed erroneous inlined definition for constructor"
+ *
+ * This reverts commit 96e7f20e48eed3c52eb272b27740ff190ce1b9fc.
+ *
  * Revision 1.7  2017/03/15 22:56:50  smirnovd
  * TrackDataT: Added specialization for template constructor
  *
