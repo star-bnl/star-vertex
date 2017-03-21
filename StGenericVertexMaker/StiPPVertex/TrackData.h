@@ -87,7 +87,8 @@ class TrackDataT : public TrackData
 {
 public:
 
-  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr);
+  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr) :
+    TrackData(&motherTrack, trackDca) { }
 
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
 };
