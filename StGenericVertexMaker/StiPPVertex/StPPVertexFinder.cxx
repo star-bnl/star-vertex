@@ -450,12 +450,12 @@ int StPPVertexFinder::fit(StEvent* event)
 
     ntrk[0]++;
 
-    if(stiKalmanTrack->getFlag() <0)                 {ntrk[1]++; continue;}
-    if(stiKalmanTrack->getPt() < mMinTrkPt)          {ntrk[2]++; continue;}
-    if(mDropPostCrossingTrack &&
-       isPostCrossingTrack(stiKalmanTrack))          {ntrk[3]++; continue;}  // kill if it has hits in wrong z
-    if(!examinTrackDca(stiKalmanTrack, track))       {ntrk[4]++; continue;}  // drop from DCA
-    if(!matchTrack2Membrane(track))                  {ntrk[5]++; continue;}  // kill if nFitP too small
+    if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
+    if (stiKalmanTrack->getPt() < mMinTrkPt)    { ntrk[2]++; continue; }
+    if (mDropPostCrossingTrack &&
+        isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
+    if (!examinTrackDca(stiKalmanTrack, track)) { ntrk[4]++; continue; }  // drop from DCA
+    if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
 
     ntrk[6]++;
 
@@ -655,8 +655,8 @@ void StPPVertexFinder::seed_fit_export()
          const double& z = vertex.r.Z();
          vertex.r.SetXYZ( beamX(z), beamY(z), z);
       }
-
-   } else
+   }
+   else
    {
       for (VertexData &vertex : mVertexData)
       {
@@ -894,12 +894,16 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
       const StiNodePars &pars = tNode->fitPars();
       const StiNodeErrs &errs = tNode->fitErrs();
       float alfa = tNode->getAlpha();
-      Float_t setp[7] = {(float)pars.y(),    (float)pars.z(),    (float)pars.phi()
-                        ,(float)pars.ptin(), (float)pars.tanl(), (float)pars.curv(), (float)pars.hz()};
-      setp[2]+= alfa;
-      Float_t sete[15];
-      for (int i=1,li=1,jj=0;i< kNPars;li+=++i) {
-        for (int j=1;j<=i;j++) {sete[jj++]=errs.G()[li+j];}}
+      float setp[7] = {(float)pars.y(),    (float)pars.z(),    (float)pars.phi(),
+                       (float)pars.ptin(), (float)pars.tanl(), (float)pars.curv(), (float)pars.hz()};
+      setp[2] += alfa;
+      float sete[15];
+
+      for (int i=1, li=1, jj=0; i<kNPars; li += ++i) {
+        for (int j=1;j<=i;j++) {
+           sete[jj++] = errs.G()[li+j];
+        }
+      }
 
       StDcaGeometry* dca = new StDcaGeometry();
       dca->set(setp, sete);
