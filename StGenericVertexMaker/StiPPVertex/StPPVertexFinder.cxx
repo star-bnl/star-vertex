@@ -782,7 +782,7 @@ bool StPPVertexFinder::findVertexZ(VertexData &vertex)
 bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
 {
   // returns true if vertex is accepted accepted
-  int n1=0, nHiPt=0;
+  int nHiPt=0;
   
   for (TrackData &track : mTrackData)
   {
@@ -794,9 +794,9 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
     if ( !track.matchVertex(vertex, mMaxZradius) ) continue;
 
     // Otherwise, this track belongs to this vertex
-    n1++;
     track.vertexID  = vertex.id;
     vertex.gPtSum  += track.gPt;
+    vertex.nUsedTrack++;
 
     if( track.gPt>mCut_oneTrackPT && ( track.mBemc>0|| track.mEemc>0) ) nHiPt++;
 
@@ -818,8 +818,6 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
     if( track.anyMatch)     vertex.nAnyMatch++;
     else if (track.anyVeto) vertex.nAnyVeto++;
   } 
-
-  vertex.nUsedTrack = n1;
 
   vertex.isTriggered = (vertex.nAnyMatch >= mMinMatchTr) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
   if (!vertex.isTriggered) { // discrad vertex
