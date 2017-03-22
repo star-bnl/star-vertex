@@ -9,6 +9,8 @@
  *
  ************************************************************/
    
+#include <cmath>
+
 #include <St_base/StMessMgr.h>
 
 #include "TFile.h"

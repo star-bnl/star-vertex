@@ -35,7 +35,6 @@
 
 
 #include "tables/St_g2t_vertex_Table.h" // tmp for Dz(vertex)
-#include "tables/St_vertexSeed_Table.h" //
 
 class StMuDst;
 class TClonesArray;
