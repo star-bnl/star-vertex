@@ -582,16 +582,13 @@ void StPPVertexFinder::seed_fit_export()
    }
    else
    {
-      for (VertexData &vertex : mVertexData)
-      {
-         // When fitTracksToVertex fails it returns non-zero value. Just use the
-         // beam equation to set the best guess for vertex position. Works for no
-         // beamline case by setting vertex position to (0,0,0)
-         if ( fitTracksToVertex(vertex) ) {
-            const double& z = vertex.r.Z();
-            vertex.r.SetXYZ( beamX(z), beamY(z), z);
-         }
-      }
+      size_t n_seeds = mVertexData.size();
+
+      auto cannot_fit = [this] (VertexData &vertex) { return fitTracksToVertex(vertex) != 0; };
+      mVertexData.erase( std::remove_if(mVertexData.begin(), mVertexData.end(), cannot_fit), mVertexData.end() );
+      // Update the "bad" vertex counter as some vertices could have been
+      // removed in the previous step
+      nBadVertex -= n_seeds - mVertexData.size();
    }
 
    exportVertices();
