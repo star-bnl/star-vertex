@@ -900,7 +900,16 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
       LOG_WARN << "StPPVertexFinder::fitTracksToVertex: Fit did not converge. "
                << "Check TMinuit::mnexcm() status flag: " << minuitStatus << ". "
                << "This vertex (id = " << vertex.id << ") coordinates will not be updated" << endm;
-      return minuitStatus;
+
+      // The fit has failed but let's keep the vertex anyway. For cases with
+      // beam line we put the vertex on the beam line
+      if ( fitRequiresBeamline ) {
+         const double& z = vertex.r.Z();
+         vertex.r.SetXYZ( beamX(z), beamY(z), z);
+         vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, vertex.er.Z());
+      }
+      // Return 0 (=success) in order to keep the vertex
+      return 0;
    }
 
    double chisquare, fedm, errdef;
