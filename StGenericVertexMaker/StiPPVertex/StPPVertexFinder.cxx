@@ -787,7 +787,7 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
       mDCAs.clear();
       
       for (const TrackData & track : mTrackData) {
-         if (track.vertexID != vertex.id) continue;
+         if ( std::fabs(track.vertexID) != vertex.id) continue;
          mDCAs.push_back(track.dca);
       }
 
@@ -802,7 +802,7 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
 
    for (const TrackData & track : mTrackData)
    {
-      if (track.vertexID != vertex.id) continue;
+      if ( std::fabs(track.vertexID) != vertex.id) continue;
       if (!track.mother) continue;
 
       // This code is adopted from StiStEventFiller::fillDca()
