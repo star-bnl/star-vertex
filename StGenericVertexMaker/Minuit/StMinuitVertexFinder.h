@@ -130,6 +130,7 @@ private:
     Int_t   checkCrossMembrane(const StTrack *);
     void    calculateRanks();
     Int_t   findSeeds();
+    void    exportVertices(); 
 
     virtual void UseVertexConstraint() {}
 

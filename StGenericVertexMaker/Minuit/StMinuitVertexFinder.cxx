@@ -137,6 +137,96 @@ Int_t StMinuitVertexFinder::findSeeds()
   return mNSeed;
 }
 
+ 
+/**
+ * Copies vertices from this finder private container to StEvent's one. No
+ * rejection criteria is applied during the copy.
+ */
+void StMinuitVertexFinder::exportVertices()
+{
+      // Store vertex
+      StThreeVectorD XVertex;
+      Float_t cov[6];
+      memset(cov,0,sizeof(cov));
+    
+      Double_t val, verr;
+      if (mVertexFitMode == VertexFit_t::Beamline1D)
+      {
+	mMinuit->GetParameter(0, val, verr); 
+	XVertex.setZ(val);  cov[5]=verr*verr;
+	
+	// LSB Really error in x and y should come from error on constraint
+	// At least this way it is clear that those were fixed paramters
+	XVertex.setX(mBeamline.X(val));  cov[0]=0.1; // non-zero error values needed for Sti
+	XVertex.setY(mBeamline.Y(val));  cov[2]=0.1;
+      }
+      else
+      {
+	XVertex = StThreeVectorD(mMinuit->fU[0],mMinuit->fU[1],mMinuit->fU[2]);
+	Double_t emat[9];
+	/* 0 1 2
+	   3 4 5
+           6 7 8 */
+	mMinuit->mnemat(emat,3);
+	cov[0] = emat[0];
+	cov[1] = emat[3];
+	cov[2] = emat[4];
+	cov[3] = emat[6];
+	cov[4] = emat[7];
+	cov[5] = emat[8];
+      }
+
+      StPrimaryVertex primV;
+      primV.setPosition(XVertex);
+      primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
+      primV.setCovariantMatrix(cov); 
+      primV.setVertexFinderId(minuitVertexFinder);
+      primV.setFlag(1); // was not set earlier by this vertex finder ?? Jan
+      primV.setRanking(333);
+      primV.setNumTracksUsedInFinder(n_trk_vtx);
+
+      Int_t n_ctb_match = 0;
+      Int_t n_bemc_match = 0;
+      Int_t n_cross = 0;
+      n_trk_vtx = 0;
+
+      Double_t mean_dip = 0;
+      Double_t sum_pt = 0;
+ 
+      for (UInt_t i=0; i < mHelixFlags.size(); i++) {
+	if (!(mHelixFlags[i] & kFlagDcaz))
+	  continue;
+	n_trk_vtx++;
+	if (mHelixFlags[i] & kFlagCTBMatch)
+	  n_ctb_match++;
+	if (mHelixFlags[i] & kFlagBEMCMatch)
+	  n_bemc_match++;
+	if (mHelixFlags[i] & kFlagCrossMembrane)
+	  n_cross++;
+	mean_dip += mHelices[i].dipAngle();
+	sum_pt += mHelices[i].momentum(0).perp();
+      }
+      
+      mean_dip /= n_trk_vtx;
+
+      if (mDebugLevel) {
+	LOG_INFO << "check n_trk_vtx " << n_trk_vtx << ", found "
+	         << n_ctb_match << " ctb matches, "
+		 << n_bemc_match << " bemc matches, "
+		 << n_cross << " tracks crossing central membrane\n"
+	         << "mean dip " << mean_dip << endm;
+      }
+
+      primV.setNumMatchesWithCTB(n_ctb_match);      
+      primV.setNumMatchesWithBEMC(n_bemc_match);
+      primV.setNumTracksCrossingCentralMembrane(n_cross);
+      primV.setMeanDip(mean_dip);
+      primV.setSumOfTrackPt(sum_pt);
+
+      //..... add vertex to the list
+      addVertex(primV);
+}
+
 
 void StMinuitVertexFinder::fillBemcHits(StEvent *event)
 {
@@ -579,87 +669,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	continue;
       }
 
-      // Store vertex
-      StThreeVectorD XVertex;
-      Float_t cov[6];
-      memset(cov,0,sizeof(cov));
-    
-      Double_t val, verr;
-      if (mVertexFitMode == VertexFit_t::Beamline1D)
-      {
-	mMinuit->GetParameter(0, val, verr); 
-	XVertex.setZ(val);  cov[5]=verr*verr;
-	
-	// LSB Really error in x and y should come from error on constraint
-	// At least this way it is clear that those were fixed paramters
-	XVertex.setX(mBeamline.X(val));  cov[0]=0.1; // non-zero error values needed for Sti
-	XVertex.setY(mBeamline.Y(val));  cov[2]=0.1;
-      }
-      else
-      {
-	XVertex = StThreeVectorD(mMinuit->fU[0],mMinuit->fU[1],mMinuit->fU[2]);
-	Double_t emat[9];
-	/* 0 1 2
-	   3 4 5
-           6 7 8 */
-	mMinuit->mnemat(emat,3);
-	cov[0] = emat[0];
-	cov[1] = emat[3];
-	cov[2] = emat[4];
-	cov[3] = emat[6];
-	cov[4] = emat[7];
-	cov[5] = emat[8];
-      }
-
-      StPrimaryVertex primV;
-      primV.setPosition(XVertex);
-      primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
-      primV.setCovariantMatrix(cov); 
-      primV.setVertexFinderId(minuitVertexFinder);
-      primV.setFlag(1); // was not set earlier by this vertex finder ?? Jan
-      primV.setRanking(333);
-      primV.setNumTracksUsedInFinder(n_trk_vtx);
-
-      Int_t n_ctb_match = 0;
-      Int_t n_bemc_match = 0;
-      Int_t n_cross = 0;
-      n_trk_vtx = 0;
-
-      Double_t mean_dip = 0;
-      Double_t sum_pt = 0;
- 
-      for (UInt_t i=0; i < mHelixFlags.size(); i++) {
-	if (!(mHelixFlags[i] & kFlagDcaz))
-	  continue;
-	n_trk_vtx++;
-	if (mHelixFlags[i] & kFlagCTBMatch)
-	  n_ctb_match++;
-	if (mHelixFlags[i] & kFlagBEMCMatch)
-	  n_bemc_match++;
-	if (mHelixFlags[i] & kFlagCrossMembrane)
-	  n_cross++;
-	mean_dip += mHelices[i].dipAngle();
-	sum_pt += mHelices[i].momentum(0).perp();
-      }
-      
-      mean_dip /= n_trk_vtx;
-
-      if (mDebugLevel) {
-	LOG_INFO << "check n_trk_vtx " << n_trk_vtx << ", found "
-	         << n_ctb_match << " ctb matches, "
-		 << n_bemc_match << " bemc matches, "
-		 << n_cross << " tracks crossing central membrane\n"
-	         << "mean dip " << mean_dip << endm;
-      }
-
-      primV.setNumMatchesWithCTB(n_ctb_match);      
-      primV.setNumMatchesWithBEMC(n_bemc_match);
-      primV.setNumTracksCrossingCentralMembrane(n_cross);
-      primV.setMeanDip(mean_dip);
-      primV.setSumOfTrackPt(sum_pt);
-
-      //..... add vertex to the list
-      addVertex(primV);
+      exportVertices();
 
       old_vtx_z = XVertex.z();
     }
