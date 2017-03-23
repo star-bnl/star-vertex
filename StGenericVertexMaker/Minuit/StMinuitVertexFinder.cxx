@@ -20,6 +20,12 @@
 #include "StEvent/StDcaGeometry.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
 #include "StChain/StMaker.h"
+#include "StMuDSTMaker/COMMON/StMuBTofHit.h"
+#include "StMuDSTMaker/COMMON/StMuDst.h"
+#include "StMuDSTMaker/COMMON/StMuTrack.h"
+#include "StMuDSTMaker/COMMON/StMuEmcCollection.h"
+#include "StMuDSTMaker/COMMON/StMuEmcUtil.h"
+
 std::vector<StPhysicalHelixD>   StMinuitVertexFinder::mHelices;
 std::vector<UShort_t>           StMinuitVertexFinder::mHelixFlags;
 std::vector<Double_t >          StMinuitVertexFinder::mZImpact;
@@ -45,7 +51,8 @@ StMinuitVertexFinder::setExternalSeed(const StThreeVectorD& s)
 
 
 StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
-  StGenericVertexFinder(SeedFinder_t::MinuitVF, fitMode)
+  StGenericVertexFinder(SeedFinder_t::MinuitVF, fitMode),
+  mStMuDst(nullptr)
 {
   mExternalSeedPresent = kFALSE;
   mRequireCTB        = kFALSE;
@@ -683,6 +690,67 @@ int StMinuitVertexFinder::fit(StEvent* event)
     requireCTB = kFALSE;
 
     return 1;
+}
+
+
+int StMinuitVertexFinder::fit(const StMuDst& muDst)
+{
+   mStMuDst = &muDst;
+
+   // Similar to fit() we need to populate bemcList
+   StMuEmcCollection *muEmcCollection = muDst.muEmcCollection();
+
+   StMuEmcUtil muEmcUtil;
+
+   StEmcCollection* emcC = muEmcUtil.getEmc(muEmcCollection);
+   StEmcDetector* btow = emcC->detector(kBarrelEmcTowerId);
+
+   // Access btof data from ... branch
+   //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
+   //btofList->build(*muBTofHits);
+
+   // Access array of all StDcaGeometry objects (i.e. tracks)
+   TObjArray*    globalTracks  = muDst.globalTracks();
+   TClonesArray* covGlobTracks = muDst.covGlobTrack();
+
+//   for (const TObject* obj : *globalTracks)
+//   {
+//      ntrk[0]++;
+//
+//      const StMuTrack& stMuTrack = static_cast<const StMuTrack&>(*obj);
+//
+//      if (stMuTrack.pt() < mMinTrkPt) { ntrk[2]++; continue; }
+//
+//      // Supposedly equivalent to isPostCrossingTrack()
+//      if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
+//
+//      // Supposedly equivalent to DCA check with examinTrackDca()
+//      if (stMuTrack.index2Cov() < 0) { ntrk[4]++; continue; }
+//
+//      StDcaGeometry* dca = static_cast<StDcaGeometry*>(covGlobTracks->At(stMuTrack.index2Cov()));
+//
+//      if ( std::fabs(dca->z()) > mMaxZrange ) { ntrk[4]++; continue; }
+//      if ( std::fabs(dca->impact())  > mMaxTrkDcaRxy) { ntrk[4]++; continue; }
+//
+//      // Condition similar to one in matchTrack2Membrane
+//      double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
+//      if (fracFit2PossHits < mVertexCuts.MinFracOfPossFitPointsOnTrack) { ntrk[5]++; continue; }  // kill if nFitP too small
+//
+//      ntrk[6]++;
+//
+//      TrackDataT<StMuTrack> track(stMuTrack, dca);
+//
+//      // Modify track weights
+//      matchTrack2BEMC(track);
+//      matchTrack2EEMC(track);
+//      matchTrack2Membrane(track);
+//
+//      mTrackData.push_back(track);
+//   }
+
+   //seed_fit_export();
+
+   return size();
 }
 
 

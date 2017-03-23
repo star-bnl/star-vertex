@@ -95,6 +95,7 @@
 class StEvent;
 class StTrack;
 class TMinuit;
+class StMuDst;
 
 
 class StMinuitVertexFinder: public StGenericVertexFinder
@@ -106,6 +107,7 @@ public:
     // mandatory implementations
     virtual        ~StMinuitVertexFinder();
     virtual int     fit(StEvent*);
+    virtual int     fit(const StMuDst& muDst);
     void            printInfo(ostream& = cout) const;
     void            Clear();
 
@@ -158,6 +160,9 @@ private:
     StPrimaryVertex         *mBestVtx;    // pointer to best vertex of this event
     Float_t                  mBestRank;   // store rank of best vertex
     Float_t                  mCTBSum;
+
+    /// A pointer to muDST event
+    const StMuDst* mStMuDst;
 };
 
 
