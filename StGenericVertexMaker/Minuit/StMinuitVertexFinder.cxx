@@ -217,7 +217,7 @@ void StMinuitVertexFinder::exportVertices()
 
    StPrimaryVertex primV;
    primV.setPosition(XVertex);
-   primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
+   //primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
    primV.setCovariantMatrix(cov);
    primV.setVertexFinderId(minuitVertexFinder);
    primV.setFlag(1); // was not set earlier by this vertex finder ?? Jan
@@ -677,7 +677,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
 
       exportVertices();
 
-      old_vtx_z = XVertex.z();
+      //old_vtx_z = XVertex.z();
     }
 
     calculateRanks();
