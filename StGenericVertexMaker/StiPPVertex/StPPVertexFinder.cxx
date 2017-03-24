@@ -311,10 +311,11 @@ void StPPVertexFinderT<Event_t, Track_t>::printInfo(ostream& os) const
 
 //==========================================================
 //==========================================================
-int StPPVertexFinder::fit(StEvent* event)
+template<>
+int StPPVertexFinderT<StEvent, StiKalmanTrack>::fit(const StEvent& event)
 {
   mTotEve++;
-  eveID=event->id();
+  eveID= event.id();
 
   LOG_INFO << "***** START FIT\n"
            << "   @@@@@@   PPVertex::Fit START nEve=" << mTotEve
@@ -324,7 +325,7 @@ int StPPVertexFinder::fit(StEvent* event)
 
   // get BTOF info
   if(mUseBtof) {
-    StBTofCollection *btofColl = (StBTofCollection*)event->btofCollection();
+    StBTofCollection *btofColl = (StBTofCollection*) event.btofCollection();
     if(btofColl==0) {
       LOG_WARN << "no btofCollection, continue THE SAME eve" << endm;
     } else {
@@ -334,12 +335,12 @@ int StPPVertexFinder::fit(StEvent* event)
 
   // get CTB info, does not  work for embeding 
   if(mUseCtb) {// CTB could be off since 2006 
-    StTriggerData *trgD=event->triggerData ();
+    StTriggerData *trgD= const_cast<StEvent&>(event).triggerData ();
     ctbList->buildFromData(trgD); // use real data
   }
 
 
-  StEmcCollection* emcC =(StEmcCollection*)event->emcCollection();
+  StEmcCollection* emcC =(StEmcCollection*) event.emcCollection();
   if(emcC==0) {
     LOG_WARN << "No StEmcCollection found, continue with this event" << endm;
   } else {
