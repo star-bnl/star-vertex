@@ -2,6 +2,7 @@
 #include <cmath>
 #include <St_base/StMessMgr.h>
 #include "StEvent/StDcaGeometry.h"
+#include "Sti/StiKalmanTrackNode.h"
 
 #include "StGenericVertexMaker/StiPPVertex/TrackData.h"
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
@@ -174,6 +175,57 @@ void TrackData::print(ostream& os) const
    }
 
    os << endl;
+}
+
+
+template<>
+TrackDataT<StiKalmanTrack>::TrackDataT(const StiKalmanTrack &motherTrack) :
+  TrackData(&motherTrack, new StDcaGeometry())
+{
+  // This code is adopted from StiStEventFiller::fillDca()
+  StiKalmanTrackNode *tNode = const_cast<StiKalmanTrack&>(motherTrack).extrapolateToBeam();
+
+  if (tNode)
+  {
+    const StiNodePars &pars = tNode->fitPars();
+    const StiNodeErrs &errs = tNode->fitErrs();
+    float alfa = tNode->getAlpha();
+    float setp[7] = {(float)pars.y(),    (float)pars.z(),    (float)pars.phi(),
+                     (float)pars.ptin(), (float)pars.tanl(), (float)pars.curv(), (float)pars.hz()};
+    setp[2] += alfa;
+    float sete[15];
+
+    for (int i=1, li=1, jj=0; i<kNPars; li += ++i) {
+      for (int j=1;j<=i;j++) {
+         sete[jj++] = errs.G()[li+j];
+      }
+    }
+
+    const_cast<StDcaGeometry*>(dca)->set(setp, sete);
+  }
+  else
+  {
+    delete dca;
+    dca = nullptr;
+  }
+
+  // The following code is moved from the original StPPVertexFinder::examinTrackDca()
+  StiKalmanTrackNode* bmNode = motherTrack.getInnerMostNode();
+
+  if ( bmNode && bmNode->isDca() )
+  {
+    zDca   = bmNode->getZ(); // FIXME: Why not bmNode->z_g() instead?
+    ezDca  = std::sqrt(bmNode->getCzz());
+    rxyDca = std::sqrt(bmNode->x_g()*bmNode->x_g() + bmNode->y_g()*bmNode->y_g());
+    gPt    = bmNode->getPt();
+  }
+}
+
+template<>
+TrackDataT<StiKalmanTrack>::~TrackDataT()
+{
+  delete dca;
+  dca = nullptr;
 }
 
 

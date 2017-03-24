@@ -3,6 +3,7 @@
 
 #include <TVector3.h>
 #include <Sti/StiTrackNode.h>
+#include "Sti/StiKalmanTrack.h"
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 
 
@@ -10,7 +11,6 @@
 using namespace std;  // for vector
 
 class VertexData ;
-class StiKalmanTrack;
 class StDcaGeometry;
 
 
@@ -87,12 +87,23 @@ class TrackDataT : public TrackData
 {
 public:
 
-  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca=nullptr) :
+  TrackDataT(const OriginalTrack_t &motherTrack) :
+    TrackData(&motherTrack, nullptr) { }
+
+  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca) :
     TrackData(&motherTrack, trackDca) { }
+
+  ~TrackDataT() {};
 
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
 };
 
+
+template<>
+TrackDataT<StiKalmanTrack>::TrackDataT(const StiKalmanTrack &motherTrack);
+
+template<>
+TrackDataT<StiKalmanTrack>::~TrackDataT();
 
 template<>
 TrackDataT<StMuTrack>::TrackDataT(const StMuTrack &motherTrack, const StDcaGeometry* trackDca);
