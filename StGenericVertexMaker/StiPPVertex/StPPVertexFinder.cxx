@@ -737,8 +737,10 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
 
 
 /**
- * Creates DCA states for selected tracks (mTrackData) and fills the member
- * container mDCAs. The tracks in mTrackData must be already associated with
+ * Indentifies the tracks corresponding to the provided `vertex` and fills the
+ * member container `mDCAs` with pointers to their StDcaGeometry-s. These will
+ * be used in the static minimization function during the fit. The tracks are
+ * selected from `mTrackData` and must be already associated with
  * a corresponding vertex, i.e. we check that track.vertexID == vertex.id
  *
  * \author Dmitri Smirnov, BNL
@@ -746,56 +748,15 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
  */
 void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
 {
-   // Consider muDst case
-   if (mStMuDst)
-   {
-      // Just clean the pointers owned by something else
-      mDCAs.clear();
-      
-      for (const TrackData & track : mTrackData) {
-         if ( std::fabs(track.vertexID) != vertex.id) continue;
-         mDCAs.push_back(track.dca);
-      }
-
-      return;
-   }
-
-   // Fill member array of pointers to StDcaGeometry objects for selected tracks
-   // in mTrackData corresponding to this vertex. These will be used in static
-   // minimization function
-   while (!mDCAs.empty()) delete mDCAs.back(), mDCAs.pop_back();
-
+   // Just clean the pointers owned by something else
+   mDCAs.clear();
 
    for (const TrackData & track : mTrackData)
    {
       if ( std::fabs(track.vertexID) != vertex.id) continue;
-      if (!track.mother) continue;
+      if ( !track.dca ) continue;
 
-      // This code is adopted from StiStEventFiller::fillDca()
-      StiKalmanTrack tmpTrack = *track.getMother<StiKalmanTrack>();
-      StiKalmanTrackNode *tNode = tmpTrack.extrapolateToBeam();
-
-      if (!tNode) continue;
-
-      const StiNodePars &pars = tNode->fitPars();
-      const StiNodeErrs &errs = tNode->fitErrs();
-      float alfa = tNode->getAlpha();
-      float setp[7] = {(float)pars.y(),    (float)pars.z(),    (float)pars.phi(),
-                       (float)pars.ptin(), (float)pars.tanl(), (float)pars.curv(), (float)pars.hz()};
-      setp[2] += alfa;
-      float sete[15];
-
-      // These nested loops remove the first column (`x` is irrelevant in Sti
-      // basis) in symmetric triangular matrix errs.G() -> sete
-      for (int i=1, li=1, jj=0; i<kNPars; li += ++i) {
-        for (int j=1;j<=i;j++) {
-           sete[jj++] = errs.G()[li+j];
-        }
-      }
-
-      StDcaGeometry* dca = new StDcaGeometry();
-      dca->set(setp, sete);
-      mDCAs.push_back(dca);
+      mDCAs.push_back(track.dca);
    }
 }
 
@@ -811,7 +772,7 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
  */
 int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 {
-   createTrackDcas(vertex);
+   fillTrackDcas(vertex);
 
    bool fitRequiresBeamline = star_vertex::requiresBeamline(mVertexFitMode);
 
