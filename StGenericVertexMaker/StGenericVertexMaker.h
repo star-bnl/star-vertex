@@ -10,8 +10,8 @@
  */
 
    
-#ifndef STAR_StGenericVertexMaker
-#define STAR_StGenericVertexMaker
+#ifndef StGenericVertexMaker_h
+#define StGenericVertexMaker_h
 
 #include "StChain/StMaker.h"
 

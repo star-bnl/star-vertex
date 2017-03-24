@@ -83,6 +83,8 @@
  *
  */
 
+#ifndef StMinuitVertexFinder_h
+#define StMinuitVertexFinder_h
 
 #include <vector>
 
@@ -165,3 +167,6 @@ private:
     Float_t                  mBestRank;   // store rank of best vertex
     Float_t                  mCTBSum;
 };
+
+
+#endif

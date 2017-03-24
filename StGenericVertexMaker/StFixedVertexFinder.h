@@ -20,8 +20,8 @@
  *  to zero for the lack of a better choice.
  */
 
-#ifndef STAR_StFixedVertexFinder
-#define STAR_StFixedVertexFinder
+#ifndef StFixedVertexFinder_h
+#define StFixedVertexFinder_h
 
 
 #include "StGenericVertexMaker/StGenericVertexFinder.h"

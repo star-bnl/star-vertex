@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef StPPVertexFinder_h
+#define StPPVertexFinder_h
+
 #include <vector>
 
 #include "StGenericVertexMaker/StGenericVertexFinder.h"
@@ -147,3 +150,6 @@ public:
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
   virtual void printInfo(std::ostream& os = std::cout) const;
 };
+
+
+#endif
