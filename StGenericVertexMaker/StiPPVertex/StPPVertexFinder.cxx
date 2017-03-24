@@ -1045,23 +1045,9 @@ void StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track)
 //==========================================================
 bool StPPVertexFinder::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
 {
-  const StiKalmanTrack* stiTrack = track.getMother();
+  if ( track.rxyDca > mVertexCuts.RImpactMax ) return false;
 
-  // .......... test DCA to beam .............
-  StiKalmanTrackNode * bmNode = stiTrack->getInnerMostNode();
-
-  if (!bmNode)          return false;
-  if (!bmNode->isDca()) return false;
-
-  float rxy = std::sqrt(bmNode->x_g()*bmNode->x_g() + bmNode->y_g()*bmNode->y_g());
-
-  if ( rxy > mVertexCuts.RImpactMax ) return false;
-  if ( bmNode->z_g() > mVertexCuts.ZMax || bmNode->z_g() < mVertexCuts.ZMin  ) return false;
-
-  track.zDca   = bmNode->getZ();
-  track.ezDca  = std::sqrt(bmNode->getCzz());
-  track.rxyDca = rxy;
-  track.gPt    = bmNode->getPt();
+  if ( track.zDca > mVertexCuts.ZMax || track.zDca < mVertexCuts.ZMin  ) return false;
 
   return true;
 }
