@@ -183,19 +183,10 @@ void StMinuitVertexFinder::exportVertices()
      cov[5] = emat[8];
    }
 
-   StPrimaryVertex primV;
-   primV.setPosition(XVertex);
-   primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
-   primV.setCovariantMatrix(cov); 
-   primV.setVertexFinderId(minuitVertexFinder);
-   primV.setFlag(1); // was not set earlier by this vertex finder ?? Jan
-   primV.setRanking(333);
-   primV.setNumTracksUsedInFinder(n_trk_vtx);
-
    Int_t n_ctb_match = 0;
    Int_t n_bemc_match = 0;
    Int_t n_cross = 0;
-   n_trk_vtx = 0;
+   int n_trk_vtx = 0;
 
    Double_t mean_dip = 0;
    Double_t sum_pt = 0;
@@ -224,7 +215,15 @@ void StMinuitVertexFinder::exportVertices()
               << "mean dip " << mean_dip << endm;
    }
 
-   primV.setNumMatchesWithCTB(n_ctb_match);      
+   StPrimaryVertex primV;
+   primV.setPosition(XVertex);
+   primV.setChiSquared(chisquare);  // this is not really a chisquare, but anyways
+   primV.setCovariantMatrix(cov);
+   primV.setVertexFinderId(minuitVertexFinder);
+   primV.setFlag(1); // was not set earlier by this vertex finder ?? Jan
+   primV.setRanking(333);
+   primV.setNumTracksUsedInFinder(n_trk_vtx);
+   primV.setNumMatchesWithCTB(n_ctb_match);
    primV.setNumMatchesWithBEMC(n_bemc_match);
    primV.setNumTracksCrossingCentralMembrane(n_cross);
    primV.setMeanDip(mean_dip);
