@@ -1,8 +1,7 @@
 #ifndef TrackData_h
 #define TrackData_h
 
-#include <TVector3.h>
-#include <Sti/StiTrackNode.h>
+#include "TVector3.h"
 #include "Sti/StiKalmanTrack.h"
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 
