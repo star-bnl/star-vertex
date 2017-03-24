@@ -25,6 +25,7 @@
 #include "StGenericVertexMaker/StGenericVertexMaker.h"
 #include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
 #include "StEvent/StDcaGeometry.h"
+#include "StEvent/StEvent.h"
 #include "StEvent/StEventTypes.h"
 #include "StEvent/StEnumerations.h"
 #include "StEvent/StTrack.h"

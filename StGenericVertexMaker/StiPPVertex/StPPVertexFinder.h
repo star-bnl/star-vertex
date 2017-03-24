@@ -17,6 +17,7 @@
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
 
 #include "StarClassLibrary/StPhysicalHelixD.hh"
+#include "StMuDSTMaker/COMMON/StMuDst.h"
 
 class TH1F;
 class TH2F;
@@ -26,7 +27,6 @@ class StiKalmanTrack;
 class StEvent; 
 class StiToolkit;
 
-class StMuDst;
 
 class St_db_Maker;
 class BtofHitList;  
