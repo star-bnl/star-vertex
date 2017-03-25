@@ -32,6 +32,7 @@ public:
 };
 
 
+template<class OriginalTrack_t>
 class TrackData
 {
 public:
@@ -41,7 +42,7 @@ public:
   int vertexID;
 
   /// Pointer to original track
-  const void* mother;
+  const OriginalTrack_t& mother;
 
   const StDcaGeometry* dca;
 
@@ -62,12 +63,12 @@ public:
   int eemcBin; // >=0 if track passed through ETOW tower
   // ........................methods
 
-  TrackData() : TrackData(nullptr, nullptr) { }
+  TrackData(const OriginalTrack_t& motherTrack);
+  TrackData(const OriginalTrack_t& motherTrack, const StDcaGeometry* motherDca);
 
-  TrackData(const void* motherTrack, const StDcaGeometry* motherDca);
+  ~TrackData() {};
 
-  template<class OriginalTrack_t>
-  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
+  const OriginalTrack_t& getMother() const { return mother; }
 
   void scanNodes( vector<int> & hitPatt, int jz0);
   bool matchVertex(VertexData &V, float kSig) ;
@@ -81,31 +82,14 @@ public:
 };
 
 
-template<class OriginalTrack_t>
-class TrackDataT : public TrackData
-{
-public:
-
-  TrackDataT(const OriginalTrack_t &motherTrack) :
-    TrackData(&motherTrack, nullptr) { }
-
-  TrackDataT(const OriginalTrack_t &motherTrack, const StDcaGeometry* trackDca) :
-    TrackData(&motherTrack, trackDca) { }
-
-  ~TrackDataT() {};
-
-  const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
-};
-
+template<>
+TrackData<StiKalmanTrack>::TrackData(const StiKalmanTrack &motherTrack);
 
 template<>
-TrackDataT<StiKalmanTrack>::TrackDataT(const StiKalmanTrack &motherTrack);
+TrackData<StiKalmanTrack>::~TrackData();
 
 template<>
-TrackDataT<StiKalmanTrack>::~TrackDataT();
-
-template<>
-TrackDataT<StMuTrack>::TrackDataT(const StMuTrack &motherTrack, const StDcaGeometry* trackDca);
+TrackData<StMuTrack>::TrackData(const StMuTrack &motherTrack, const StDcaGeometry* trackDca);
 
 
 #endif
