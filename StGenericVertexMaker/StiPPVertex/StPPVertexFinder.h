@@ -38,7 +38,7 @@ class EemcHitList;
 template<class Event_t, class Track_t>
 class StPPVertexFinderT: public StGenericVertexFinder
 {
- private:
+ protected:
 
   /// Takes a list of vertex candidates/seeds and updates each vertex position
   /// by fitting tracks pointing to it
@@ -57,8 +57,6 @@ class StPPVertexFinderT: public StGenericVertexFinder
   void findSeeds_PPVLikelihood();
 
   enum {mxH=32};
-  bool examinTrackDca(TrackDataT<StiKalmanTrack> &track);
-  void matchTrack2CTB(TrackDataT<StiKalmanTrack> &track);
 
   void matchTrack2EEMC(Track_t &track);
   void matchTrack2EEMC(const StPhysicalHelixD& helix, Track_t &track);
@@ -70,8 +68,6 @@ class StPPVertexFinderT: public StGenericVertexFinder
   void matchTrack2BTOF(const StPhysicalHelixD& helix, Track_t &track);
 
   bool matchTrack2Membrane(Track_t &track);
-
-  bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
   bool buildLikelihoodZ();
   bool findVertexZ(VertexData &);
@@ -120,8 +116,6 @@ class StPPVertexFinderT: public StGenericVertexFinder
   /// A pointer to muDST event
   const StMuDst* mStMuDst;
   
-  void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
-
   /// A helper function to do common processing for StEvent and StMuDst cases
   void seed_fit_export();
 
@@ -143,7 +137,7 @@ public:
 
   virtual ~StPPVertexFinderT() {}
   virtual int fit(StEvent*) { return -1; }
-  virtual int fit(const Event_t& event);
+  virtual int fit(const Event_t& event) { return -1; }
   virtual void SetStoreUnqualifiedVertex(int n) { mStoreUnqualifiedVertex = n; }
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
 
@@ -151,6 +145,48 @@ public:
 
   virtual void printInfo(std::ostream& os = std::cout) const;
 };
+
+
+
+template<class Event_t>
+class StPPVertexFinder : public StPPVertexFinderT<Event_t, void> { };
+
+
+
+template<>
+class StPPVertexFinder<StEvent> : public StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >
+{
+public:
+
+   using Track_t = TrackData<StiKalmanTrack>;
+
+   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::BeamlineNoFit) :
+      StPPVertexFinderT(fitMode) { };
+
+   virtual int fit(const StEvent& event);
+
+   bool examinTrackDca(TrackData<StiKalmanTrack> &track);
+   void matchTrack2BTOF(TrackData<StiKalmanTrack> &track);
+   void matchTrack2CTB(TrackData<StiKalmanTrack> &track);
+   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
+   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
+};
+
+
+
+template<>
+class StPPVertexFinder<StMuDst> : public StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >
+{
+public:
+
+   using Track_t = TrackData<StMuTrack>;
+
+   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::Beamline3D) :
+      StPPVertexFinderT(fitMode) { };
+
+   virtual int fit(const StMuDst& event);
+};
+
 
 
 #endif

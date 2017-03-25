@@ -139,7 +139,7 @@ Int_t StGenericVertexMaker::Init()
     LOG_INFO << "StGenericVertexMaker::Init: uses PPVertex finder"<<  endm;
     LOG_INFO << "StPPVertexFinder::StPPVertexFinder is in use" << endm;
 
-    theFinder= new StPPVertexFinder(vertexFitMode);
+    theFinder= new StPPVertexFinder<StEvent>(vertexFitMode);
 
     if ( IAttr("VFPPVnoCTB")) theFinder->UseCTB(kFALSE);	
 

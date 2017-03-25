@@ -1521,3 +1521,6 @@ void StPPVertexFinderT<Event_t, Track_t>::result(TClonesArray& stMuPrimaryVertic
 
 template class StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >;
 template class StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >;
+
+template class StPPVertexFinder<StEvent>;
+template class StPPVertexFinder<StMuDst>;
