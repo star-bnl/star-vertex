@@ -14,7 +14,7 @@ class Vertex3D {
   TH1 *hYX[mxHE], *hYZ[mxHE]; // event histogram
   int nHE;// counter of used histos
 
-  vector<TrackData*> track;
+  vector<TrackData<StiKalmanTrack>*> track;
   float cut_pT1,cut_pT2, cut_sigY;
   unsigned int  cut_numTrack;
   int   isFound;
@@ -25,7 +25,7 @@ class Vertex3D {
   void clearEvent();
   void clearTracks();
   void initRun();
-  void addTrack(TrackData*);
+  void addTrack(TrackData<StiKalmanTrack>*);
   void study(TVector3 r, int eveID);
   void doExtrapolation(); // in both directions
   void initHisto(TObjArray* );

@@ -63,7 +63,7 @@ Vertex3D::clearTracks(){
 //==========================================================
 //==========================================================
 void
-Vertex3D::addTrack(TrackData* trk){
+Vertex3D::addTrack(TrackData<StiKalmanTrack>* trk){
   if(isValid()) return; // block adding new track after 1st vertex is found
   if(  !trk->mTpc && !trk->mBtof && !trk->mCtb && !trk->mBemc && trk->mEemc ) return;
   hA[0]->Fill(3);
@@ -90,7 +90,7 @@ Vertex3D::addTrack(TrackData* trk){
 void
 Vertex3D::doExtrapolation(){ // study track cov matrix for individual tracks using my macro plTrCov.C 
   for(unsigned int i=0;i<track.size();i++) {
-     const StiKalmanTrack* tr=track[i]->getMother<StiKalmanTrack>();
+     const StiKalmanTrack* tr= &track[i]->getMother();
      hA[5]->Fill(1);
      if( fabs(tr->getChi2()-1.)>0.8) continue;
      hA[5]->Fill(2);
