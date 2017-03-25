@@ -367,7 +367,7 @@ int StPPVertexFinder::fit(StEvent* event)
   {
     const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
 
-    TrackDataT<StiKalmanTrack> track(*stiKalmanTrack);
+    TrackData<StiKalmanTrack> track(*stiKalmanTrack);
 
     ntrk[0]++;
 
@@ -460,7 +460,7 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
       int index2Cov = stMuTrack.index2Cov();
       StDcaGeometry* dca = (index2Cov >= 0 ? static_cast<StDcaGeometry*>( covGlobTracks->At(index2Cov) ) : nullptr);
 
-      TrackDataT<StMuTrack> track(stMuTrack, dca);
+      TrackData<StMuTrack> track(stMuTrack, dca);
 
       ntrk[0]++;
 
