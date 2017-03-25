@@ -310,203 +310,6 @@ void StPPVertexFinderT<Event_t, Track_t>::printInfo(ostream& os) const
 }
 
 
-//==========================================================
-//==========================================================
-int StPPVertexFinder<StEvent>::fit(const StEvent& event)
-{
-  mTotEve++;
-  eveID= event.id();
-
-  LOG_INFO << "***** START FIT\n"
-           << "   @@@@@@   PPVertex::Fit START nEve=" << mTotEve
-           << "  eveID=" << eveID << endm;
-
-  hL->SetTitle("Vertex likelihood, eveID=" + TString(eveID) );
-
-  // get BTOF info
-  if(mUseBtof) {
-    StBTofCollection *btofColl = (StBTofCollection*) event.btofCollection();
-    if(btofColl==0) {
-      LOG_WARN << "no btofCollection, continue THE SAME eve" << endm;
-    } else {
-      btofList->build(btofColl);
-    }
-  }
-
-  // get CTB info, does not  work for embeding 
-  if(mUseCtb) {// CTB could be off since 2006 
-    StTriggerData *trgD= const_cast<StEvent&>(event).triggerData ();
-    ctbList->buildFromData(trgD); // use real data
-  }
-
-
-  StEmcCollection* emcC =(StEmcCollection*) event.emcCollection();
-  if(emcC==0) {
-    LOG_WARN << "No StEmcCollection found, continue with this event" << endm;
-  } else {
-    StEmcDetector* btow = emcC->detector( kBarrelEmcTowerId); 
-    if(btow==0) {
-      LOG_WARN << "No BEMC found in StEmcCollection, continue with this event" << endm;
-    } else {
-      bemcList->build(btow, mMinAdcBemc);
-    }
-
-    StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId); 
-    if(etow==0) {
-      LOG_WARN << "No EEMC found in StEmcCollection, continue with this event" << endm;
-    } else {
-      eemcList->build(etow, mMinAdcEemc);
-    }
-  }
-
-  //get the Sti track container...
-  assert(mToolkit);          // internal error of Sti
-  StiTrackContainer* stiTracks = mToolkit->getTrackContainer();
-   if(stiTracks==0) {
-     LOG_WARN << "No Sti tracks found, skipping this event" << endm;
-     return 0 ;
-   }
-
-  //select reasonable tracks and add them to my list
-  int kBtof=0,kCtb=0,kBemc=0, kEemc=0,kTpc=0;
-  int nTracksMatchingAnyFastDetector=0;
-
-  for (const StiTrack* stiTrack : *stiTracks)
-  {
-    const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
-
-    TrackData<StiKalmanTrack> track(*stiKalmanTrack);
-
-    ntrk[0]++;
-
-    if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
-    if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
-    if (mDropPostCrossingTrack &&
-        isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
-    if (!examinTrackDca(track))                 { ntrk[4]++; continue; }  // drop from DCA
-    if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
-
-
-    // Match to various detectors
-    if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
-    if (mUseBTOFmatchOnly && (track.mBtof <= 0)) { ntrk[6]++; continue; }
-
-    if (mUseCtb)  matchTrack2CTB(track);
-    matchTrack2BEMC(track);
-    matchTrack2EEMC(track);
-
-    ntrk[7]++;
-
-    // ...all test done on this track
-    mTrackData.push_back(track); 
-
-
-    if (track.mBtof > 0) kBtof++;
-    if (track.mCtb  > 0) kCtb++;
-    if (track.mBemc > 0) kBemc++;
-    if (track.mEemc > 0) kEemc++;
-    if (track.mTpc  > 0) kTpc++;
-
-    if (track.mBtof>0 || track.mCtb>0 || track.mBemc>0 || track.mEemc>0 || track.mTpc>0)
-       nTracksMatchingAnyFastDetector++;
-  }
-
-  LOG_INFO << Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)
-           << "PPV::fit() nEve=" << mTotEve << " , "
-           << nTracksMatchingAnyFastDetector << " traks with good DCA, matching: BTOF="
-           << kBtof << " CTB=" << kCtb << " BEMC=" << kBemc << " EEMC=" << kEemc << endm;
-
-  if (nTracksMatchingAnyFastDetector >= mVertexCuts.MinTrack || mStoreUnqualifiedVertex > 0)
-  {
-    seed_fit_export();
-  } else {
-    LOG_INFO << "StPPVertexFinder::fit() nEve=" << mTotEve << " Quit, to few matched tracks" << endm;
-  }
-  
-  return size();
-} 
-
-
-int StPPVertexFinder<StMuDst>::fit(const StMuDst& muDst)
-{
-   mTotEve++;
-
-   mStMuDst = &muDst;
-
-   // Similar to fit() we need to populate bemcList
-   StMuEmcCollection *muEmcCollection = muDst.muEmcCollection();
-
-   StMuEmcUtil muEmcUtil;
-
-   StEmcCollection* emcC = muEmcUtil.getEmc(muEmcCollection);
-
-   StEmcDetector* btow = emcC->detector(kBarrelEmcTowerId);
-   bemcList->build(btow, mMinAdcBemc);
-
-   StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId);
-   eemcList->build(etow, mMinAdcEemc);
-
-   delete emcC; emcC=0;
-
-   // Access btof data from ... branch
-   //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
-   //btofList->build(*muBTofHits);
-
-   // Access array of all StDcaGeometry objects (i.e. tracks)
-   TObjArray*    globalTracks  = muDst.globalTracks();
-   TClonesArray* covGlobTracks = muDst.covGlobTrack();
-
-
-   for (TObject* obj : *globalTracks)
-   {
-      StMuTrack& stMuTrack = static_cast<StMuTrack&>(*obj);
-
-      // This is a global track that may be converted to primary. Save its index
-      // to self, so in can be referred later by the primary track
-      stMuTrack.setIndex2Global(ntrk[0]);
-
-      int index2Cov = stMuTrack.index2Cov();
-      StDcaGeometry* dca = (index2Cov >= 0 ? static_cast<StDcaGeometry*>( covGlobTracks->At(index2Cov) ) : nullptr);
-
-      TrackData<StMuTrack> track(stMuTrack, dca);
-
-      ntrk[0]++;
-
-      if (stMuTrack.pt() < mVertexCuts.MinTrackPt) { ntrk[2]++; continue; }
-
-      // Supposedly equivalent to isPostCrossingTrack()
-      if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
-
-      // Supposedly equivalent to DCA check with examinTrackDca()
-      if ( !dca ||
-            dca->z() > mVertexCuts.ZMax || dca->z() < mVertexCuts.ZMin ||
-            std::fabs(dca->impact()) > mVertexCuts.RImpactMax ) { ntrk[4]++; continue; }
-
-      // Condition similar to one in matchTrack2Membrane
-      double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
-      if (fracFit2PossHits < mVertexCuts.MinFracOfPossFitPointsOnTrack) { ntrk[5]++; continue; }  // kill if nFitP too small
-
-      // Test TOF match if required
-      if (mUseBTOFmatchOnly && (stMuTrack.tofHit() == 0)) { ntrk[6]++; continue; }
-
-      ntrk[7]++;
-
-
-      // Modify track weights
-      if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
-      matchTrack2BEMC(track);
-      matchTrack2EEMC(track);
-      matchTrack2Membrane(track);
-
-      mTrackData.push_back(track);
-   }
-
-   seed_fit_export();
-
-   return size();
-}
-
-
 template<class Event_t, class Track_t>
 void StPPVertexFinderT<Event_t, Track_t>::seed_fit_export()
 {
@@ -1543,6 +1346,203 @@ void StPPVertexFinder<StMuDst>::result(TClonesArray& stMuPrimaryVertices,
       // save it in the array
       new(stMuPrimaryTracks[index++]) StMuTrack( track.getMother() );
    }
+}
+
+
+//==========================================================
+//==========================================================
+int StPPVertexFinder<StEvent>::fit(const StEvent& event)
+{
+  mTotEve++;
+  eveID= event.id();
+
+  LOG_INFO << "***** START FIT\n"
+           << "   @@@@@@   PPVertex::Fit START nEve=" << mTotEve
+           << "  eveID=" << eveID << endm;
+
+  hL->SetTitle("Vertex likelihood, eveID=" + TString(eveID) );
+
+  // get BTOF info
+  if(mUseBtof) {
+    StBTofCollection *btofColl = (StBTofCollection*) event.btofCollection();
+    if(btofColl==0) {
+      LOG_WARN << "no btofCollection, continue THE SAME eve" << endm;
+    } else {
+      btofList->build(btofColl);
+    }
+  }
+
+  // get CTB info, does not  work for embeding 
+  if(mUseCtb) {// CTB could be off since 2006 
+    StTriggerData *trgD= const_cast<StEvent&>(event).triggerData ();
+    ctbList->buildFromData(trgD); // use real data
+  }
+
+
+  StEmcCollection* emcC =(StEmcCollection*) event.emcCollection();
+  if(emcC==0) {
+    LOG_WARN << "No StEmcCollection found, continue with this event" << endm;
+  } else {
+    StEmcDetector* btow = emcC->detector( kBarrelEmcTowerId); 
+    if(btow==0) {
+      LOG_WARN << "No BEMC found in StEmcCollection, continue with this event" << endm;
+    } else {
+      bemcList->build(btow, mMinAdcBemc);
+    }
+
+    StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId); 
+    if(etow==0) {
+      LOG_WARN << "No EEMC found in StEmcCollection, continue with this event" << endm;
+    } else {
+      eemcList->build(etow, mMinAdcEemc);
+    }
+  }
+
+  //get the Sti track container...
+  assert(mToolkit);          // internal error of Sti
+  StiTrackContainer* stiTracks = mToolkit->getTrackContainer();
+   if(stiTracks==0) {
+     LOG_WARN << "No Sti tracks found, skipping this event" << endm;
+     return 0 ;
+   }
+
+  //select reasonable tracks and add them to my list
+  int kBtof=0,kCtb=0,kBemc=0, kEemc=0,kTpc=0;
+  int nTracksMatchingAnyFastDetector=0;
+
+  for (const StiTrack* stiTrack : *stiTracks)
+  {
+    const StiKalmanTrack* stiKalmanTrack = static_cast<const StiKalmanTrack*>(stiTrack);
+
+    TrackData<StiKalmanTrack> track(*stiKalmanTrack);
+
+    ntrk[0]++;
+
+    if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
+    if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
+    if (mDropPostCrossingTrack &&
+        isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
+    if (!examinTrackDca(track))                 { ntrk[4]++; continue; }  // drop from DCA
+    if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
+
+
+    // Match to various detectors
+    if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
+    if (mUseBTOFmatchOnly && (track.mBtof <= 0)) { ntrk[6]++; continue; }
+
+    if (mUseCtb)  matchTrack2CTB(track);
+    matchTrack2BEMC(track);
+    matchTrack2EEMC(track);
+
+    ntrk[7]++;
+
+    // ...all test done on this track
+    mTrackData.push_back(track); 
+
+
+    if (track.mBtof > 0) kBtof++;
+    if (track.mCtb  > 0) kCtb++;
+    if (track.mBemc > 0) kBemc++;
+    if (track.mEemc > 0) kEemc++;
+    if (track.mTpc  > 0) kTpc++;
+
+    if (track.mBtof>0 || track.mCtb>0 || track.mBemc>0 || track.mEemc>0 || track.mTpc>0)
+       nTracksMatchingAnyFastDetector++;
+  }
+
+  LOG_INFO << Form("PPV::TpcList size=%d nMatched=%d\n\n",mTrackData.size(),kTpc)
+           << "PPV::fit() nEve=" << mTotEve << " , "
+           << nTracksMatchingAnyFastDetector << " traks with good DCA, matching: BTOF="
+           << kBtof << " CTB=" << kCtb << " BEMC=" << kBemc << " EEMC=" << kEemc << endm;
+
+  if (nTracksMatchingAnyFastDetector >= mVertexCuts.MinTrack || mStoreUnqualifiedVertex > 0)
+  {
+    seed_fit_export();
+  } else {
+    LOG_INFO << "StPPVertexFinder::fit() nEve=" << mTotEve << " Quit, to few matched tracks" << endm;
+  }
+  
+  return size();
+} 
+
+
+int StPPVertexFinder<StMuDst>::fit(const StMuDst& muDst)
+{
+   mTotEve++;
+
+   mStMuDst = &muDst;
+
+   // Similar to fit() we need to populate bemcList
+   StMuEmcCollection *muEmcCollection = muDst.muEmcCollection();
+
+   StMuEmcUtil muEmcUtil;
+
+   StEmcCollection* emcC = muEmcUtil.getEmc(muEmcCollection);
+
+   StEmcDetector* btow = emcC->detector(kBarrelEmcTowerId);
+   bemcList->build(btow, mMinAdcBemc);
+
+   StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId);
+   eemcList->build(etow, mMinAdcEemc);
+
+   delete emcC; emcC=0;
+
+   // Access btof data from ... branch
+   //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
+   //btofList->build(*muBTofHits);
+
+   // Access array of all StDcaGeometry objects (i.e. tracks)
+   TObjArray*    globalTracks  = muDst.globalTracks();
+   TClonesArray* covGlobTracks = muDst.covGlobTrack();
+
+
+   for (TObject* obj : *globalTracks)
+   {
+      StMuTrack& stMuTrack = static_cast<StMuTrack&>(*obj);
+
+      // This is a global track that may be converted to primary. Save its index
+      // to self, so in can be referred later by the primary track
+      stMuTrack.setIndex2Global(ntrk[0]);
+
+      int index2Cov = stMuTrack.index2Cov();
+      StDcaGeometry* dca = (index2Cov >= 0 ? static_cast<StDcaGeometry*>( covGlobTracks->At(index2Cov) ) : nullptr);
+
+      TrackData<StMuTrack> track(stMuTrack, dca);
+
+      ntrk[0]++;
+
+      if (stMuTrack.pt() < mVertexCuts.MinTrackPt) { ntrk[2]++; continue; }
+
+      // Supposedly equivalent to isPostCrossingTrack()
+      if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
+
+      // Supposedly equivalent to DCA check with examinTrackDca()
+      if ( !dca ||
+            dca->z() > mVertexCuts.ZMax || dca->z() < mVertexCuts.ZMin ||
+            std::fabs(dca->impact()) > mVertexCuts.RImpactMax ) { ntrk[4]++; continue; }
+
+      // Condition similar to one in matchTrack2Membrane
+      double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
+      if (fracFit2PossHits < mVertexCuts.MinFracOfPossFitPointsOnTrack) { ntrk[5]++; continue; }  // kill if nFitP too small
+
+      // Test TOF match if required
+      if (mUseBTOFmatchOnly && (stMuTrack.tofHit() == 0)) { ntrk[6]++; continue; }
+
+      ntrk[7]++;
+
+
+      // Modify track weights
+      if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
+      matchTrack2BEMC(track);
+      matchTrack2EEMC(track);
+      matchTrack2Membrane(track);
+
+      mTrackData.push_back(track);
+   }
+
+   seed_fit_export();
+
+   return size();
 }
 
 
