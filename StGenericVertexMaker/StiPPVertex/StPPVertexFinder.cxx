@@ -56,7 +56,8 @@
 //==========================================================
 //==========================================================
 
-StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
+template<class Event_t, class Track_t>
+StPPVertexFinderT<Event_t, Track_t>::StPPVertexFinderT(VertexFit_t fitMode) :
   StGenericVertexFinder(SeedFinder_t::PPVLikelihood, fitMode),
   mTrackData(), mVertexData(),
   mTotEve(0), eveID(0), nBadVertex(0),
@@ -95,7 +96,8 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::Init()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::Init()
 {
   assert(mTotEve==0); // can't be called twice
   LOG_INFO << Form("PPV-algo  switches=0x%0x,  following cuts have been activated:",mAlgoSwitches)<<endm;
@@ -119,7 +121,8 @@ void StPPVertexFinder::Init()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::InitRun(int run_number, const St_db_Maker* db_maker)
 {
   StGenericVertexFinder::InitRun(run_number, db_maker);
 
@@ -156,7 +159,8 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 }
 
 
-void StPPVertexFinder::findSeeds_TSpectrum()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::findSeeds_TSpectrum()
 {
    std::vector<double> vertexZs = StGenericVertexFinder::FindSeeds_TSpectrum();
 
@@ -181,7 +185,8 @@ void StPPVertexFinder::findSeeds_TSpectrum()
  * tracks already associated with a vertex are not considered in the next
  * iteration when a new likelihood histogram is built.
  */
-void StPPVertexFinder::findSeeds_PPVLikelihood()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::findSeeds_PPVLikelihood()
 {
   const float par_rankOffset = 1e6; // to separate class of vertices (approximately)
 
@@ -216,7 +221,8 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::Clear()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::Clear()
 {
   LOG_INFO << "StPPVertexFinder::Clear(): Finished event " << mTotEve
            << ": Found " << mVertexData.size()-nBadVertex << " \"good\" and "
@@ -246,7 +252,8 @@ void StPPVertexFinder::Clear()
 
 //======================================================
 //======================================================
-void StPPVertexFinder::printInfo(ostream& os) const
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::printInfo(ostream& os) const
 {
   LOG_INFO << "\n"
            << Form("PPV:: # of input track          = %d\n", ntrk[0])
@@ -270,7 +277,7 @@ void StPPVertexFinder::printInfo(ostream& os) const
 
   int nTpcM=0, nTpcV=0;
   int k=0;
-  for (const TrackData &track : mTrackData) {
+  for (const Track_t &track : mTrackData) {
     if(  track.mTpc>0)   nTpcM++;
     else if (  track.mTpc<0) nTpcV++;
     if(track.vertexID<=0) continue; // skip not used or pileup vertex
@@ -419,7 +426,8 @@ int StPPVertexFinder::fit(StEvent* event)
 } 
 
 
-int StPPVertexFinder::fit(const StMuDst& muDst)
+template<>
+int StPPVertexFinderT<StMuDst, StMuTrack>::fit(const StMuDst& muDst)
 {
    mTotEve++;
 
@@ -499,7 +507,8 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 }
 
 
-void StPPVertexFinder::seed_fit_export()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::seed_fit_export()
 {
    // Select a method to find vertex candidates/seeds. The methods work using the
    // `mTrackData` and `mDCAs` containers as input whereas the reconstructed
@@ -567,7 +576,8 @@ void StPPVertexFinder::UpdateVertexCuts(int run_number)
 
 //==========================================================
 //==========================================================
-bool StPPVertexFinder::buildLikelihoodZ()
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::buildLikelihoodZ()
 {
   hL->Reset();
   hM->Reset();
@@ -586,7 +596,7 @@ bool StPPVertexFinder::buildLikelihoodZ()
   double *Wa = hW->GetArray(); // track weight histogram 
   
   // Loop over pre-selected tracks only
-  for (const TrackData &track : mTrackData)
+  for (const Track_t &track : mTrackData)
   {
     // Skip tracks already assigned to a vertex
     if (track.vertexID != 0) continue;
@@ -620,7 +630,8 @@ bool StPPVertexFinder::buildLikelihoodZ()
 
 //==========================================================
 //==========================================================
-bool StPPVertexFinder::findVertexZ(VertexData &vertex)
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::findVertexZ(VertexData &vertex)
 {
   if(hL->GetMaximum()<=0) return false; // no more tracks left
 
@@ -675,12 +686,13 @@ bool StPPVertexFinder::findVertexZ(VertexData &vertex)
 
 //==========================================================
 //==========================================================
-bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
+template<class Event_t, class Track_t>
+bool  StPPVertexFinderT<Event_t, Track_t>::evalVertexZ(VertexData &vertex) // and tag used tracks
 {
   // returns true if vertex is accepted accepted
   int nHiPt=0;
   
-  for (TrackData &track : mTrackData)
+  for (Track_t &track : mTrackData)
   {
     // Skip tracks already matched to a vertex
     if (track.vertexID != 0) continue;
@@ -721,7 +733,7 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
     //no match tracks in this vertex, tag vertex ID in tracks differently
     //vertex.print(cout);
     LOG_DEBUG << "StPPVertexFinder::evalVertex Vid=" << vertex.id << " rejected" << endm;
-    for (TrackData &track : mTrackData) {
+    for (Track_t &track : mTrackData) {
       if(track.vertexID!=vertex.id) continue;
       track.vertexID=-vertex.id;
     }
@@ -746,12 +758,13 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
  * \author Dmitri Smirnov, BNL
  * \date April, 2016
  */
-void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::fillTrackDcas(const VertexData &vertex)
 {
    // Just clean the pointers owned by something else
    mDCAs.clear();
 
-   for (const TrackData & track : mTrackData)
+   for (const Track_t & track : mTrackData)
    {
       if ( std::fabs(track.vertexID) != vertex.id) continue;
       if ( !track.dca ) continue;
@@ -770,7 +783,8 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
  * \author Dmitri Smirnov, BNL
  * \date February, 2016
  */
-int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
+template<class Event_t, class Track_t>
+int StPPVertexFinderT<Event_t, Track_t>::fitTracksToVertex(VertexData &vertex)
 {
    fillTrackDcas(vertex);
 
@@ -868,7 +882,8 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
  * Copies vertices from this finder private container to StEvent's one. No
  * rejection criteria is applied during the copy.
  */
-void StPPVertexFinder::exportVertices()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::exportVertices()
 {
   for (VertexData &vertex : mVertexData)
   {
@@ -932,7 +947,8 @@ void StPPVertexFinder::exportVertices()
 
 //-------------------------------------------------
 //-------------------------------------------------
-void StPPVertexFinder::Finish()
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::Finish()
 {
   LOG_INFO << "StPPVertexFinder::Finish() done, seen eve=" << mTotEve << endm;
 }
@@ -940,7 +956,8 @@ void StPPVertexFinder::Finish()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::dumpKalmanNodes(const StiKalmanTrack*track)
 {
   //.................... print all nodes ...........
   StiKTNBidirectionalIterator it;
@@ -1004,7 +1021,8 @@ void StPPVertexFinder::dumpKalmanNodes(const StiKalmanTrack*track)
 
 //==========================================================
 //==========================================================
-bool StPPVertexFinder::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
 {
   if ( track.rxyDca > mVertexCuts.RImpactMax ) return false;
 
@@ -1016,7 +1034,8 @@ bool StPPVertexFinder::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::matchTrack2BTOF(TrackDataT<StiKalmanTrack> &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BTOF(TrackDataT<StiKalmanTrack> &track)
 {
   const StiKalmanTrack* stiTrack = track.getMother();
 
@@ -1089,8 +1108,9 @@ void StPPVertexFinder::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, Track
 
 //==========================================================
 //==========================================================
+template<class Event_t, class Track_t>
 void  
-StPPVertexFinder::matchTrack2CTB(TrackDataT<StiKalmanTrack> &track)
+StPPVertexFinderT<Event_t, Track_t>::matchTrack2CTB(TrackDataT<StiKalmanTrack> &track)
 {
   const StiKalmanTrack* stiTrack = track.getMother();
 
@@ -1153,7 +1173,8 @@ StPPVertexFinder::matchTrack2CTB(TrackDataT<StiKalmanTrack> &track)
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track)
 {
   const StiKalmanTrack* stiTrack = track.getMother();
 
@@ -1172,14 +1193,16 @@ void StPPVertexFinder::matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track)
 }
 
 
-void StPPVertexFinder::matchTrack2BEMC(TrackDataT<StMuTrack> &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(TrackDataT<StMuTrack> &track)
 {
    const StMuTrack& muTrack = *track.getMother();
    matchTrack2BEMC(muTrack.outerHelix(), track);
 }
 
 
-void StPPVertexFinder::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
 {
   const double Rxy = 242.; // middle of tower in Rxy
 
@@ -1212,7 +1235,8 @@ void StPPVertexFinder::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, Track
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track)
 {
   const StiKalmanTrack* stiTrack = track.getMother();
 
@@ -1242,7 +1266,8 @@ void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track)
 }
 
 
-void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StMuTrack> &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(TrackDataT<StMuTrack> &track)
 {
    const StMuTrack& muTrack = *track.getMother();
 
@@ -1258,7 +1283,8 @@ void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StMuTrack> &track)
 }
 
 
-void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, Track_t &track)
 {
   const double eemc_z_position = 288.; // middle of tower in Z
   const double maxPath = 200 ;// tmp, cut too long extrapolation
@@ -1294,7 +1320,8 @@ void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, Track
 
 //==========================================================
 //==========================================================
-bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
 {
   const StiKalmanTrack* stiTrack = track.getMother();
 
@@ -1360,7 +1387,8 @@ bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
 }
 
 
-bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
 {
    const StMuTrack& muTrack = *track.getMother();
 
@@ -1429,7 +1457,8 @@ bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
 /**
  * Identifies tracks coming from post bunch crossing collisions.
  */
-bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
+template<class Event_t, class Track_t>
+bool StPPVertexFinderT<Event_t, Track_t>::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
 {
   const float RxyMin = 59, RxyMax = 199, zMax = 200;
   const float zMembraneDepth = 1.0;
@@ -1470,8 +1499,9 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
 }
 
 
-void StPPVertexFinder::result(TClonesArray& stMuPrimaryVertices,
-                              TClonesArray& stMuPrimaryTracks)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::result(TClonesArray& stMuPrimaryVertices,
+                                                 TClonesArray& stMuPrimaryTracks)
 {
    StGenericVertexFinder::result(stMuPrimaryVertices, stMuPrimaryTracks);
 
@@ -1486,3 +1516,7 @@ void StPPVertexFinder::result(TClonesArray& stMuPrimaryVertices,
       new(stMuPrimaryTracks[index++]) StMuTrack( *track.getMother<StMuTrack>() );
    }
 }
+
+
+template class StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >;
+template class StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >;

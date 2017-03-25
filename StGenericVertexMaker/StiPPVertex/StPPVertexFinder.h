@@ -35,7 +35,8 @@ class BemcHitList;
 class EemcHitList;
 
 
-class StPPVertexFinder: public StGenericVertexFinder
+template<class Event_t, class Track_t>
+class StPPVertexFinderT: public StGenericVertexFinder
 {
  private:
 
@@ -59,20 +60,16 @@ class StPPVertexFinder: public StGenericVertexFinder
   bool examinTrackDca(TrackDataT<StiKalmanTrack> &track);
   void matchTrack2CTB(TrackDataT<StiKalmanTrack> &track);
 
-  void matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track);
-  void matchTrack2EEMC(TrackDataT<StMuTrack> &track);
-  void matchTrack2EEMC(const StPhysicalHelixD& helix, TrackData &track);
+  void matchTrack2EEMC(Track_t &track);
+  void matchTrack2EEMC(const StPhysicalHelixD& helix, Track_t &track);
 
-  void matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track);
-  void matchTrack2BEMC(TrackDataT<StMuTrack> &track);
-  void matchTrack2BEMC(const StPhysicalHelixD& helix, TrackData &track);
+  void matchTrack2BEMC(Track_t &track);
+  void matchTrack2BEMC(const StPhysicalHelixD& helix, Track_t &track);
 
-  void matchTrack2BTOF(TrackDataT<StiKalmanTrack> &track);
-  void matchTrack2BTOF(TrackDataT<StMuTrack> &track);
-  void matchTrack2BTOF(const StPhysicalHelixD& helix, TrackData &track);
+  void matchTrack2BTOF(Track_t &track);
+  void matchTrack2BTOF(const StPhysicalHelixD& helix, Track_t &track);
 
-  bool matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track);
-  bool matchTrack2Membrane(TrackDataT<StMuTrack> &track);
+  bool matchTrack2Membrane(Track_t &track);
 
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 
@@ -83,7 +80,7 @@ class StPPVertexFinder: public StGenericVertexFinder
   void saveHisto(TString fname);
 
   /// A container with pre-selected tracks to be used in seed finding
-  std::vector<TrackData>  mTrackData;
+  std::vector<Track_t>  mTrackData;
   std::vector<VertexData> mVertexData;
   int  mTotEve;
   int  eveID;
@@ -142,11 +139,11 @@ public:
   virtual void InitRun(int run_number, const St_db_Maker* db_maker);
   virtual void Clear(); 
 
-  StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::BeamlineNoFit);
+  StPPVertexFinderT(VertexFit_t fitMode=VertexFit_t::BeamlineNoFit);
 
-  virtual ~StPPVertexFinder() {}
-  virtual int fit(StEvent*);
-  virtual int fit(const StMuDst& muDst);
+  virtual ~StPPVertexFinderT() {}
+  virtual int fit(StEvent*) { return -1; }
+  virtual int fit(const Event_t& event);
   virtual void SetStoreUnqualifiedVertex(int n) { mStoreUnqualifiedVertex = n; }
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
 
