@@ -165,9 +165,9 @@ public:
 
    virtual int fit(const StEvent& event);
 
-   bool examinTrackDca(TrackData<StiKalmanTrack> &track);
-   void matchTrack2BTOF(TrackData<StiKalmanTrack> &track);
-   void matchTrack2CTB(TrackData<StiKalmanTrack> &track);
+   bool examinTrackDca(Track_t &track);
+   void matchTrack2BTOF(Track_t &track);
+   void matchTrack2CTB(Track_t &track);
    bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
    void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
 };

@@ -312,8 +312,7 @@ void StPPVertexFinderT<Event_t, Track_t>::printInfo(ostream& os) const
 
 //==========================================================
 //==========================================================
-template<>
-int StPPVertexFinderT<StEvent, StiKalmanTrack>::fit(const StEvent& event)
+int StPPVertexFinder<StEvent>::fit(const StEvent& event)
 {
   mTotEve++;
   eveID= event.id();
@@ -428,8 +427,7 @@ int StPPVertexFinderT<StEvent, StiKalmanTrack>::fit(const StEvent& event)
 } 
 
 
-template<>
-int StPPVertexFinderT<StMuDst, StMuTrack>::fit(const StMuDst& muDst)
+int StPPVertexFinder<StMuDst>::fit(const StMuDst& muDst)
 {
    mTotEve++;
 
@@ -884,8 +882,41 @@ int StPPVertexFinderT<Event_t, Track_t>::fitTracksToVertex(VertexData &vertex)
  * Copies vertices from this finder private container to StEvent's one. No
  * rejection criteria is applied during the copy.
  */
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::exportVertices()
+template<>
+void StPPVertexFinderT<StEvent, StiKalmanTrack>::exportVertices()
+{
+  for (VertexData &vertex : mVertexData)
+  {
+    StThreeVectorD r(vertex.r.x(), vertex.r.y(), vertex.r.z());
+
+    float cov[6]{};
+
+    cov[0] = vertex.er.x() * vertex.er.x();
+    cov[2] = vertex.er.y() * vertex.er.y();
+    cov[5] = vertex.er.z() * vertex.er.z();  // [5] is correct,JB
+
+    StPrimaryVertex primV;
+    primV.setPosition(r);
+    primV.setCovariantMatrix(cov); 
+    primV.setVertexFinderId(mUseCtb ? ppvVertexFinder : ppvNoCtbVertexFinder);
+    primV.setNumTracksUsedInFinder(vertex.nUsedTrack);
+    primV.setNumMatchesWithBTOF(vertex.nBtof);
+    primV.setNumMatchesWithCTB(vertex.nCtb);
+    primV.setNumMatchesWithBEMC(vertex.nBemc);
+    primV.setNumMatchesWithEEMC(vertex.nEemc);
+    primV.setNumTracksCrossingCentralMembrane(vertex.nTpc);
+    primV.setSumOfTrackPt(vertex.gPtSum);
+    primV.setRanking(vertex.Lmax);
+    primV.setFlag(1); //??? is it a right value?
+
+    //..... add vertex to the list
+    addVertex(primV);
+  }
+}
+
+
+template<>
+void StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::exportVertices()
 {
   for (VertexData &vertex : mVertexData)
   {
@@ -907,7 +938,7 @@ void StPPVertexFinderT<Event_t, Track_t>::exportVertices()
 
     if (mStMuDst)
     {
-       for (TrackData &track : mTrackData)
+       for (TrackData<StMuTrack> &track : mTrackData)
        {
           StThreeVectorF v_position(vertex.r.x(), vertex.r.y(), vertex.r.z());
           StThreeVectorF dist = v_position - track.dca->origin();
@@ -924,13 +955,13 @@ void StPPVertexFinderT<Event_t, Track_t>::exportVertices()
 
           track.vertexID = vertex.id;
 
-          StMuTrack* stMuTrack = const_cast<StMuTrack*>( track.getMother<StMuTrack>() );
+          StMuTrack& stMuTrack = const_cast<StMuTrack&>( track.getMother() );
 
           // Vertex id is its index in StGenericVertexFinder::mVertexList vector
           stMuTrack->convertToPrimary(*const_cast<StMuDst*>(mStMuDst), &primV, StGenericVertexFinder::size());
 
           // Create StTrack from StMuTrack so idTruth can be calculated for this vertex
-          StTrack* primTrack = StMuDst::createStTrack(stMuTrack);
+          StTrack* primTrack = StMuDst::createStTrack(&stMuTrack);
           primV.addDaughter(primTrack);
        }
 
@@ -958,8 +989,7 @@ void StPPVertexFinderT<Event_t, Track_t>::Finish()
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::dumpKalmanNodes(const StiKalmanTrack*track)
+void StPPVertexFinder<StEvent>::dumpKalmanNodes(const StiKalmanTrack* track)
 {
   //.................... print all nodes ...........
   StiKTNBidirectionalIterator it;
@@ -1023,8 +1053,7 @@ void StPPVertexFinderT<Event_t, Track_t>::dumpKalmanNodes(const StiKalmanTrack*t
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
-bool StPPVertexFinderT<Event_t, Track_t>::examinTrackDca(TrackDataT<StiKalmanTrack> &track)
+bool StPPVertexFinder<StEvent>::examinTrackDca(Track_t &track)
 {
   if ( track.rxyDca > mVertexCuts.RImpactMax ) return false;
 
@@ -1036,12 +1065,11 @@ bool StPPVertexFinderT<Event_t, Track_t>::examinTrackDca(TrackDataT<StiKalmanTra
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BTOF(TrackDataT<StiKalmanTrack> &track)
+void StPPVertexFinder<StEvent>::matchTrack2BTOF(Track_t &track)
 {
-  const StiKalmanTrack* stiTrack = track.getMother();
+  const StiKalmanTrack& stiTrack = track.getMother();
 
-  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack.getOuterMostNode();
 
   // helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
@@ -1110,15 +1138,14 @@ void StPPVertexFinder::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, Track
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
 void  
-StPPVertexFinderT<Event_t, Track_t>::matchTrack2CTB(TrackDataT<StiKalmanTrack> &track)
+StPPVertexFinder<StEvent>::matchTrack2CTB(Track_t &track)
 {
-  const StiKalmanTrack* stiTrack = track.getMother();
+  const StiKalmanTrack& stiTrack = track.getMother();
 
   const double Rctb = 213.6; // (cm) radius of the CTB 
 
-  StiKalmanTrackNode* ouNode = stiTrack->getOuterMostNode();
+  StiKalmanTrackNode* ouNode = stiTrack.getOuterMostNode();
 
   StThreeVectorD posCTB;
   float path=-1;
@@ -1145,12 +1172,12 @@ StPPVertexFinderT<Event_t, Track_t>::matchTrack2CTB(TrackDataT<StiKalmanTrack> &
 
   // official Sti node extrapolation
   if(0){
-    StiKalmanTrack track2 = *stiTrack;
+    StiKalmanTrack track2 = stiTrack;
     StiKalmanTrackNode* ctbNode=track2.extrapolateToRadius(Rctb);
 
     if(ctbNode==0)  { 
       LOG_INFO <<"#e @ctbNode NULL"<<endm;
-      LOG_INFO <<"#e @track dump"<< *stiTrack << endm;
+      LOG_INFO <<"#e @track dump"<< stiTrack << endm;
       LOG_INFO <<"#e @OuterMostNode dump"<< *ouNode <<endm;
       return; 
     }
@@ -1173,14 +1200,15 @@ StPPVertexFinderT<Event_t, Track_t>::matchTrack2CTB(TrackDataT<StiKalmanTrack> &
   track.ctbBin=iBin;
 }
 
-//==========================================================
-//==========================================================
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(TrackDataT<StiKalmanTrack> &track)
-{
-  const StiKalmanTrack* stiTrack = track.getMother();
 
-  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
+//==========================================================
+//==========================================================
+template<>
+void StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >::matchTrack2BEMC(TrackData<StiKalmanTrack> &track)
+{
+  const StiKalmanTrack& stiTrack = track.getMother();
+
+  StiKalmanTrackNode* ouNode=stiTrack.getOuterMostNode();
 
   //alternative helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
@@ -1195,16 +1223,16 @@ void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(TrackDataT<StiKalmanTr
 }
 
 
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(TrackDataT<StMuTrack> &track)
+template<>
+void StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::matchTrack2BEMC(TrackData<StMuTrack> &track)
 {
-   const StMuTrack& muTrack = *track.getMother();
+   const StMuTrack& muTrack = track.getMother();
    matchTrack2BEMC(muTrack.outerHelix(), track);
 }
 
 
 template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(const StPhysicalHelixD& phys_helix, Track_t &track)
 {
   const double Rxy = 242.; // middle of tower in Rxy
 
@@ -1237,21 +1265,21 @@ void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BEMC(const StPhysicalHelixD
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track)
+template<>
+void StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >::matchTrack2EEMC(TrackData<StiKalmanTrack> &track)
 {
-  const StiKalmanTrack* stiTrack = track.getMother();
+  const StiKalmanTrack& stiTrack = track.getMother();
 
   const double minEta=0.7 ;// tmp cut
 
-  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
-  StiKalmanTrackNode* inNode=stiTrack->getInnerMostNode();
+  StiKalmanTrackNode* ouNode=stiTrack.getOuterMostNode();
+  StiKalmanTrackNode* inNode=stiTrack.getInnerMostNode();
 
   //direction of extrapolation must be toward West (Z+ axis)
   if(inNode->getZ()> ouNode->getZ()) return;
   
   // droop too steep tracks
-  if(stiTrack->getPseudoRapidity()<minEta) return;
+  if(stiTrack.getPseudoRapidity()<minEta) return;
 
   StThreeVectorD ou(ouNode->getX(), ouNode->getY(), ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
@@ -1268,10 +1296,10 @@ void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(TrackDataT<StiKalmanTr
 }
 
 
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(TrackDataT<StMuTrack> &track)
+template<>
+void StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::matchTrack2EEMC(TrackData<StMuTrack> &track)
 {
-   const StMuTrack& muTrack = *track.getMother();
+   const StMuTrack& muTrack = track.getMother();
 
    const double minEta = 0.7;
 
@@ -1322,10 +1350,10 @@ void StPPVertexFinderT<Event_t, Track_t>::matchTrack2EEMC(const StPhysicalHelixD
 
 //==========================================================
 //==========================================================
-template<class Event_t, class Track_t>
-bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
+template<>
+bool StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >::matchTrack2Membrane(TrackData<StiKalmanTrack> &track)
 {
-  const StiKalmanTrack* stiTrack = track.getMother();
+  const StiKalmanTrack& stiTrack = track.getMother();
 
   const double RxyMin=59, RxyMax=199, zMax=200;
   const double zMembraneDepth=1; // (cm) ignore signe change for nodes so close to membrane
@@ -1339,7 +1367,7 @@ bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StiKalm
 
   int jz0=0;
   StiKTNBidirectionalIterator it;
-  for (it=stiTrack->begin();it!=stiTrack->end();it++) {
+  for (it=stiTrack.begin();it!=stiTrack.end();it++) {
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid()) continue;
     //if(ktnp->getHit() && ktnp->getChi2() >1000) continue; // ---> those track need to be counted as npossiblehit, commented out
@@ -1389,10 +1417,10 @@ bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StiKalm
 }
 
 
-template<class Event_t, class Track_t>
-bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
+template<>
+bool StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::matchTrack2Membrane(TrackData<StMuTrack> &track)
 {
-   const StMuTrack& muTrack = *track.getMother();
+   const StMuTrack& muTrack = track.getMother();
 
    // Code from matchTrack2Membrane
    if (mFitPossWeighting) { // introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51
@@ -1459,8 +1487,7 @@ bool StPPVertexFinderT<Event_t, Track_t>::matchTrack2Membrane(TrackDataT<StMuTra
 /**
  * Identifies tracks coming from post bunch crossing collisions.
  */
-template<class Event_t, class Track_t>
-bool StPPVertexFinderT<Event_t, Track_t>::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
+bool StPPVertexFinder<StEvent>::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
 {
   const float RxyMin = 59, RxyMax = 199, zMax = 200;
   const float zMembraneDepth = 1.0;
