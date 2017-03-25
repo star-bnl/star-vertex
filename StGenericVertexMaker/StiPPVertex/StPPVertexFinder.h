@@ -72,7 +72,7 @@ class StPPVertexFinder: public StGenericVertexFinder
   void matchTrack2BTOF(const StPhysicalHelixD& helix, TrackData &track);
 
   bool matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track);
-  void matchTrack2Membrane(TrackDataT<StMuTrack> &track);
+  bool matchTrack2Membrane(TrackDataT<StMuTrack> &track);
 
   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
 

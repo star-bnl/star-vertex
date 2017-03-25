@@ -1413,7 +1413,7 @@ bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
 }
 
 
-void StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
+bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
 {
    const StMuTrack& muTrack = *track.getMother();
 
@@ -1437,7 +1437,7 @@ void StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
    // Require start and end to be on different sides of the z=0 plane
    bool crossMembrane = firstPoint.z() * lastPoint.z() < 0;
 
-   if ( !isTrackInside || !crossMembrane) return;
+   if ( !isTrackInside || !crossMembrane) return false;
 
    // Find crossing point of the track with z=0 membrane then identify jz0
    double t = firstPoint.z() / (firstPoint.z() - lastPoint.z());
@@ -1474,6 +1474,8 @@ void StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
    }
 
    track.scanNodes(hitPatt, jz0); // if central membrane is crossed, scale weight inside
+
+   return true;
 }
 
 
