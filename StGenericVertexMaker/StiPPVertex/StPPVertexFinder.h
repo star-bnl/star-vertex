@@ -97,16 +97,10 @@ class StPPVertexFinder: public StGenericVertexFinder
   std::array<int, 8> ntrk;
 
   // params
-  double mMinTrkPt;               ///< ~ pT=0.16(GeV/c) == R=2 (m )in 2001
-  double mMaxTrkDcaRxy;           ///< DCA to nominal beam line for each track
-  float  mMaxZradius;             ///< used in matching: tracks to zVertex
-  int    mMinMatchTr;             ///< for valid vertex
-  float  mMaxZrange;              ///< cut off for tracks Z_DCA
   float  mMinZBtof;               ///< BTOF local z min cut
   float  mMaxZBtof;               ///< BTOF local z max cut
   float  mMinAdcBemc;             ///< BEMC towers with MIP response
   float  mMinAdcEemc;             ///< EEMC towers with MIP response
-  float  mMinFitPfrac;            ///< nFit/nPossible
 
   /// A flag whether to use nFit/nPossible in track weighting (ranking).
   /// Introduced in 2012 for pp510 to differentiate between global track

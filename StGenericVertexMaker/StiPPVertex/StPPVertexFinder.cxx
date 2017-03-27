@@ -63,16 +63,10 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mAlgoSwitches(kSwitchOneHighPT),
   hL(nullptr), hM(nullptr), hW(nullptr),
   ntrk{},
-  mMinTrkPt(0.2),
-  mMaxTrkDcaRxy(3.),
-  mMaxZradius(3.),
-  mMinMatchTr(5),
-  mMaxZrange(200.),
   mMinZBtof(-3.),
   mMaxZBtof(3.),
   mMinAdcBemc(8),
   mMinAdcEemc(5),
-  mMinFitPfrac(0.51),
   mFitPossWeighting(false),
   mDropPostCrossingTrack(true), // default PCT rejection on
   mStoreUnqualifiedVertex(5),
@@ -132,30 +126,6 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 
   int dateY = db_maker->GetDateTime().GetYear();
 
-  //.. set various params 
-  // It is not clear why one would hard code cuts for any specific run or
-  // a period since they can be set in the database. Here we'll assume that for
-  // Runs 5 to 12 the PPV cuts are optimized and there is no need to access the
-  // values from the database.
-  if (run_number >= 6000000 && run_number < 13000000) {
-    // old defaults, pre-Run12
-    // (important if we want to reprocess old data with different cuts!)
-    LOG_INFO << "PPV InitRun() using old, hardwired cuts" << endm;
-    mMaxTrkDcaRxy = 3.0;  // cm 
-    mMinTrkPt     = 0.20; // GeV/c  //was 0.2 in 2005 prod
-    mMinFitPfrac  = 0.7;  // nFit /nPossible points on the track
-    mMaxZradius   = 3.0;  //+sigTrack, to match tracks to Zvertex
-    mMinMatchTr   = 2;    // required to accept vertex
-  } else {
-    St_VertexCutsC* vtxCuts = St_VertexCutsC::instance();
-    mMaxTrkDcaRxy = vtxCuts->RImpactMax();
-    mMinTrkPt     = vtxCuts->MinTrackPt();
-    mMinFitPfrac  = vtxCuts->MinFracOfPossFitPointsOnTrack();
-    mMaxZradius   = vtxCuts->DcaZMax();  //+sigTrack, to match tracks to Zvertex
-    mMinMatchTr   = vtxCuts->MinTrack();    // required to accept vertex
-    mFitPossWeighting = true;
-  }
-
   if(dateY<2006) {
     mMinAdcBemc   = 15;   // BTOW used calibration of maxt Et @ ~27Gev 
   } else {
@@ -173,12 +143,6 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 
   LOG_INFO << "PPV::cuts "
            << "\n MinNumberOfFitPointsOnTrack = unused"
-           << "\n MinFitPfrac=nFit/nPos  = " << mMinFitPfrac
-           << "\n MaxTrkDcaRxy/cm= " << mMaxTrkDcaRxy
-           << "\n MinTrkPt GeV/c = " << mMinTrkPt
-           << "\n MinMatchTr of prim tracks = " << mMinMatchTr
-           << "\n MaxZrange (cm)for glob tracks = " << mMaxZrange
-           << "\n MaxZradius (cm) for prim tracks &Likelihood  = " << mMaxZradius
            << "\n Min/Max Z position for BTOF hit = " << mMinZBtof << " " << mMaxZBtof
            << "\n MinAdcBemc for MIP = " << mMinAdcBemc
            << "\n MinAdcEemc for MIP = " << mMinAdcEemc
