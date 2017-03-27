@@ -58,7 +58,6 @@ StGenericVertexMaker::StGenericVertexMaker(const char *name):StMaker(name),
   useBTOF(false),
   eval(false),
   externalFindUse(true),
-  minTracks(0),
   mEvalNtuple(nullptr),
   mEvent(nullptr),
   primV(nullptr),
@@ -99,7 +98,6 @@ Int_t StGenericVertexMaker::Init()
   usePCT        = IAttr("PCT");
   useBTOF       = IAttr("BTOF");
   eval          = IAttr("eval");
-  minTracks     = IAttr("minTracks");
 
   bool isMinuit = ( IAttr("VFMinuit") || IAttr("VFMinuit2") || IAttr("VFMinuit3") );
   bool isPPV    = ( IAttr("VFPPV") || IAttr("VFPPVnoCTB") || IAttr("VFPPVEv") ||  IAttr("VFPPVEvNoBTof") );
@@ -127,7 +125,6 @@ Int_t StGenericVertexMaker::Init()
 
     if (IAttr("VFMinuit") ) ((StMinuitVertexFinder*) theFinder)->useOldBEMCRank();
     if (IAttr("VFMinuit3") ) ((StMinuitVertexFinder*) theFinder)->lowerSplitVtxRank();
-    if (minTracks > 0) ((StMinuitVertexFinder*) theFinder)->SetMinimumTracks(minTracks);
 
   } else if ( IAttr("VFppLMV")){
     theFinder= new StppLMVVertexFinder();

@@ -35,7 +35,6 @@ class StGenericVertexMaker : public StMaker
   /// Finder will by called externally (by StiMaker). If set to true no finding
   /// actually done
   Bool_t  externalFindUse;
-  Int_t   minTracks;
 
   TNtuple *mEvalNtuple;    /// Ntuple for evaluation purposes
 
@@ -66,7 +65,6 @@ class StGenericVertexMaker : public StMaker
   void SetInternalFind()        {SetAttr("externalFindUse", kFALSE);}
   void SetUseITTF()             {SetAttr("ITTF"           , kTRUE );}
   void SetDoNotUseITTF()        {SetAttr("ITTF"           , kFALSE);}
-  void SetMinimumTracks(Int_t n){SetAttr("minTracks"      , n     );}
   void UsePCT()                 {SetAttr("PCT"            , kTRUE );}
   void DoNotUsePCT()            {SetAttr("PCT"            , kFALSE);}
 

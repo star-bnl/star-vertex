@@ -119,8 +119,6 @@ public:
     Int_t           statusMin() const {return mStatusMin;}     // Minuit status flag
     void            useOldBEMCRank() { mUseOldBEMCRank = kTRUE; }
     void            lowerSplitVtxRank() { mLowerSplitVtxRank = kTRUE; }
-    void            SetFitPointsCut(Int_t fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
-    void            SetMinimumTracks(Int_t n) {mMinTrack = n;}
 
 private:
 
