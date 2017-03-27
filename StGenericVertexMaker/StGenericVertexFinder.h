@@ -17,6 +17,7 @@
 #include "TMinuit.h"
 
 #include "StEvent/StPrimaryVertex.h"
+#include "tables/St_vertexSeed_Table.h"
 #include "tables/St_VertexCuts_Table.h"
 #include "StGenericVertexMaker/VertexFinderOptions.h"
 #include "StGenericVertexMaker/BeamLine.h"
@@ -112,6 +113,8 @@ protected:
   /// All measured parameters of the beamline. Updated whenever
   /// UseVertexConstraint(const BeamLine&) is called
   star_vertex::BeamLine  mBeamline;
+
+  VertexCuts_st  mVertexCuts;
 
   /// A container with pointers to DCA states to be used in a vertex fit.
   /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.

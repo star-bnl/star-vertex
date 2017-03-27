@@ -50,6 +50,7 @@ StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_
   mUseBtof(false),
   mUseCtb(false),
   mBeamline(),
+  mVertexCuts(),
   mDCAs()
 {
   using ObjectiveFunc_t = void (*)(int&, double*, double&, double*, int);
