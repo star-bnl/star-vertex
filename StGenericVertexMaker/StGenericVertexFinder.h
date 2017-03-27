@@ -126,6 +126,8 @@ protected:
   /// implementations from Minuit minimization function
   static StGenericVertexFinder* sSelf;
 
+  virtual void UpdateVertexCuts(int run_number);
+
   /// Searches for vertex candidates and fills private `mVertexData` container
   /// using the ROOT's TSpectrum peak finder applied to the distribution of
   /// track DCAs along the `z` axis
@@ -168,6 +170,8 @@ private:
   std::vector<StPrimaryVertex> mVertexList;
 
   virtual void  UseVertexConstraint() = 0;
+
+  void SetVertexCuts(int run_number, const St_db_Maker* db_maker);
 };
 
 #endif

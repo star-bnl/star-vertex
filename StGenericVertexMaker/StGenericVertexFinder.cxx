@@ -117,6 +117,48 @@ void StGenericVertexFinder::FillStEvent(StEvent* event)
 }
 
 
+void StGenericVertexFinder::SetVertexCuts(int run_number, const St_db_Maker* db_maker)
+{
+   const TDataSet* db_dataset = db_maker ?
+      const_cast<St_db_Maker*>(db_maker)->GetDataBase("Calibrations/tracker/PrimaryVertexCuts") : nullptr;
+
+   VertexCuts_st* vertexCuts = db_dataset ?
+      static_cast<St_VertexCuts*>(db_dataset->FindObject("PrimaryVertexCuts"))->GetTable() : nullptr;
+
+   if (!vertexCuts)
+   {
+      LOG_FATAL << "Vertex fit w/ beamline requested but 'Calibrations/rhic/vertexSeed' table not found" << endm;
+      return;
+   }
+
+   mVertexCuts = *vertexCuts;
+
+   // Derived classes can update vertex cuts read from database
+   UpdateVertexCuts(run_number);
+
+   LOG_INFO << "Vertex cuts:\n"
+            << "\t MinNumberOfFitPointsOnTrack: "   << mVertexCuts.MinNumberOfFitPointsOnTrack << "\n"
+            << "\t MinTrack: "                      << mVertexCuts.MinTrack << "\n"
+            << "\t DcaZMax: "                       << mVertexCuts.DcaZMax << "\n"
+            << "\t RImpactMax: "                    << mVertexCuts.RImpactMax << "\n"
+            << "\t MinFracOfPossFitPointsOnTrack: " << mVertexCuts.MinFracOfPossFitPointsOnTrack << "\n"
+            << "\t MinTrackPt: "                    << mVertexCuts.MinTrackPt << "\n"
+            << "\t ZMin: "                          << mVertexCuts.ZMin << "\n"
+            << "\t ZMax: "                          << mVertexCuts.ZMax << "\n"
+            << endm;
+}
+
+
+void StGenericVertexFinder::UpdateVertexCuts(int run_number)
+{
+  if (mVertexCuts.ZMin == mVertexCuts.ZMax)
+  { // historical defaults
+    mVertexCuts.ZMin = -200.0;
+    mVertexCuts.ZMax =  200.0;
+  }
+}
+
+
 /**
  * Searches for vertex seeds using the ROOT's TSpectrum peak finder applied to
  * track's DCA z distribution. This method can be transfered to a separate class
@@ -192,6 +234,8 @@ StPrimaryVertex* StGenericVertexFinder::getVertex(int idx) const
 void StGenericVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 {
    LOG_INFO << "StGenericVertexFinder::InitRun(run_number=" << run_number << ")" << endm;
+
+   SetVertexCuts(run_number, db_maker);
 
    // Check if all necessary conditions satisfied
    bool prerequisites = db_maker && star_vertex::requiresBeamline(mVertexFitMode);
