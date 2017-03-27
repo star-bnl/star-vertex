@@ -107,7 +107,6 @@ public:
     virtual        ~StMinuitVertexFinder();
     virtual int     fit(StEvent*);
     void            printInfo(ostream& = cout) const;
-    virtual void    InitRun(int run_number, const St_db_Maker* db_maker);
     void            Clear();
 
 
@@ -141,12 +140,6 @@ private:
     bool                   mUseOldBEMCRank;   // Use old BEMC rank calculation (Cu+Cu production)
     bool                   mLowerSplitVtxRank;// Use lower rank for split vertices
     bool                   mRequireCTB;       // Set maker to use CTB
-    UInt_t                 mMinNumberOfFitPointsOnTrack;
-    Float_t                mDcaZMax;
-    Double_t               mRImpactMax;       // Max distance between helix and nominal beamline (0,0,z)
-    Int_t                  mMinTrack;         // Min number of tracks
-    Float_t                mZMin;             // Min z of possible vertex positions
-    Float_t                mZMax;             // Max z of possible vertex positions
 
     enum                   {maxSeed=500};
 

@@ -53,7 +53,6 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
   mUseOldBEMCRank    = kFALSE;
   mLowerSplitVtxRank = kFALSE;
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
-  mMinTrack  = -1;
   mCTBSum = 0;
 }
  
@@ -65,32 +64,6 @@ StMinuitVertexFinder::~StMinuitVertexFinder()
    mHelixFlags.clear();
    mZImpact.clear();
 }
-//________________________________________________________________________________
-void StMinuitVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
-{
-  StGenericVertexFinder::InitRun(run_number, db_maker);
-
-  St_VertexCutsC *cuts = St_VertexCutsC::instance();
-  mMinNumberOfFitPointsOnTrack = cuts->MinNumberOfFitPointsOnTrack();
-  mDcaZMax                     = cuts->DcaZMax();     // Note: best to use integer numbers
-  mMinTrack                    = (mMinTrack<0 ? cuts->MinTrack() : mMinTrack);
-  mRImpactMax                  = cuts->RImpactMax();
-  mZMin                        = cuts->ZMin();        // note: best to use integer numbers
-  mZMax                        = cuts->ZMax();        // note: best to use integer numbers
-  if (mZMin == mZMax) {
-    // historical defaults
-    mZMin = -200.0;
-    mZMax =  200.0;
-  }
-
-  LOG_INFO << "Set cuts: MinNumberOfFitPointsOnTrack = " << mMinNumberOfFitPointsOnTrack
-	   << " DcaZMax = " << mDcaZMax
-	   << " MinTrack = " << mMinTrack  
-	   << " RImpactMax = " << mRImpactMax
-	   << " ZMin = " << mZMin
-	   << " ZMax = " << mZMax
-	   << endm;
-}
 
 
 /**
@@ -101,7 +74,7 @@ Int_t StMinuitVertexFinder::findSeeds()
 {
   mNSeed = 0;
 
-  int zIdxMax = (int) (mZMax - mZMin); 
+  int zIdxMax = (int) (mVertexCuts.ZMax - mVertexCuts.ZMin);
   Int_t zImpactArr[zIdxMax]; // simple array to 'histogram' zImpacts
 
   for (Int_t i=0; i < zIdxMax; i++)
@@ -110,9 +83,9 @@ Int_t StMinuitVertexFinder::findSeeds()
   Int_t nTrk = mZImpact.size();
 
   for (Int_t iTrk=0; iTrk < nTrk; iTrk++) {
-    if ((mZImpact[iTrk] > mZMin) &&
-        (mZImpact[iTrk] < mZMax))
-      zImpactArr[int(mZImpact[iTrk]-mZMin)]++;
+    if ((mZImpact[iTrk] > mVertexCuts.ZMin) &&
+        (mZImpact[iTrk] < mVertexCuts.ZMax))
+      zImpactArr[int(mZImpact[iTrk]-mVertexCuts.ZMin)]++;
   }
 
   // Search for maxima using sliding 3-bin window
@@ -130,16 +103,16 @@ Int_t StMinuitVertexFinder::findSeeds()
     else if (nTrkBin < nOldBin) {
       if (slope == 1) {
 	if (mNSeed < maxSeed) {
-	  Float_t seed_z = mZMin + iBin + (Float_t)nBinZ / 2 - 1;
+	  Float_t seed_z = mVertexCuts.ZMin + iBin + (Float_t)nBinZ / 2 - 1;
 	  Double_t meanZ = 0;
 	  Int_t nTrkZ = 0;
 	  for (Int_t iTrk = 0; iTrk < nTrk; iTrk ++ ) {
-	    if ( std::fabs(mZImpact[iTrk] - seed_z ) < mDcaZMax ) {
+	    if ( std::fabs(mZImpact[iTrk] - seed_z ) < mVertexCuts.DcaZMax ) {
 	      meanZ += mZImpact[iTrk];
 	      nTrkZ++;
 	    }
 	  }
-	  if (nTrkZ >= mMinTrack) {
+	  if (nTrkZ >= mVertexCuts.MinTrack) {
 	    if (mDebugLevel) {
 	      LOG_INFO << "Seed " << mNSeed << ", z " << seed_z << " nTrk " << nTrkZ << " meanZ/nTrkZ " << meanZ/nTrkZ << endm;
             }
@@ -413,7 +386,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
       if (!accept(g)) continue;
       StDcaGeometry* gDCA = g->dcaGeometry();
       if (!gDCA) continue;
-      if ( std::fabs(gDCA->impact()) >  mRImpactMax) continue;
+      if ( std::fabs(gDCA->impact()) >  mVertexCuts.RImpactMax) continue;
 
       mDCAs.push_back(gDCA);
       mHelices.push_back(g->geometry()->helix());
@@ -520,7 +493,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
         // "Disable" from the fit tracks whose DCA's z is too far from the vertex seed z
 	for (Int_t i=0; i < n_helix; i++)
         {
-	  if (std::fabs(mZImpact[i] - seed_z) < mDcaZMax)
+	  if (std::fabs(mZImpact[i] - seed_z) < mVertexCuts.DcaZMax)
           {
 	    mHelixFlags[i] |= kFlagDcaz;
 	    n_trk_vtx++;
@@ -533,9 +506,9 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	  LOG_INFO << n_trk_vtx << " tracks within dcaZ cut (iter " << iter <<" )" << endm;
         }
 
-	if (n_trk_vtx < mMinTrack) {
+	if (n_trk_vtx < mVertexCuts.MinTrack) {
 	  if (mDebugLevel) {
-	    LOG_INFO << "Less than mMinTrack (=" << mMinTrack << ") tracks, skipping vtx" << endm;
+	    LOG_INFO << "Less than mVertexCuts.MinTrack (=" << mVertexCuts.MinTrack << ") tracks, skipping vtx" << endm;
           }
 	  continue;
 	}
@@ -575,7 +548,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	Int_t n_trk = 0;
 
 	for (Int_t i=0; i < n_helix; i++) {
-	  if ( std::fabs(mZImpact[i] - new_z) < mDcaZMax ) {
+	  if ( std::fabs(mZImpact[i] - new_z) < mVertexCuts.DcaZMax ) {
 	    n_trk++;
 	  }
 	}
@@ -585,9 +558,9 @@ int StMinuitVertexFinder::fit(StEvent* event)
 
 	iter++;
 	seed_z = new_z; // seed for next iteration
-      } while (!done && iter < 5 && n_trk_vtx >= mMinTrack);
+      } while (!done && iter < 5 && n_trk_vtx >= mVertexCuts.MinTrack);
 
-      if (n_trk_vtx < mMinTrack)
+      if (n_trk_vtx < mVertexCuts.MinTrack)
 	continue;
 
       if (!done) { 
@@ -595,13 +568,13 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	continue;
       }
 
-      if (!mExternalSeedPresent && std::fabs(seed_z-mSeedZ[iSeed]) > mDcaZMax) {
+      if (!mExternalSeedPresent && std::fabs(seed_z-mSeedZ[iSeed]) > mVertexCuts.DcaZMax) {
 	LOG_WARN << "Vertex walks during fits: seed was " << mSeedZ[iSeed] << ", vertex at " << seed_z << endm;
       }
 
-      if (std::fabs(seed_z - old_vtx_z) < mDcaZMax) {
+      if (std::fabs(seed_z - old_vtx_z) < mVertexCuts.DcaZMax) {
         if (mDebugLevel) {
-	  LOG_INFO << "Vertices too close (<mDcaZMax). Skipping" << endm;
+	  LOG_INFO << "Vertices too close (<mVertexCuts.DcaZMax). Skipping" << endm;
         }
 	continue;
       }
@@ -742,7 +715,7 @@ bool StMinuitVertexFinder::accept(StTrack* track) const
 {
   return (track &&
           track->flag() >= 0 &&
-          track->fitTraits().numberOfFitPoints() >= mMinNumberOfFitPointsOnTrack &&
+          track->fitTraits().numberOfFitPoints() >= mVertexCuts.MinNumberOfFitPointsOnTrack &&
           !track->topologyMap().trackFtpc() &&
           finite(track->length()) &&  //LSB another temporary check
           track->geometry()->helix().valid());
@@ -761,7 +734,7 @@ void StMinuitVertexFinder::printInfo(ostream& os) const
       os << "# of used tracks ............. " << mBestVtx->numTracksUsedInFinder() << endl;
       os << "Chisquare .................... " << mBestVtx->chiSquared() << endl;
     }
-    os << "min # of fit points for tracks . " << mMinNumberOfFitPointsOnTrack << endl;
+    os << "min # of fit points for tracks . " << mVertexCuts.MinNumberOfFitPointsOnTrack << endl;
 }
 
 
