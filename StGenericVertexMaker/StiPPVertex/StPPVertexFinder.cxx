@@ -354,7 +354,8 @@ void StPPVertexFinderT<Event_t, Track_t>::seed_fit_export()
 }
 
 
-void StPPVertexFinder::UpdateVertexCuts(int run_number)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::UpdateVertexCuts(int run_number)
 {
   StGenericVertexFinder::UpdateVertexCuts(run_number);
 
