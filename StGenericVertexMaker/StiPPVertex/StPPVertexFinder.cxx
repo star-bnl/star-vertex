@@ -235,7 +235,7 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
     bool trigV = evalVertexZ(vertex);   // vertex.print();
 
     //bump up rank of 2+ track all vertices 
-    if (vertex.nAnyMatch >= mMinMatchTr) vertex.Lmax += par_rankOffset;
+    if (vertex.nAnyMatch >= mVertexCuts.MinTrack) vertex.Lmax += par_rankOffset;
 
     if (!trigV) {
       // Ignore this "bad" vertex
@@ -409,7 +409,7 @@ int StPPVertexFinder::fit(StEvent* event)
     ntrk[0]++;
 
     if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
-    if (stiKalmanTrack->getPt() < mMinTrkPt)    { ntrk[2]++; continue; }
+    if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
     if (mDropPostCrossingTrack &&
         isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
     if (!examinTrackDca(stiKalmanTrack, track)) { ntrk[4]++; continue; }  // drop from DCA
@@ -445,7 +445,7 @@ int StPPVertexFinder::fit(StEvent* event)
            << nTracksMatchingAnyFastDetector << " traks with good DCA, matching: BTOF="
            << kBtof << " CTB=" << kCtb << " BEMC=" << kBemc << " EEMC=" << kEemc << endm;
 
-  if (nTracksMatchingAnyFastDetector >= mMinMatchTr || mStoreUnqualifiedVertex > 0)
+  if (nTracksMatchingAnyFastDetector >= mVertexCuts.MinTrack || mStoreUnqualifiedVertex > 0)
   {
     seed_fit_export();
   } else {
@@ -492,7 +492,7 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
       const StMuTrack& stMuTrack = static_cast<const StMuTrack&>(*obj);
 
-      if (stMuTrack.pt() < mMinTrkPt) { ntrk[2]++; continue; }
+      if (stMuTrack.pt() < mVertexCuts.MinTrackPt) { ntrk[2]++; continue; }
 
       // Supposedly equivalent to isPostCrossingTrack()
       if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
@@ -502,12 +502,12 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
       StDcaGeometry* dca = static_cast<StDcaGeometry*>(covGlobTracks->At(stMuTrack.index2Cov()));
 
-      if ( std::fabs(dca->z()) > mMaxZrange ) { ntrk[4]++; continue; }
-      if ( std::fabs(dca->impact())  > mMaxTrkDcaRxy) { ntrk[4]++; continue; }
+      if ( dca->z() > mVertexCuts.ZMax || dca->z() < mVertexCuts.ZMin ) { ntrk[4]++; continue; }
+      if ( std::fabs(dca->impact())  > mVertexCuts.RImpactMax) { ntrk[4]++; continue; }
 
       // Condition similar to one in matchTrack2Membrane
       double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
-      if (fracFit2PossHits < mMinFitPfrac) { ntrk[5]++; continue; }  // kill if nFitP too small
+      if (fracFit2PossHits < mVertexCuts.MinFracOfPossFitPointsOnTrack) { ntrk[5]++; continue; }  // kill if nFitP too small
 
       // Test TOF match if required
       if (mUseBTOFmatchOnly && (stMuTrack.tofHit() == 0)) { ntrk[6]++; continue; }
@@ -582,7 +582,7 @@ bool StPPVertexFinder::buildLikelihoodZ()
   hM->Reset();
   hW->Reset();
 
-  float dzMax2 = mMaxZradius*mMaxZradius;
+  float dzMax2 = mVertexCuts.DcaZMax*mVertexCuts.DcaZMax;
 
   int nt=mTrackData.size();
   LOG_DEBUG<< Form("PPV::buildLikelihood() pool of nTracks=%d",nt)<<endm;
@@ -605,8 +605,8 @@ bool StPPVertexFinder::buildLikelihoodZ()
     float z0   = track.zDca;  // z coordinate at DCA
     float ez   = track.ezDca; // error on z coordinate at DCA
     float ez2  = ez*ez;
-    int   j1   = hL->FindBin(z0-mMaxZradius-.1);
-    int   j2   = hL->FindBin(z0+mMaxZradius+.1);
+    int   j1   = hL->FindBin(z0-mVertexCuts.DcaZMax-.1);
+    int   j2   = hL->FindBin(z0+mVertexCuts.DcaZMax+.1);
     float base = dzMax2/2/ez2;
     float totW = track.weight;
 
@@ -624,7 +624,7 @@ bool StPPVertexFinder::buildLikelihoodZ()
 
   LOG_DEBUG << Form("PPV::buildLikelihood() %d tracks w/ matched @ Lmax=%f", nTracksMatchingAnyFastDetector, hL->GetMaximum()) << endm;
 
-  return (nTracksMatchingAnyFastDetector >= mMinMatchTr) || (mStoreUnqualifiedVertex > 0);
+  return (nTracksMatchingAnyFastDetector >= mVertexCuts.MinTrack) || (mStoreUnqualifiedVertex > 0);
 }
 
 //==========================================================
@@ -695,8 +695,8 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
     if (track.vertexID != 0) continue;
 
     // Do not match tracks to vertex if they are too far in Z
-    // (i.e. |delta_z| > (mMaxZradius + sigma_z))
-    if ( !track.matchVertex(vertex, mMaxZradius) ) continue;
+    // (i.e. |delta_z| > (mVertexCuts.DcaZMax + sigma_z))
+    if ( !track.matchVertex(vertex, mVertexCuts.DcaZMax) ) continue;
 
     // Otherwise, this track belongs to this vertex
     track.vertexID  = vertex.id;
@@ -724,7 +724,7 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
     else if (track.anyVeto) vertex.nAnyVeto++;
   } 
 
-  vertex.isTriggered = (vertex.nAnyMatch >= mMinMatchTr) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
+  vertex.isTriggered = (vertex.nAnyMatch >= mVertexCuts.MinTrack) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
 
   if (!vertex.isTriggered) { // discrad vertex
     //no match tracks in this vertex, tag vertex ID in tracks differently
@@ -853,13 +853,13 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 
    static double step[3] = {0.01, 0.01, 0.01};
 
-   double x_lo = vertexSeed.x() - mMaxTrkDcaRxy;
-   double y_lo = vertexSeed.y() - mMaxTrkDcaRxy;
-   double z_lo = vertexSeed.z() - mMaxZradius;
+   double x_lo = vertexSeed.x() - mVertexCuts.RImpactMax;
+   double y_lo = vertexSeed.y() - mVertexCuts.RImpactMax;
+   double z_lo = vertexSeed.z() - mVertexCuts.DcaZMax;
 
-   double x_hi = vertexSeed.x() + mMaxTrkDcaRxy;
-   double y_hi = vertexSeed.y() + mMaxTrkDcaRxy;
-   double z_hi = vertexSeed.z() + mMaxZradius;
+   double x_hi = vertexSeed.x() + mVertexCuts.RImpactMax;
+   double y_hi = vertexSeed.y() + mVertexCuts.RImpactMax;
+   double z_hi = vertexSeed.z() + mVertexCuts.DcaZMax;
 
    if (mVertexFitMode == VertexFit_t::Beamline1D)
    {
@@ -1062,8 +1062,8 @@ bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData 
 
   float rxy = std::sqrt(bmNode->x_g()*bmNode->x_g() + bmNode->y_g()*bmNode->y_g());
 
-  if ( rxy > mMaxTrkDcaRxy ) return false;
-  if ( std::fabs(bmNode->z_g()) > mMaxZrange ) return false;
+  if ( rxy > mVertexCuts.RImpactMax ) return false;
+  if ( bmNode->z_g() > mVertexCuts.ZMax || bmNode->z_g() < mVertexCuts.ZMin  ) return false;
 
   track.zDca   = bmNode->getZ();
   track.ezDca  = std::sqrt(bmNode->getCzz());
@@ -1406,7 +1406,7 @@ bool StPPVertexFinder::matchTrack2Membrane(TrackDataT<StiKalmanTrack> &track)
     }
   }
 
-  if (nFit < mMinFitPfrac * nPos) return false; // too short fragment of a track
+  if (nFit < mVertexCuts.MinFracOfPossFitPointsOnTrack * nPos) return false; // too short fragment of a track
 
   if( mFitPossWeighting)
     track.weight *= 1.*nFit/nPos; // introduced in 2012 for pp510 to differentiate between global track quality, together with lowering the overall threshold from 0.7 to 0.51, Jan
