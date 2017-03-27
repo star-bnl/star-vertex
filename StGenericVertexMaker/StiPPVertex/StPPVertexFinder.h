@@ -136,6 +136,8 @@ class StPPVertexFinder: public StGenericVertexFinder
 
   virtual void  UseVertexConstraint() {}
 
+  virtual void UpdateVertexCuts(int run_number);
+
 public:
 
   virtual void numVerticesToStore(int n) { mStoreUnqualifiedVertex = n; }

@@ -574,6 +574,27 @@ void StPPVertexFinder::seed_fit_export()
 }
 
 
+void StPPVertexFinder::UpdateVertexCuts(int run_number)
+{
+  // It is not clear why one would hard code cuts for any specific run or
+  // a period since they can be set in the database. Here we'll assume that for
+  // Runs 5 to 12 the PPV cuts are optimized and there is no need to access the
+  // values from the database.
+  if (run_number >= 6000000 && run_number < 13000000) {
+    // old defaults, pre-Run12
+    // (important if we want to reprocess old data with different cuts!)
+    LOG_INFO << "PPV using old, hardwired cuts" << endm;
+    mVertexCuts.RImpactMax = 3.0;  // cm 
+    mVertexCuts.MinTrackPt = 0.20; // GeV/c  //was 0.2 in 2005 prod
+    mVertexCuts.MinFracOfPossFitPointsOnTrack = 0.7;  // nFit /nPossible points on the track
+    mVertexCuts.DcaZMax   = 3.0;  //+sigTrack, to match tracks to Zvertex
+    mVertexCuts.MinTrack   = 2;    // required to accept vertex
+  } else {
+    mFitPossWeighting = true;
+  }
+}
+
+
 //==========================================================
 //==========================================================
 bool StPPVertexFinder::buildLikelihoodZ()
