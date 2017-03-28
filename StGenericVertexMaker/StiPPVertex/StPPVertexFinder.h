@@ -58,6 +58,9 @@ class StPPVertexFinderT: public StGenericVertexFinder
 
   enum {mxH=32};
 
+  void matchTrack2BTOF(Track_t &track);
+  void matchTrack2BTOF(const StPhysicalHelixD& helix, Track_t &track);
+
   void matchTrack2EEMC(Track_t &track);
   void matchTrack2EEMC(const StPhysicalHelixD& helix, Track_t &track);
 
@@ -164,7 +167,6 @@ public:
    virtual int fit(const StEvent& event);
 
    bool examinTrackDca(Track_t &track);
-   void matchTrack2BTOF(Track_t &track);
    void matchTrack2CTB(Track_t &track);
    bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
    void dumpKalmanNodes(const StiKalmanTrack *stiTrack);

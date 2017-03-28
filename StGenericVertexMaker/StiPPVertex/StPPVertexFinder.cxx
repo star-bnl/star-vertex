@@ -869,7 +869,8 @@ bool StPPVertexFinder<StEvent>::examinTrackDca(Track_t &track)
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder<StEvent>::matchTrack2BTOF(Track_t &track)
+template<>
+void StPPVertexFinderT<StEvent, TrackData<StiKalmanTrack> >::matchTrack2BTOF(TrackData<StiKalmanTrack> &track)
 {
   const StiKalmanTrack& stiTrack = track.getMother();
 
@@ -888,14 +889,16 @@ void StPPVertexFinder<StEvent>::matchTrack2BTOF(Track_t &track)
 }
 
 
-void StPPVertexFinder::matchTrack2BTOF(TrackDataT<StMuTrack> &track)
+template<>
+void StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::matchTrack2BTOF(TrackData<StMuTrack> &track)
 {
-   const StMuTrack& muTrack = *track.getMother();
+   const StMuTrack& muTrack = track.getMother();
    matchTrack2BTOF(muTrack.outerHelix(), track);
 }
 
 
-void StPPVertexFinder::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, TrackData &track)
+template<class Event_t, class Track_t>
+void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, Track_t &track)
 {
   IntVec idVec;
   DoubleVec pathVec;
