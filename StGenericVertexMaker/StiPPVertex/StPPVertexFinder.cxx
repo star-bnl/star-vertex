@@ -1072,9 +1072,9 @@ bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData 
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData &track)
+void StPPVertexFinder::matchTrack2BTOF(TrackDataT<StiKalmanTrack> &track)
 {
-  StBTofGeometry* geom = btofList->Geometry();
+  const StiKalmanTrack* stiTrack = track.getMother();
 
   StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
@@ -1086,9 +1086,25 @@ void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData
                        ouNode->getPhase(),
                        ou,
                        ouNode->getHelicity());
+
+  matchTrack2BTOF(phys_helix, track);
+}
+
+
+void StPPVertexFinder::matchTrack2BTOF(TrackDataT<StMuTrack> &track)
+{
+   const StMuTrack& muTrack = *track.getMother();
+   matchTrack2BTOF(muTrack.outerHelix(), track);
+}
+
+
+void StPPVertexFinder::matchTrack2BTOF(const StPhysicalHelixD& phys_helix, TrackData &track)
+{
   IntVec idVec;
   DoubleVec pathVec;
   PointVec crossVec;
+
+  StBTofGeometry* geom = btofList->Geometry();
 
   IntVec iBinVec;
   if(geom->HelixCrossCellIds(phys_helix,idVec,pathVec,crossVec)) {
