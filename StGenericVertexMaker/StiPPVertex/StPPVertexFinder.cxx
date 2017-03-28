@@ -643,7 +643,8 @@ int StPPVertexFinderT<Event_t, Track_t>::fitTracksToVertex(VertexData &vertex)
    mMinuit->mnexcm("minimize", 0, 0, minuitStatus);
 
    // Check fit result
-   if (minuitStatus) {
+   if (minuitStatus)
+   {
       LOG_WARN << "StPPVertexFinder::fitTracksToVertex: Fit did not converge. "
                << "Check TMinuit::mnexcm() status flag: " << minuitStatus << ". "
                << "This vertex (id = " << vertex.id << ") coordinates will not be updated" << endm;
@@ -942,6 +943,7 @@ void StPPVertexFinderT<Event_t, Track_t>::matchTrack2BTOF(const StPhysicalHelixD
   track.weight*=btofW;
   track.btofBin= iBinVec.size() ? iBinVec[0] : -1;
 }
+
 
 //==========================================================
 //==========================================================
