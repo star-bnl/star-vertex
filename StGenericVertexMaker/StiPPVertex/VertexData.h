@@ -21,6 +21,9 @@ class VertexData {
   // methods
   VertexData(int vertexId=0);
   VertexData(const TVector3& position);
+
+  void convertTo(StMuPrimaryVertex& muVertex);
+
   void print(ostream& os) const;
 };
 #endif

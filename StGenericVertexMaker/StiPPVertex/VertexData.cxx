@@ -29,6 +29,42 @@ VertexData::VertexData(const TVector3& position) :
 {
 }
 
+
+void VertexData::convertTo(StMuPrimaryVertex& muVertex)
+{
+  muVertex.mFlag = 1;
+  muVertex.mPosition.Set(r.x(), r.y(), r.z());
+  muVertex.mPosError.Set(er.x(), er.y(), er.z());
+  muVertex.mVertexFinderId = undefinedVertexFinder;
+  muVertex.mRanking = Lmax;
+  muVertex.mNTracksUsed = nUsedTrack;
+  muVertex.mNBTOFMatch = nBtof;
+  muVertex.mNCTBMatch = nCtb;
+  muVertex.mNBEMCMatch = nBemc;
+  muVertex.mNEEMCMatch = nEemc;
+  muVertex.mNBTOFNotMatch = 0;
+  muVertex.mNCTBNotMatch = 0;
+  muVertex.mNBEMCNotMatch = 0;
+  muVertex.mNEEMCNotMatch = 0;
+  muVertex.mNCrossCentralMembrane = nTpc;
+  muVertex.mNTracksWithPromptHit = 0;
+  muVertex.mNPostXTracks = 0;
+  muVertex.mSumTrackPt = gPtSum;
+  muVertex.mMeanDip;
+  muVertex.mChiSquared;
+  muVertex.mNTracks;
+  muVertex.mNTpcWestOnly;
+  muVertex.mNTpcEastOnly;
+  muVertex.mRefMultNeg;
+  muVertex.mRefMultPos;
+  muVertex.mRefMultFtpcWest;
+  muVertex.mRefMultFtpcEast;
+  muVertex.mIdTruth; // MC vertex id if any 
+  muVertex.mQuality; // quality of this information (percentage of tracks coming the above MC Vertex)
+  muVertex.mIdParent;
+}
+
+
 //==========================================================
 //==========================================================
 void VertexData::print(ostream& os) const { // does not work ??
