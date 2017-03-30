@@ -153,6 +153,9 @@ public:
   virtual int fit(const StMuDst& muDst);
   virtual void SetStoreUnqualifiedVertex(int n) { mStoreUnqualifiedVertex = n; }
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
+
+  virtual void result(TClonesArray& stMuPrimaryVertices, TClonesArray& stMuPrimaryTracks);
+
   virtual void printInfo(std::ostream& os = std::cout) const;
 };
 

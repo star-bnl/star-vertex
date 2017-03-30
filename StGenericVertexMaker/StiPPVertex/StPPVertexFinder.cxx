@@ -1523,3 +1523,21 @@ bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
   }
   return false;
 }
+
+
+void StPPVertexFinder::result(TClonesArray& stMuPrimaryVertices,
+                              TClonesArray& stMuPrimaryTracks)
+{
+   StGenericVertexFinder::result(stMuPrimaryVertices, stMuPrimaryTracks);
+
+   int index = 0;
+
+   for (TrackData &track : mTrackData)
+   {
+      if (track.getMother<StMuTrack>()->type() != primary) continue;
+
+      // Create a copy of already modified by exportVertices() global track and
+      // save it in the array
+      new(stMuPrimaryTracks[index++]) StMuTrack( *track.getMother<StMuTrack>() );
+   }
+}

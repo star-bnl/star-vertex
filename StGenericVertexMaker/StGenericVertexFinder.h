@@ -80,7 +80,7 @@ public:
   virtual void           Clear();
   const std::vector<StPrimaryVertex> *result() {return &mVertexList;}
 
-  void result(TClonesArray& stMuDstPrimaryVertices);
+  virtual void result(TClonesArray& stMuPrimaryVertices, TClonesArray& stMuPrimaryTracks);
 
   void                   FillStEvent(StEvent*);
   virtual void SetVertexPosition(double x,double y,double z){assert(0);}

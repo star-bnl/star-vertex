@@ -217,7 +217,8 @@ void StGenericVertexFinder::Clear()
 }
 
 
-void StGenericVertexFinder::result(TClonesArray& stMuDstPrimaryVertices)
+void StGenericVertexFinder::result(TClonesArray& stMuDstPrimaryVertices,
+                                   TClonesArray& stMuPrimaryTracks)
 {
   stMuDstPrimaryVertices.Clear();
 
