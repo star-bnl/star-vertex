@@ -619,8 +619,8 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	
 	// LSB Really error in x and y should come from error on constraint
 	// At least this way it is clear that those were fixed paramters
-	XVertex.setX(beamX(val));  cov[0]=0.1; // non-zero error values needed for Sti
-	XVertex.setY(beamY(val));  cov[2]=0.1;
+	XVertex.setX(mBeamline.X(val));  cov[0]=0.1; // non-zero error values needed for Sti
+	XVertex.setY(mBeamline.Y(val));  cov[2]=0.1;
       }
       else
       {

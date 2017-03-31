@@ -126,14 +126,6 @@ protected:
   /// track DCAs along the `z` axis
   std::vector<double> FindSeeds_TSpectrum();
 
-  /// Returns x coordinate on the beamline (given by mBeamline) corresponding to
-  /// the passed value of z.
-  double beamX(double z) const;
-
-  /// Returns y coordinate on the beamline (given by mBeamline) corresponding to
-  /// the passed value of z.
-  double beamY(double z) const;
-
   /// Recalculates the vertex position from DCA measurements in the input list
   /// of DCAs
   StThreeVectorD CalcVertexSeed(const StDcaList &trackDcas);
@@ -156,8 +148,7 @@ protected:
   /// A static interface to CalcChi2DCAs(...) with x and y fixed by beamline equation
   static void fcnCalcChi2DCAsBeamline1D(int& npar, double* gin, double& f, double* par, Int_t iflag)
   {
-     double z = par[0], x = sSelf->beamX(z), y = sSelf->beamY(z);
-     f = sSelf->CalcChi2DCAs( StThreeVectorD(x, y, z) );
+     f = sSelf->CalcChi2DCAs( sSelf->mBeamline.GetXYZAt<StThreeVectorD>(par[0]) );
   }
 
   /// A static interface to CalcChi2DCAsBeamline(...)

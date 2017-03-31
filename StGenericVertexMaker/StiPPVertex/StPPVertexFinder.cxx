@@ -553,7 +553,7 @@ void StPPVertexFinder::seed_fit_export()
    {
       for (VertexData &vertex : mVertexData) {
          const double& z = vertex.r.Z();
-         vertex.r.SetXYZ( beamX(z), beamY(z), z);
+         vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
       }
    }
    else
@@ -840,8 +840,8 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
    // For fits with beamline force the seed to be on the beamline
    if ( fitRequiresBeamline )
    {
-      vertexSeed.setX( beamX(vertexSeed.z()) );
-      vertexSeed.setY( beamY(vertexSeed.z()) );
+      double z = vertexSeed.z();
+      vertexSeed.set( mBeamline.X(z), mBeamline.Y(z), z );
    }
 
    // Make sure the global pointer points to valid object so Minuit uses correct data
@@ -882,7 +882,7 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
       // beam line we put the vertex on the beam line
       if ( fitRequiresBeamline ) {
          const double& z = vertex.r.Z();
-         vertex.r.SetXYZ( beamX(z), beamY(z), z);
+         vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
          vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, vertex.er.Z());
       }
       // Return 0 (=success) in order to keep the vertex
@@ -905,7 +905,7 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
    if (mVertexFitMode == VertexFit_t::Beamline1D)
    {
       const double& z = mMinuit->fU[0];
-      vertex.r.SetXYZ( beamX(z), beamY(z), z);
+      vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
       vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, std::sqrt(emat[0]) );
    } else {
       vertex.r.SetXYZ(mMinuit->fU[0], mMinuit->fU[1], mMinuit->fU[2]);

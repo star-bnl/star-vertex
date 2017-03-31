@@ -693,7 +693,7 @@ bool StPPVertexFinder::findVertexZ(VertexData &V) {
   if(sigZ<0.1) sigZ=0.1; // tmp, make it not smaller than the bin size
 
   // take x,y from beam line equation, TMP
-  V.r=TVector3(beamX(z0), beamY(z0), z0);
+  V.r=TVector3(mBeamline.X(z0), mBeamline.Y(z0), z0);
   V.er=TVector3(0.1,0.1,sigZ); //tmp
   V.Lmax=Lmax;
 
