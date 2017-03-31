@@ -741,42 +741,39 @@ void StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::exportVertices()
     primV.setRanking(vertex.Lmax);
     primV.setFlag(1); //??? is it a right value?
 
-    if (mStMuDst)
+    for (TrackData<StMuTrack> &track : mTrackData)
     {
-       for (TrackData<StMuTrack> &track : mTrackData)
-       {
-          StThreeVectorF v_position(vertex.r.x(), vertex.r.y(), vertex.r.z());
-          StThreeVectorF dist = v_position - track.dca->origin();
+       StThreeVectorF v_position(vertex.r.x(), vertex.r.y(), vertex.r.z());
+       StThreeVectorF dist = v_position - track.dca->origin();
 
-          // Calculate total error as fully uncorrelated between DCA and vertex
-          float total_err_perp = std::sqrt( vertex.errPerp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
-          float total_err_z    = std::sqrt( vertex.errMatrix()[5] + track.dca->errMatrix()[2] );
+       // Calculate total error as fully uncorrelated between DCA and vertex
+       float total_err_perp = std::sqrt( vertex.errPerp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
+       float total_err_z    = std::sqrt( vertex.errMatrix()[5] + track.dca->errMatrix()[2] );
 
-          bool is_daughter = (dist.mag() < 3) &&
-                             (track.vertexID == vertex.id ||
-                              (std::fabs(dist.perp())/total_err_perp < 3 && std::fabs(dist.z())/total_err_z < 3) );
+       bool is_daughter = (dist.mag() < 3) &&
+                          (track.vertexID == vertex.id ||
+                           (std::fabs(dist.perp())/total_err_perp < 3 && std::fabs(dist.z())/total_err_z < 3) );
 
-          if ( !is_daughter ) continue;
+       if ( !is_daughter ) continue;
 
-          track.vertexID = vertex.id;
+       track.vertexID = vertex.id;
 
-          StMuTrack& stMuTrack = const_cast<StMuTrack&>( track.getMother() );
+       StMuTrack& stMuTrack = const_cast<StMuTrack&>( track.getMother() );
 
-          // Vertex id is its index in StGenericVertexFinder::mVertexList vector
-          stMuTrack->convertToPrimary(*const_cast<StMuDst*>(mStMuDst), &primV, StGenericVertexFinder::size());
+       // Vertex id is its index in StGenericVertexFinder::mVertexList vector
+       stMuTrack->convertToPrimary(*const_cast<StMuDst*>(mStMuDst), &primV, StGenericVertexFinder::size());
 
-          // Create StTrack from StMuTrack so idTruth can be calculated for this vertex
-          StTrack* primTrack = StMuDst::createStTrack(&stMuTrack);
-          primV.addDaughter(primTrack);
-       }
-
-       primV.setIdTruth();
-       vertex.mIdTruth = primV.idTruth();
-
-       // The daughter StTrack-s are removed at this time because we don't save them
-       while ( !primV.daughters().empty() )
-          delete primV.daughters().back(), primV.daughters().pop_back();
+       // Create StTrack from StMuTrack so idTruth can be calculated for this vertex
+       StTrack* primTrack = StMuDst::createStTrack(&stMuTrack);
+       primV.addDaughter(primTrack);
     }
+
+    primV.setIdTruth();
+    vertex.mIdTruth = primV.idTruth();
+
+    // The daughter StTrack-s are removed at this time because we don't save them
+    while ( !primV.daughters().empty() )
+       delete primV.daughters().back(), primV.daughters().pop_back();
 
     //..... add vertex to the list
     addVertex(primV);
