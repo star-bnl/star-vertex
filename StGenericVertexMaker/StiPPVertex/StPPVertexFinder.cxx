@@ -955,7 +955,9 @@ void StPPVertexFinder::exportVertices()
           track.vertexID = vertex.id;
 
           StMuTrack* stMuTrack = const_cast<StMuTrack*>( track.getMother<StMuTrack>() );
-          stMuTrack->setType(primary);
+
+          // Vertex id is its index in StGenericVertexFinder::mVertexList vector
+          stMuTrack->convertToPrimary(*const_cast<StMuDst*>(mStMuDst), &primV, StGenericVertexFinder::size());
 
           // Create StTrack from StMuTrack so idTruth can be calculated for this vertex
           StTrack* primTrack = StMuDst::createStTrack(stMuTrack);
