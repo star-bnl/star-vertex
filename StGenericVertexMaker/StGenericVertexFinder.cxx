@@ -22,7 +22,10 @@
 #include "StEvent/StDcaGeometry.h"
 #include "StEvent/StEventTypes.h"
 #include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
+#include "tables/St_vertexSeed_Table.h"
 
+
+using namespace star_vertex;
 
 // Initialize static variable with default values
 
@@ -202,7 +205,7 @@ void StGenericVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
    if (!vSeed) {
       LOG_FATAL << "Vertex fit w/ beamline requested but 'Calibrations/rhic/vertexSeed' table not found" << endm;
    } else {
-     UseVertexConstraint(*vSeed);
+     UseVertexConstraint( *static_cast<BeamLine*>(vSeed) );
    }
 }
 
@@ -263,7 +266,7 @@ double StGenericVertexFinder::CalcChi2DCAsBeamline(const StThreeVectorD &point)
  * argument.
  *
  * The beamline parameters are taken from this class member object mBeamline of
- * vertexSeed_st type which is initialized in UseVertexConstraint().
+ * BeamLine type which is initialized in UseVertexConstraint().
  *
  * The distance between the beamline and the point is experssed in terms of the
  * measured beamline parameters and the point's coordinates. We then calculate
@@ -278,7 +281,7 @@ double StGenericVertexFinder::CalcChi2DCAsBeamline(const StThreeVectorD &point)
 double StGenericVertexFinder::CalcChi2Beamline(const StThreeVectorD& point)
 {
    // Just for shorthand
-   const vertexSeed_st& bl = mBeamline;
+   const BeamLine& bl = mBeamline;
 
    double dx  = point.x() - bl.x0;
    double dy  = point.y() - bl.y0;
@@ -398,7 +401,7 @@ void StGenericVertexFinder::NoVertexConstraint()
  * Stores beamline parameters (aka vertexSeed) from DB record in this class
  * member mBeamline.
  */
-void StGenericVertexFinder::UseVertexConstraint(const vertexSeed_st& beamline)
+void StGenericVertexFinder::UseVertexConstraint(const BeamLine& beamline)
 {
    mBeamline = beamline;
 

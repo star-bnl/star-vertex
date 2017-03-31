@@ -17,8 +17,9 @@
 #include "TMinuit.h"
 
 #include "StEvent/StPrimaryVertex.h"
-#include "tables/St_vertexSeed_Table.h"
+#include "tables/St_VertexCuts_Table.h"
 #include "StGenericVertexMaker/VertexFinderOptions.h"
+#include "StGenericVertexMaker/BeamLine.h"
 
 class StEvent;
 class StMuDst;
@@ -48,7 +49,7 @@ public:
   StPrimaryVertex*       getVertex(int idx) const;
   void                   addVertex(const StPrimaryVertex& vtx);
   int                    size() const;
-          void           UseVertexConstraint(const vertexSeed_st& beamline);
+          void           UseVertexConstraint(const star_vertex::BeamLine& beamline);
           void           NoVertexConstraint();
           int            IsVertexConstraint() const {return mVertexConstrain;}
   virtual void           UsePCT(bool usePCT = true);
@@ -107,8 +108,8 @@ protected:
   bool                   mUseCtb;            // default use ctb = false
 
   /// All measured parameters of the beamline. Updated whenever
-  /// UseVertexConstraint(const vertexSeed_st&) is called
-  vertexSeed_st  mBeamline;
+  /// UseVertexConstraint(const BeamLine&) is called
+  star_vertex::BeamLine  mBeamline;
 
   /// A container with pointers to DCA states to be used in a vertex fit.
   /// The DCAs are assumed to be calculated w.r.t. the z-axis, i.e. x = y = 0.
