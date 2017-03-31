@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <cmath>
-#include <St_base/StMessMgr.h>
 
 #include "StEvent/StDcaGeometry.h"
 #include "Sti/StiKalmanTrackNode.h"
@@ -118,7 +117,7 @@ bool TrackData<OriginalTrack_t>::matchVertex(VertexData &V, float dzMax)
   bool ret = fabs(dz) < dzMax + ezDca;
 
   if (ret)
-     LOG_DEBUG<< Form("PPV::matchTr2Ver VerID=%d  weight=%.2f anyM=%d anyV=%d  m: ctb=%d  bemc=%d eemc=%d tpc=%d dz=%.2f +/- %.2f\n",V.id,weight,anyMatch,anyVeto,mCtb,mBemc,mEemc,mTpc,dz,ezDca)<<endm;
+     std::cout << Form("PPV::matchTr2Ver VerID=%d  weight=%.2f anyM=%d anyV=%d  m: ctb=%d  bemc=%d eemc=%d tpc=%d dz=%.2f +/- %.2f\n",V.id,weight,anyMatch,anyVeto,mCtb,mBemc,mEemc,mTpc,dz,ezDca);
 
   return ret;
 }
