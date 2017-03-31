@@ -5,9 +5,7 @@
 #include "Sti/StiKalmanTrack.h"
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 
-
 #include <vector>
-using namespace std;  // for vector
 
 class VertexData ;
 class StDcaGeometry;
@@ -70,7 +68,7 @@ public:
 
   const OriginalTrack_t& getMother() const { return mother; }
 
-  void scanNodes( vector<int> & hitPatt, int jz0);
+  void scanNodes( std::vector<int> & hitPatt, int jz0);
   bool matchVertex(VertexData &V, float kSig) ;
 
   /// Calculates chi^2 at track DCA w.r.t. the vertex

@@ -141,7 +141,7 @@ double TrackData<OriginalTrack_t>::calcChi2DCA(const VertexData &V) const
 //==========================================================
 //==========================================================
 template<class OriginalTrack_t>
-void TrackData<OriginalTrack_t>::scanNodes(vector<int> &hit, int jz0)
+void TrackData<OriginalTrack_t>::scanNodes(std::vector<int> &hit, int jz0)
 {
   /* INPUT: vector of hits for active nodes
      i=[0,jz0-1] is on one side of z-Axis
