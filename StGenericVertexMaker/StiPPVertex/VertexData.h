@@ -6,7 +6,7 @@
 
 #include <array>
 
-#include <TVector3.h>
+#include "TVector3.h"
 
 #include "StGenericVertexMaker/BeamLine.h"
 
