@@ -61,16 +61,6 @@ add_library(StGenericVertexMaker SHARED
 	StGenericVertexMaker/StiPPVertex/TrackData.cxx
 	StGenericVertexMaker/StiPPVertex/Vertex3D.cxx
 	StGenericVertexMaker/StiPPVertex/VertexData.cxx
-	StGenericVertexMaker/StvPPVertex/BemcHitList.cxx
-	StGenericVertexMaker/StvPPVertex/BtofHitList.cxx
-	StGenericVertexMaker/StvPPVertex/CtbHitList.cxx
-	StGenericVertexMaker/StvPPVertex/EemcHitList.cxx
-	StGenericVertexMaker/StvPPVertex/ScintHitList.cxx
-	StGenericVertexMaker/StvPPVertex/StEventToolkit.cxx
-	StGenericVertexMaker/StvPPVertex/StPPVertexFinder.cxx
-	StGenericVertexMaker/StvPPVertex/TrackData.cxx
-	StGenericVertexMaker/StvPPVertex/Vertex3D.cxx
-	StGenericVertexMaker/StvPPVertex/VertexData.cxx
 	StGenericVertexMaker_dict.cxx
 )
 
