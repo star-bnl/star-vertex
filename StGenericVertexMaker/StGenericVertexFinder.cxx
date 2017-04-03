@@ -262,16 +262,16 @@ void StGenericVertexFinder::Clear()
 }
 
 
-void StGenericVertexFinder::result(TClonesArray& stMuDstPrimaryVertices,
+void StGenericVertexFinder::result(TClonesArray& stMuPrimaryVertices,
                                    TClonesArray& stMuPrimaryTracks)
 {
-  stMuDstPrimaryVertices.Clear();
+  stMuPrimaryVertices.Clear();
 
   int index = 0;
 
   for (const StPrimaryVertex & stVertex : mVertexList)
   {
-     new(stMuDstPrimaryVertices[index++]) StMuPrimaryVertex( &stVertex);
+     new(stMuPrimaryVertices[index++]) StMuPrimaryVertex( &stVertex);
   }
 }
 
