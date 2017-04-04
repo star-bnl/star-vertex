@@ -145,7 +145,7 @@ Int_t StMinuitVertexFinder::findSeeds()
 	  Double_t meanZ = 0;
 	  Int_t nTrkZ = 0;
 	  for (Int_t iTrk = 0; iTrk < nTrk; iTrk ++ ) {
-	    if ( fabs(mZImpact[iTrk] - seed_z ) < mDcaZMax ) {
+	    if ( std::fabs(mZImpact[iTrk] - seed_z ) < mDcaZMax ) {
 	      meanZ += mZImpact[iTrk];
 	      nTrkZ++;
 	    }
@@ -253,7 +253,7 @@ StMinuitVertexFinder::matchTrack2BEMC(const StTrack *track)
   Float_t phi=posCyl.phi();
   Float_t eta=posCyl.pseudoRapidity();
 
-  if (fabs(eta) < 1) {
+  if (std::fabs(eta) < 1) {
     Int_t mod, ieta, sub;
     if (bemcGeom->getBin(phi, eta, mod, ieta, sub) == 0) {
       // There is some edge effect leading to sub=-1. 
@@ -329,13 +329,13 @@ void StMinuitVertexFinder::calculateRanks()
         n_bemc_expected = (float)primV->numTracksUsedInFinder()/nVtxTrackTot*nBemcMatchTot; 
     }
 
-    Float_t n_cross_expected = fabs(primV->position().z())*0.0020*primV->numTracksUsedInFinder(); // old coeff 0.0016 with dca 3 and 10 points on track
+    Float_t n_cross_expected = std::fabs(primV->position().z())*0.0020*primV->numTracksUsedInFinder(); // old coeff 0.0016 with dca 3 and 10 points on track
 
     if (mDebugLevel) {
       LOG_INFO << "vertex z " << primV->position().z() << " dip expected " << avg_dip_expected << " bemc " << n_bemc_expected << " cross " << n_cross_expected << endm;
     }
 
-    Float_t rank_avg_dip = 1 - fabs(primV->meanDip() - avg_dip_expected)*sqrt((float)primV->numTracksUsedInFinder())/0.67;  // Sigma was 0.8 for old cuts
+    Float_t rank_avg_dip = 1 - std::fabs(primV->meanDip() - avg_dip_expected)*sqrt((float)primV->numTracksUsedInFinder())/0.67;  // Sigma was 0.8 for old cuts
 
     Float_t rank_bemc = 0;
     if (n_bemc_expected >= 1) { 
@@ -426,13 +426,12 @@ int StMinuitVertexFinder::fit(StEvent* event)
       if (!accept(g)) continue;
       StDcaGeometry* gDCA = g->dcaGeometry();
       if (!gDCA) continue;
-      if (TMath::Abs(gDCA->impact()) >  mRImpactMax) continue;
+      if ( std::fabs(gDCA->impact()) >  mRImpactMax) continue;
 
       mDCAs.push_back(gDCA);
       mHelices.push_back(g->geometry()->helix());
-      mHelixFlags.push_back(1);
-      Double_t z_lin = gDCA->z();
-      mZImpact.push_back(z_lin);
+      mHelixFlags.push_back(kFlagDcaz);
+      mZImpact.push_back(gDCA->z());
 
       Bool_t shouldHitCTB = kFALSE;
       Double_t etaInCTBFrame = -999;
@@ -534,7 +533,7 @@ int StMinuitVertexFinder::fit(StEvent* event)
         // "Disable" from the fit tracks whose DCA's z is too far from the vertex seed z
 	for (Int_t i=0; i < n_helix; i++)
         {
-	  if (fabs(mZImpact[i] - seed_z) < mDcaZMax)
+	  if (std::fabs(mZImpact[i] - seed_z) < mDcaZMax)
           {
 	    mHelixFlags[i] |= kFlagDcaz;
 	    n_trk_vtx++;
@@ -583,13 +582,13 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	  mMinuit->GetParameter(2, new_z, zerr); 
 	}
 
-	if (fabs(new_z - seed_z) > 1) // refit if vertex shifted
+	if (std::fabs(new_z - seed_z) > 1) // refit if vertex shifted
 	  done = 0;
 
 	Int_t n_trk = 0;
 
 	for (Int_t i=0; i < n_helix; i++) {
-	  if ( fabs(mZImpact[i] - new_z) < mDcaZMax ) {
+	  if ( std::fabs(mZImpact[i] - new_z) < mDcaZMax ) {
 	    n_trk++;
 	  }
 	}
@@ -609,11 +608,11 @@ int StMinuitVertexFinder::fit(StEvent* event)
 	continue;
       }
 
-      if (!mExternalSeedPresent && fabs(seed_z-mSeedZ[iSeed]) > mDcaZMax) {
+      if (!mExternalSeedPresent && std::fabs(seed_z-mSeedZ[iSeed]) > mDcaZMax) {
 	LOG_WARN << "Vertex walks during fits: seed was " << mSeedZ[iSeed] << ", vertex at " << seed_z << endm;
       }
 
-      if (fabs(seed_z - old_vtx_z) < mDcaZMax) {
+      if (std::fabs(seed_z - old_vtx_z) < mDcaZMax) {
         if (mDebugLevel) {
 	  LOG_INFO << "Vertices too close (<mDcaZMax). Skipping" << endm;
         }
@@ -721,12 +720,11 @@ int StMinuitVertexFinder::fit(StEvent* event)
 double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx)
 {
   Double_t f = 0;
-  Double_t e;
   nCTBHits = 0;
 
-  if (fabs(vtx.x())> 10) return 1e6;
-  if (fabs(vtx.y())> 10) return 1e6;
-  if (fabs(vtx.z())>300) return 1e6;
+  if (std::fabs(vtx.x())> 10) return 1e6;
+  if (std::fabs(vtx.y())> 10) return 1e6;
+  if (std::fabs(vtx.z())>300) return 1e6;
 
   for (UInt_t i=0; i<mDCAs.size(); i++)
   {
@@ -736,7 +734,7 @@ double StMinuitVertexFinder::CalcChi2DCAs(const StThreeVectorD &vtx)
     const StDcaGeometry* gDCA = mDCAs[i];
     if ( !gDCA ) continue;
     const StPhysicalHelixD helix = gDCA->helix();
-    e = helix.distance(vtx, kFALSE);  // false: don't do multiple loops
+    double e = helix.distance(vtx, kFALSE);  // false: don't do multiple loops
     Double_t err2;
     Double_t chi2 = gDCA->thelix().Dca(&(vtx.x()),&err2);
     chi2 *= chi2/err2;

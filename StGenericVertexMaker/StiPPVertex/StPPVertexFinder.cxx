@@ -1064,8 +1064,8 @@ bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData 
   // .......... test DCA to beam .............
   StiKalmanTrackNode * bmNode = stiTrack->getInnerMostNode();
 
-  if (!bmNode)          return 0;
-  if (!bmNode->isDca()) return 0;
+  if (!bmNode)          return false;
+  if (!bmNode->isDca()) return false;
 
   float rxy = std::sqrt(bmNode->x_g()*bmNode->x_g() + bmNode->y_g()*bmNode->y_g());
 

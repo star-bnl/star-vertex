@@ -109,7 +109,7 @@ public:
 
     // mandatory implementations
     virtual        ~StMinuitVertexFinder();
-    Int_t           fit(StEvent*);       
+    virtual int     fit(StEvent*);
     void            printInfo(ostream& = cout) const;
     virtual void    InitRun(int run_number, const St_db_Maker* db_maker);
     void            Clear();

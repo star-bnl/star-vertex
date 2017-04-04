@@ -145,5 +145,5 @@ public:
   virtual int fit(const StMuDst& muDst);
   virtual void SetStoreUnqualifiedVertex(int n) { mStoreUnqualifiedVertex = n; }
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
-  void printInfo(std::ostream& os = std::cout) const;
+  virtual void printInfo(std::ostream& os = std::cout) const;
 };
