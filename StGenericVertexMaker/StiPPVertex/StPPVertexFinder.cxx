@@ -1528,21 +1528,20 @@ bool StPPVertexFinder<StEvent>::isPostCrossingTrack(const StiKalmanTrack* stiTra
 }
 
 
-template<class Event_t, class Track_t>
-void StPPVertexFinderT<Event_t, Track_t>::result(TClonesArray& stMuPrimaryVertices,
-                                                 TClonesArray& stMuPrimaryTracks)
+void StPPVertexFinder<StMuDst>::result(TClonesArray& stMuPrimaryVertices,
+                                       TClonesArray& stMuPrimaryTracks)
 {
    StGenericVertexFinder::result(stMuPrimaryVertices, stMuPrimaryTracks);
 
    int index = 0;
 
-   for (TrackData &track : mTrackData)
+   for (TrackData<StMuTrack> &track : mTrackData)
    {
-      if (track.getMother<StMuTrack>()->type() != primary) continue;
+      if (track.getMother().type() != primary) continue;
 
       // Create a copy of already modified by exportVertices() global track and
       // save it in the array
-      new(stMuPrimaryTracks[index++]) StMuTrack( *track.getMother<StMuTrack>() );
+      new(stMuPrimaryTracks[index++]) StMuTrack( track.getMother() );
    }
 }
 

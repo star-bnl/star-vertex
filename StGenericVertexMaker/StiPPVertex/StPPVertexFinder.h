@@ -141,8 +141,6 @@ public:
   virtual void SetStoreUnqualifiedVertex(int n) { mStoreUnqualifiedVertex = n; }
   virtual void UseBTOFmatchOnly(bool useBTOFmatchOnly = true) { UseBTOF(); mUseBTOFmatchOnly = useBTOFmatchOnly; }
 
-  virtual void result(TClonesArray& stMuPrimaryVertices, TClonesArray& stMuPrimaryTracks);
-
   virtual void printInfo(std::ostream& os = std::cout) const;
 };
 
@@ -185,6 +183,8 @@ public:
       StPPVertexFinderT(fitMode) { };
 
    virtual int fit(const StMuDst& event);
+
+   virtual void result(TClonesArray& stMuPrimaryVertices, TClonesArray& stMuPrimaryTracks);
 };
 
 
