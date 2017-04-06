@@ -692,7 +692,7 @@ void StPPVertexFinderT<StEvent, StiKalmanTrack>::exportVertices()
 {
   for (VertexData &vertex : mVertexData)
   {
-    StThreeVectorD r(vertex.r.x(), vertex.r.y(), vertex.r.z());
+    StThreeVectorF v_position(vertex.r.x(), vertex.r.y(), vertex.r.z());
 
     float cov[6]{};
 
@@ -701,7 +701,7 @@ void StPPVertexFinderT<StEvent, StiKalmanTrack>::exportVertices()
     cov[5] = vertex.er.z() * vertex.er.z();  // [5] is correct,JB
 
     StPrimaryVertex primV;
-    primV.setPosition(r);
+    primV.setPosition(v_position);
     primV.setCovariantMatrix(cov); 
     primV.setVertexFinderId(mUseCtb ? ppvVertexFinder : ppvNoCtbVertexFinder);
     primV.setNumTracksUsedInFinder(vertex.nUsedTrack);
