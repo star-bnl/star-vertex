@@ -794,13 +794,13 @@ void StPPVertexFinderT<Event_t, Track_t>::Finish()
 
 //==========================================================
 //==========================================================
-void StPPVertexFinder<StEvent>::dumpKalmanNodes(const StiKalmanTrack* track)
+void StPPVertexFinder<StEvent>::dumpKalmanNodes(const StiKalmanTrack& track)
 {
   //.................... print all nodes ...........
   StiKTNBidirectionalIterator it;
   int in=0,nh=0,nTpc=0;
   float zL=999, zH=-999;
-  for (it=track->begin();it!=track->end();it++,in++) {
+  for (it=track.begin();it!=track.end();it++,in++) {
     StiKalmanTrackNode& ktn = (*it);
     if(!ktn.isValid()) continue;
     if(ktn.getHit() && ktn.getChi2() >1000) continue;
@@ -828,14 +828,14 @@ void StPPVertexFinder<StEvent>::dumpKalmanNodes(const StiKalmanTrack* track)
     <<endm;
  
   // ........................print both ends  ....................
-  LOG_INFO << "#e  |P|="<<track->getP()<<" pT="<<track->getPt()<<" eta="<<track->getPseudoRapidity()<<" nFitP="<<track->getFitPointCount() << endm; 
-  StiKalmanTrackNode* inNode=track->getInnerMostNode();
+  LOG_INFO << "#e  |P|="<<track.getP()<<" pT="<<track.getPt()<<" eta="<<track.getPseudoRapidity()<<" nFitP="<<track.getFitPointCount() << endm; 
+  StiKalmanTrackNode* inNode=track.getInnerMostNode();
   LOG_INFO << "#e @InnerMostNode x:"<< inNode->x_g()<<" y:"<< inNode->y_g()<<" z:"<< inNode->z_g()<<" Eta="<<inNode->getEta()<<" |P|="<<inNode->getP() << endm;
-  StiKalmanTrackNode* ouNode=track->getOuterMostNode();
+  StiKalmanTrackNode* ouNode=track.getOuterMostNode();
   LOG_INFO << "#e @OuterMostNode g x:"<< ouNode->x_g()<<" y:"<< ouNode->y_g()<<" z:"<< ouNode->z_g()<<" Eta="<<ouNode->getEta()<<" |P|="<<ouNode->getP() << endm;
 
   in=0;
-  for (it=track->begin();it!=track->end();it++,in++) {
+  for (it=track.begin();it!=track.end();it++,in++) {
     // if(in>=2 && in<nn-5) continue; // print only ends of the track
     StiKalmanTrackNode& ktn = (*it);
     if(!ktn.isValid()) continue;
