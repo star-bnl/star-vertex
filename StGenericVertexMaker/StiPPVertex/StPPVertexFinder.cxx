@@ -1421,10 +1421,10 @@ int StPPVertexFinder<StEvent>::fit(const StEvent& event)
 
     ntrk[0]++;
 
-    if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
-    if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
+    if (track.getMother().getFlag() <0)           { ntrk[1]++; continue; }
+    if (track.getMother().getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
     if (mDropPostCrossingTrack &&
-        isPostCrossingTrack(*stiKalmanTrack))   { ntrk[3]++; continue; }  // kill if it has hits in wrong z
+        isPostCrossingTrack(track.getMother()) )  { ntrk[3]++; continue; }  // kill if it has hits in wrong z
     if (!examinTrackDca(track))                 { ntrk[4]++; continue; }  // drop from DCA
     if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
 
