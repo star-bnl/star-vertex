@@ -749,13 +749,6 @@ bool StMinuitVertexFinder::accept(StTrack* track) const
 }
 
 
-/// Use mMinuit print level 
-void StMinuitVertexFinder::setPrintLevel(Int_t level) 
-{
-  mMinuit->SetPrintLevel(level);
-}
-
-
 void StMinuitVertexFinder::printInfo(ostream& os) const
 {
     os << "StMinuitVertexFinder - Statistics:" << endl;

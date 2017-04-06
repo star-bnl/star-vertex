@@ -73,7 +73,7 @@ StGenericVertexFinder::StGenericVertexFinder(SeedFinder_t seedFinder, VertexFit_
   }
 
   mMinuit = new TMinuit(nFitParams);
-  mMinuit->SetPrintLevel(-1);
+  mMinuit->SetPrintLevel(mDebugLevel-1);
   mMinuit->SetMaxIterations(1000);
   mMinuit->SetFCN(fcn_minuit);
 }

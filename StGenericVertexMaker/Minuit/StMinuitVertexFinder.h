@@ -58,12 +58,6 @@
  * The seed has to be provided for every fit (fit()). It will only
  * be used for the next fit.
  *
- * void StMinuitVertexFinder::setPrintLevel(Int_t level);
- * Set Minuit print level: 0-3
- * 0 means essentially no output
- * 3 prints a lot, for debugging only
- * 1 current default level
- *
  * void StMinuitVertexFinder::printInfo([ostream& os]);
  * Prints information of the last fit to output stream os.
  * If no argument is given the info is printed to cout.
@@ -121,7 +115,6 @@ public:
     void            NoCTBforSeed(){ mRequireCTB = kFALSE;}
     void            setExternalSeed(const StThreeVectorD&);
 
-    void            setPrintLevel(Int_t = 0);
     Int_t           statusMin() const {return mStatusMin;}     // Minuit status flag
     void            useOldBEMCRank() { mUseOldBEMCRank = kTRUE; }
     void            lowerSplitVtxRank() { mLowerSplitVtxRank = kTRUE; }

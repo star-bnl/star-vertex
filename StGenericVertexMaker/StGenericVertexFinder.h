@@ -60,7 +60,17 @@ public:
   // General (default)
   virtual void           SetMode(Int_t mode=0 ) {mMode = mode;}
   virtual int            GetMode() const        {return mMode;}
-          void           SetDebugLevel(Int_t level) {mDebugLevel=level;}
+
+  /// Also affects Minuit verbosity which is this `level` - 1.
+  /// level = 0 is the default
+  void  SetDebugLevel(Int_t level)
+  {
+     mDebugLevel = level;
+
+     if (mMinuit)
+        mMinuit->SetPrintLevel(mDebugLevel-1);
+  }
+
   virtual void           Init(){ /* noop */;}
   virtual void           Finish(){ /* noop */;}
   virtual void           InitRun(int run_number, const St_db_Maker* db_maker);
