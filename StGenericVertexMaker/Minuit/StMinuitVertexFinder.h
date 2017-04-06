@@ -127,7 +127,6 @@ public:
     void            DoNotUseITTF(){ mUseITTF = kFALSE;}
     void            useOldBEMCRank() { mUseOldBEMCRank = kTRUE; }
     void            lowerSplitVtxRank() { mLowerSplitVtxRank = kTRUE; }
-    void            setFlagBase();
     void            SetFitPointsCut(Int_t fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
     void            SetMinimumTracks(Int_t n) {mMinTrack = n;}
 
@@ -149,7 +148,6 @@ private:
     bool                   mUseITTF;          // Use only tracks with ITTF encoded method
     bool                   mUseOldBEMCRank;   // Use old BEMC rank calculation (Cu+Cu production)
     bool                   mLowerSplitVtxRank;// Use lower rank for split vertices
-    UInt_t                 mFlagBase;         // ITTF track flag
     bool                   mRequireCTB;       // Set maker to use CTB
     UInt_t                 mMinNumberOfFitPointsOnTrack;
     Float_t                mDcaZMax;

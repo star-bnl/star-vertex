@@ -94,16 +94,6 @@ void StMinuitVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
 }
 
 
-void
-StMinuitVertexFinder::setFlagBase(){
-  if(mUseITTF){
-    mFlagBase = 8000;
-  } else {
-    mFlagBase = 1000;
-  }
-}
-
-
 /**
  * Fills mSeedZ array with z values calculated from the distribution of track
  * DCA-s given by the  mZImpact vector.
@@ -381,8 +371,6 @@ void StMinuitVertexFinder::calculateRanks()
 
 int StMinuitVertexFinder::fit(StEvent* event)
 {
-    setFlagBase();
-
     // get CTB info
     StCtbTriggerDetector* ctbDet = 0;
     std::vector<ctbHit> ctbHits;
