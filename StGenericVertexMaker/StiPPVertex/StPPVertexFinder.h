@@ -168,7 +168,7 @@ public:
 
    bool examinTrackDca(Track_t &track);
    void matchTrack2CTB(Track_t &track);
-   bool isPostCrossingTrack(const StiKalmanTrack* stiTrack);
+   bool isPostCrossingTrack(const StiKalmanTrack& stiTrack);
    void dumpKalmanNodes(const StiKalmanTrack& stiTrack);
 };
 

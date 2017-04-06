@@ -1296,7 +1296,7 @@ bool StPPVertexFinderT<StMuDst, TrackData<StMuTrack> >::matchTrack2Membrane(Trac
 /**
  * Identifies tracks coming from post bunch crossing collisions.
  */
-bool StPPVertexFinder<StEvent>::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
+bool StPPVertexFinder<StEvent>::isPostCrossingTrack(const StiKalmanTrack& stiTrack)
 {
   const float RxyMin = 59, RxyMax = 199, zMax = 200;
   const float zMembraneDepth = 1.0;
@@ -1304,7 +1304,7 @@ bool StPPVertexFinder<StEvent>::isPostCrossingTrack(const StiKalmanTrack* stiTra
   int nWrongZHit=0;
 
   StiKTNBidirectionalIterator it;
-  for (it=stiTrack->begin(); it!=stiTrack->end(); it++)
+  for (it=stiTrack.begin(); it!=stiTrack.end(); it++)
   {
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid() || ktnp->getChi2()>1000 ) continue;
@@ -1427,7 +1427,7 @@ int StPPVertexFinder<StEvent>::fit(const StEvent& event)
     if (stiKalmanTrack->getFlag() <0)           { ntrk[1]++; continue; }
     if (stiKalmanTrack->getPt() < mVertexCuts.MinTrackPt)    { ntrk[2]++; continue; }
     if (mDropPostCrossingTrack &&
-        isPostCrossingTrack(stiKalmanTrack))    { ntrk[3]++; continue; }  // kill if it has hits in wrong z
+        isPostCrossingTrack(*stiKalmanTrack))   { ntrk[3]++; continue; }  // kill if it has hits in wrong z
     if (!examinTrackDca(track))                 { ntrk[4]++; continue; }  // drop from DCA
     if (!matchTrack2Membrane(track))            { ntrk[5]++; continue; }  // kill if nFitP too small
 
