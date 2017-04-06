@@ -123,8 +123,6 @@ public:
 
     void            setPrintLevel(Int_t = 0);
     Int_t           statusMin() const {return mStatusMin;}     // Minuit status flag
-    void            DoUseITTF(){    mUseITTF = kTRUE; }
-    void            DoNotUseITTF(){ mUseITTF = kFALSE;}
     void            useOldBEMCRank() { mUseOldBEMCRank = kTRUE; }
     void            lowerSplitVtxRank() { mLowerSplitVtxRank = kTRUE; }
     void            SetFitPointsCut(Int_t fitpoints) {mMinNumberOfFitPointsOnTrack = fitpoints;}
@@ -145,7 +143,6 @@ private:
 
     virtual double CalcChi2DCAs(const StThreeVectorD &vtx);
     
-    bool                   mUseITTF;          // Use only tracks with ITTF encoded method
     bool                   mUseOldBEMCRank;   // Use old BEMC rank calculation (Cu+Cu production)
     bool                   mLowerSplitVtxRank;// Use lower rank for split vertices
     bool                   mRequireCTB;       // Set maker to use CTB

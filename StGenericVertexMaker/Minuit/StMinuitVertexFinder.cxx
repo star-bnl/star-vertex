@@ -50,7 +50,6 @@ StMinuitVertexFinder::StMinuitVertexFinder(VertexFit_t fitMode) :
   mExternalSeedPresent = kFALSE;
   mRequireCTB        = kFALSE;
   requireCTB         = kFALSE;
-  mUseITTF           = kFALSE;
   mUseOldBEMCRank    = kFALSE;
   mLowerSplitVtxRank = kFALSE;
   mVertexOrderMethod = orderByRanking; // change ordering by ranking

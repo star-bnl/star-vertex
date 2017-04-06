@@ -194,7 +194,6 @@ Int_t StGenericVertexMaker::Init()
   theFinder->UseBTOF(useBTOF);
 
   if(isMinuit) { // this is ugly, one should abort at 'else' above, Jan
-    if (useITTF)  ((StMinuitVertexFinder*)theFinder)->DoUseITTF();
     if (useCTB) ((StMinuitVertexFinder*)theFinder)->CTBforSeed();
   } else {
     assert(!eval); // current implementation support only Minuit Vertex finder, JB 
