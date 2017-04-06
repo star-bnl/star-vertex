@@ -21,6 +21,12 @@ enum class SeedFinder_t : int
 };
 
 
+enum class TrackRequirements_t : int
+{
+   Unspecified, MatchBEMC, MatchEEMC, MatchBTOF, MatchCTB, IsPostCrossing
+};
+
+
 bool requiresBeamline(VertexFit_t& vertex_fit);
 
 
