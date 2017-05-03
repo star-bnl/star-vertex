@@ -18,9 +18,10 @@ class VertexData {
   int nBtof,nCtb,nBemc,nEemc,nTpc,nAnyMatch; // number of matched tracks
   int nBtofV,nCtbV,nBemcV,nEemcV,nTpcV,nAnyVeto; // number of vetoed tracks
   
-  // methods
-  VertexData(int vertexId=0);
-  VertexData(const TVector3& position);
+  VertexData(int vertexId, const TVector3& position);
+  VertexData(int vertexId = 0) : VertexData(vertexId, TVector3(999, 999, 999)) { }
+  VertexData(const TVector3& position) : VertexData(0, position) { }
+
   void print(ostream& os) const;
 };
 

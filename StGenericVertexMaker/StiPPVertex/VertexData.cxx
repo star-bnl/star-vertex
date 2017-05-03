@@ -2,22 +2,10 @@
 #include <cmath>
 
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
-//==========================================================
-//==========================================================
-VertexData::VertexData(int vertexId) {
-  id=vertexId;
-  isTriggered = false;
-  mIdTruth=0;
-  r=TVector3(999,999,999);
-  gPtSum=0;
-  nUsedTrack=Lmax=nBtof=nBtofV=0;
-  nAnyMatch=nCtb=nBemc=nEemc=nTpc=0;
-  nAnyVeto=nCtbV=nBemcV=nEemcV=nTpcV=0;
-}
 
 
-VertexData::VertexData(const TVector3& position) :
-  id(0),
+VertexData::VertexData(int vertexId, const TVector3& position) :
+  id(vertexId),
   isTriggered(false),
   mIdTruth(0),
   r(position), er(),
