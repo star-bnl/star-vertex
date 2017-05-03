@@ -6,6 +6,7 @@
  */
 #include <TVector3.h>
 #include <Sti/StiTrackNode.h>
+#include "StMuDSTMaker/COMMON/StMuTrack.h"
 
 
 #include <vector>
@@ -93,11 +94,21 @@ public:
   const OriginalTrack_t* getMother() const { return static_cast<const OriginalTrack_t*>(mother); }
 };
 
+
+template<>
+TrackDataT<StMuTrack>::TrackDataT(const StMuTrack &motherTrack, const StDcaGeometry* trackDca);
+
+
 #endif
 
 
 /*
  * $Log$
+ * Revision 1.9  2017/03/21 15:15:01  smirnovd
+ * Revert "TrackDataT: Removed erroneous inlined definition for constructor"
+ *
+ * This reverts commit 96e7f20e48eed3c52eb272b27740ff190ce1b9fc.
+ *
  * Revision 1.7  2017/03/15 22:56:50  smirnovd
  * TrackDataT: Added specialization for template constructor
  *
