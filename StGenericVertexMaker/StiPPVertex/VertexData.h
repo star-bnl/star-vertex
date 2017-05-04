@@ -50,6 +50,11 @@ class VertexData {
   void setXYZ(std::array<double, 3> xyz, std::array<double, 6> cov_xyz);
   ///@}
 
+  /// Returns vertex coordinates in the basis of (impact parameter,
+  /// z coordinate, psi angle) as defined in StDcaGeometry class.
+  std::array<double, 3> positionAsDcaGeometry() const;
+  std::array<double, 6> errMatrixAsDcaGeometry() const;
+
   void print(ostream& os) const;
 };
 

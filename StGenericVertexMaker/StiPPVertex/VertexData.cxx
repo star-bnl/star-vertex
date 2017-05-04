@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <cmath>
 
+#include "TCernLib.h"
+
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
 
 
@@ -42,6 +44,57 @@ void VertexData::setXYZ(std::array<double, 3> xyz, std::array<double, 6> cov_xyz
 {
    r.SetXYZ( xyz[0], xyz[1], xyz[2] );
    mCovMatrix = cov_xyz;
+}
+
+
+/**
+ * The basis is the same as in StDcaGeometry, i.e. (imp, z, psi).
+ *
+ * imp: impact parameter such that
+ *      x =  -impact*sin(psi) = imp * cos(phi)
+ *      y =   impact*cos(psi) = imp * sin(phi)
+ * z  : z-coordinate of the track
+ * psi: the angle of the track, e.g. for DCA psi = phi + pi/2
+ */
+std::array<double, 3> VertexData::positionAsDcaGeometry() const
+{
+   // phi: [-pi, +pi]
+   // psi = r.Phi() + M_PI_2
+   // if (psi > M_PI) psi -= 2*M_PI;
+   double psi = r.Phi() > M_PI_2 ? r.Phi() - 3*M_PI_4 : r.Phi() + M_PI_2;
+
+   return std::array<double, 3>{r.Perp(), r.Z(), psi};
+}
+
+
+/**
+ * The jacobian matrix for the transformation from (imp, z, psi) to (x, y, z)
+ *
+ * note: imp is the impact paramer
+ * note: psi = phi + pi/2
+ *
+ *     [  sin(psi),  0,  imp*cos(psi)]
+ * J = [ -cos(psi),  0,  imp*sin(psi)]
+ *     [         0,  1,           0]
+ */
+std::array<double, 6> VertexData::errMatrixAsDcaGeometry() const
+{
+   double imp = r.Perp();
+   double psi = r.Phi() > M_PI_2 ? r.Phi() - 3*M_PI_4 : r.Phi() + M_PI_2;
+
+   // The inverse of the jacobian matrix J
+   double jacobian_inverse[9] =
+   {
+          std::sin(psi),   -std::cos(psi),   0,
+                      0,                0,   1,
+      std::cos(psi)/imp,     sin(psi)/imp,   0
+   };
+
+   std::array<double, 6>  newCovMatrix{0};
+
+   TCL::trasat(jacobian_inverse, mCovMatrix.data(), newCovMatrix.data(), 3, 3);
+
+   return newCovMatrix;
 }
 
 
