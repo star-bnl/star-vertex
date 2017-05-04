@@ -551,10 +551,8 @@ void StPPVertexFinder::seed_fit_export()
    // placed on the beamline
    if (mVertexFitMode == VertexFit_t::BeamlineNoFit)
    {
-      for (VertexData &vertex : mVertexData) {
-         const double& z = vertex.r.Z();
-         vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
-      }
+      for (VertexData &vertex : mVertexData)
+         vertex.setXY(mBeamline);
    }
    else
    {
@@ -675,8 +673,7 @@ bool StPPVertexFinder::findVertexZ(VertexData &vertex)
   // For approximate seed position we use (x,y)=(0,0) because the tracks are
   // extrapolated to (0,0) anyway. The x and y coordinates can be updated later
   // in a proper fit.
-  vertex.r  = TVector3(0, 0, z0);
-  vertex.er = TVector3(0.1, 0.1, sigZ);
+  vertex.setXYZ( {0, 0, z0}, {0.01, 0, 0.01, 0, 0, sigZ*sigZ} );
   vertex.Lmax = Lmax;
 
   return true;
@@ -880,11 +877,9 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 
       // The fit has failed but let's keep the vertex anyway. For cases with
       // beam line we put the vertex on the beam line
-      if ( fitRequiresBeamline ) {
-         const double& z = vertex.r.Z();
-         vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
-         vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, vertex.er.Z());
-      }
+      if ( fitRequiresBeamline )
+         vertex.setXY(mBeamline);
+
       // Return 0 (=success) in order to keep the vertex
       return 0;
    }
@@ -904,12 +899,10 @@ int StPPVertexFinder::fitTracksToVertex(VertexData &vertex)
 
    if (mVertexFitMode == VertexFit_t::Beamline1D)
    {
-      const double& z = mMinuit->fU[0];
-      vertex.r.SetXYZ( mBeamline.X(z), mBeamline.Y(z), z);
-      vertex.er.SetXYZ( mBeamline.err_x0, mBeamline.err_y0, std::sqrt(emat[0]) );
+      vertex.setXYZ( mBeamline, mMinuit->fU[0], emat[0] );
    } else {
-      vertex.r.SetXYZ(mMinuit->fU[0], mMinuit->fU[1], mMinuit->fU[2]);
-      vertex.er.SetXYZ( std::sqrt(emat[0]), std::sqrt(emat[4]), std::sqrt(emat[8]) );
+      vertex.setXYZ( {mMinuit->fU[0], mMinuit->fU[1], mMinuit->fU[2]},
+                     {emat[0], emat[3], emat[4], emat[6], emat[7], emat[8]} );
    }
 
    return 0;
@@ -926,15 +919,9 @@ void StPPVertexFinder::exportVertices()
   {
     StThreeVectorD r(vertex.r.x(), vertex.r.y(), vertex.r.z());
 
-    float cov[6]{};
-
-    cov[0] = vertex.er.x() * vertex.er.x();
-    cov[2] = vertex.er.y() * vertex.er.y();
-    cov[5] = vertex.er.z() * vertex.er.z();  // [5] is correct,JB
-
     StPrimaryVertex primV;
     primV.setPosition(r);
-    primV.setCovariantMatrix(cov); 
+    primV.setCovariantMatrix(vertex.errMatrix().data());
     primV.setVertexFinderId(mUseCtb ? ppvVertexFinder : ppvNoCtbVertexFinder);
     primV.setNumTracksUsedInFinder(vertex.nUsedTrack);
     primV.setNumMatchesWithBTOF(vertex.nBtof);
@@ -953,9 +940,9 @@ void StPPVertexFinder::exportVertices()
           StThreeVectorF v_position(vertex.r.x(), vertex.r.y(), vertex.r.z());
           StThreeVectorF dist = v_position - track.dca->origin();
 
-          // Calculate total error as fully correlated between DCA and vertex
-          float total_err_perp = std::sqrt( vertex.er.Perp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
-          float total_err_z    = std::sqrt( vertex.er.z()*vertex.er.z() + track.dca->errMatrix()[2] );
+          // Calculate total error as fully uncorrelated between DCA and vertex
+          float total_err_perp = std::sqrt( vertex.errPerp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
+          float total_err_z    = std::sqrt( vertex.errMatrix()[5] + track.dca->errMatrix()[2] );
 
           bool is_daughter = (track.vertexID == vertex.id ||
                               (std::fabs(dist.perp())/total_err_perp < 3 && std::fabs(dist.z())/total_err_z < 3) );
