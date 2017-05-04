@@ -101,5 +101,7 @@ std::array<double, 6> VertexData::errMatrixAsDcaGeometry() const
 void VertexData::print(ostream& os) const {
   os << " Vertex ID="<<id<< " isTriggered: " << isTriggered << " nUsedTrack="<<nUsedTrack<<" gPtSum="<< gPtSum<<" Lmax="<< Lmax << " idTruth: " << mIdTruth
      << " match: any="<<nAnyMatch<<"-"<<nAnyVeto<<" CTB="<<nCtb<<"-"<<nCtbV<<" BEMC="<<nBemc<<"-"<<nBemcV<<" EEMC="<<nEemc<<"-"<<nEemcV<<" TPC="<<nTpc<<"-"<<nTpcV << "\n"
-     << Form(" xyz: (%5.3f, %5.3f, %5.3f) +/- (%5.3f, %5.3f, %5.3f)\n", r.x(), r.y(), r.z(), std::sqrt(mCovMatrix[0]), std::sqrt(mCovMatrix[2]), std::sqrt(mCovMatrix[5]) );
+     << Form(" xyz: (%5.3f, %5.3f, %5.3f) +/- (%5.3f, %5.3f, %5.3f)\n",
+             r.x(), r.y(), r.z(),
+             std::sqrt(mCovMatrix[0]), std::sqrt(mCovMatrix[2]), std::sqrt(mCovMatrix[5]) );
 }
