@@ -8,7 +8,7 @@ VertexData::VertexData(int vertexId, const TVector3& position) :
   id(vertexId),
   isTriggered(false),
   mIdTruth(0),
-  r(position), er(),
+  r(position),
   mCovMatrix{{}},
   nUsedTrack(0), Lmax(0), gPtSum(0),
   nBtof(0),  nCtb(0),  nBemc(0),  nEemc(0),  nTpc(0),  nAnyMatch(0),
@@ -48,5 +48,5 @@ void VertexData::setXYZ(std::array<double, 3> xyz, std::array<double, 6> cov_xyz
 void VertexData::print(ostream& os) const {
   os << " Vertex ID="<<id<< " isTriggered: " << isTriggered << " nUsedTrack="<<nUsedTrack<<" gPtSum="<< gPtSum<<" Lmax="<< Lmax << " idTruth: " << mIdTruth
      << " match: any="<<nAnyMatch<<"-"<<nAnyVeto<<" CTB="<<nCtb<<"-"<<nCtbV<<" BEMC="<<nBemc<<"-"<<nBemcV<<" EEMC="<<nEemc<<"-"<<nEemcV<<" TPC="<<nTpc<<"-"<<nTpcV << "\n"
-     << Form(" xyz: (%5.3f, %5.3f, %5.3f) +/- (%5.3f, %5.3f, %5.3f)\n", r.x(), r.y(), r.z(), er.x(), er.y(), er.z() );
+     << Form(" xyz: (%5.3f, %5.3f, %5.3f) +/- (%5.3f, %5.3f, %5.3f)\n", r.x(), r.y(), r.z(), std::sqrt(mCovMatrix[0]), std::sqrt(mCovMatrix[2]), std::sqrt(mCovMatrix[5]) );
 }

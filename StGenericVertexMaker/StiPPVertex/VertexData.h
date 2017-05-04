@@ -16,7 +16,7 @@ class VertexData {
   int id; // vertex ID assigned by PPV
   bool isTriggered; ///< Indicates whether the vertex potentially belongs to triggered event
   short mIdTruth;
-  TVector3 r,er; // vertex position and its error
+  TVector3 r; // vertex position
 
   /// Covariance matrix is a symmetric square matrix given by six elements below
   /// the diagonal.
