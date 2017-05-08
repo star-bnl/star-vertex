@@ -80,7 +80,6 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mStMuDst(nullptr)
 {
   mDebugLevel = 1;
-  mUseCtb = true;                      // default CTB is in the data stream
   mVertexOrderMethod = orderByRanking; // change ordering by ranking
 
   // special histogram for finding the vertex, not to be saved
