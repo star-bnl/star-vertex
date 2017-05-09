@@ -449,9 +449,13 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
    TClonesArray* covGlobTracks = muDst.covGlobTrack();
 
 
-   for (const TObject* obj : *globalTracks)
+   for (TObject* obj : *globalTracks)
    {
-      const StMuTrack& stMuTrack = static_cast<const StMuTrack&>(*obj);
+      StMuTrack& stMuTrack = static_cast<StMuTrack&>(*obj);
+
+      // This is a global track that may be converted to primary. Save its index
+      // to self, so in can be referred later by the primary track
+      stMuTrack.setIndex2Global(ntrk[0]);
 
       int index2Cov = stMuTrack.index2Cov();
       StDcaGeometry* dca = (index2Cov >= 0 ? static_cast<StDcaGeometry*>( covGlobTracks->At(index2Cov) ) : nullptr);
