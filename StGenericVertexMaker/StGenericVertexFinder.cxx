@@ -271,10 +271,7 @@ void StGenericVertexFinder::result(TClonesArray& stMuDstPrimaryVertices,
 
   for (const StPrimaryVertex & stVertex : mVertexList)
   {
-     // This idiotic conversion is required due to the constructor accepting
-     // reference to pointer
-     const StPrimaryVertex * myStVertex = &stVertex;
-     new(stMuDstPrimaryVertices[index++]) StMuPrimaryVertex( myStVertex);
+     new(stMuDstPrimaryVertices[index++]) StMuPrimaryVertex( &stVertex);
   }
 }
 
