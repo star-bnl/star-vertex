@@ -104,13 +104,14 @@ class TMinuit;
 class StMinuitVertexFinder: public StGenericVertexFinder
 {
 public:
+
     StMinuitVertexFinder(VertexFit_t fitMode=VertexFit_t::NoBeamline);
 
     // mandatory implementations
     virtual        ~StMinuitVertexFinder();
     Int_t           fit(StEvent*);       
     void            printInfo(ostream& = cout) const;
-    virtual void    InitRun  (Int_t runumber, const St_db_Maker* db_maker);
+    virtual void    InitRun(int run_number, const St_db_Maker* db_maker);
     void            Clear();
 
 
@@ -131,6 +132,7 @@ public:
     void            SetMinimumTracks(Int_t n) {mMinTrack = n;}
 
 private:
+
     enum  {kFlagDcaz = 1, kFlagCTBMatch = 2, kFlagBEMCMatch = 4, kFlagCrossMembrane = 8};
 
     bool    accept(StTrack*) const;   // track filter
