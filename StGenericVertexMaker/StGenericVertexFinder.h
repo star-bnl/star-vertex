@@ -46,6 +46,8 @@ public:
   virtual ~StGenericVertexFinder();                           // virtual destructor
   virtual int            fit(StEvent*)=0;                     // fit the vertex
 
+  virtual void numVerticesToStore(int n) { }
+
   StPrimaryVertex*       getVertex(int idx) const;
   void                   addVertex(const StPrimaryVertex& vtx);
   int                    size() const;

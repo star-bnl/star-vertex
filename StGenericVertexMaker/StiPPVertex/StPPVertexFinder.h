@@ -135,6 +135,8 @@ class StPPVertexFinder: public StGenericVertexFinder
 
 public:
 
+  virtual void numVerticesToStore(int n) { mStoreUnqualifiedVertex = n; }
+
   virtual void UsePCT(bool x=true) { mDropPostCrossingTrack = !x; }
   virtual void Finish();
   virtual void Init();
