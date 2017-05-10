@@ -55,7 +55,6 @@ public:
   virtual void           UsePCT(bool usePCT = true);
   virtual void           UseBTOF(bool useBTOF = true){mUseBtof=useBTOF;}
   virtual void           UseCTB (bool useCTB  = true){mUseCtb =useCTB ;}
-  virtual void           CalibBeamLine(){ /* noop */;} // overload if useful
 
   virtual void           printInfo(ostream& = cout) const=0;
 

@@ -139,7 +139,6 @@ public:
   virtual void Init();
   virtual void InitRun(int run_number, const St_db_Maker* db_maker);
   virtual void Clear(); 
-  virtual void CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 
   StPPVertexFinder(VertexFit_t fitMode=VertexFit_t::BeamlineNoFit);
 

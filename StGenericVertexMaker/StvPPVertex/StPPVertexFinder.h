@@ -108,13 +108,25 @@ public:
   virtual void  Init();
   virtual void  InitRun  (int runumber);
   virtual void  Clear(); 
-  virtual void  CalibBeamLine(); // activates saving high quality prim tracks for 3D fit of the beamLine
 };
 }// end namespace StEvPPV
 
 /***************************************************************************
  *
  * $Log$
+ * Revision 1.4  2017/02/14 22:00:41  smirnovd
+ * Squashed commit of the following clean-up changes:
+ *
+ * See master branch for details.
+ *
+ * - Remove commented code for debugging
+ * - Removed extra validation; it is done at construction
+ * - No need to include header for apple OS
+ * - Removed pointless assert
+ * - Use standard portable type name
+ * - Remove unused header math_constants.h
+ * - StMinuitVertexFinder: Remove abandoned member function
+ *
  * Revision 1.3  2016/11/07 21:19:28  smirnovd
  * Added and reworded some doxygen and other comments
  *
