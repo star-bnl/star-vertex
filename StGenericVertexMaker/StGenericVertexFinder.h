@@ -6,7 +6,7 @@
  * (pseudo) Base class for vertex finders
  *
  *
- * $Id: StGenericVertexFinder.h,v 1.54 2017/03/05 21:00:43 smirnovd Exp $
+ * $Id: StGenericVertexFinder.h,v 1.55 2017/05/03 20:14:43 smirnovd Exp $
  */
 
 #ifndef STAR_StGenericVertexFinder

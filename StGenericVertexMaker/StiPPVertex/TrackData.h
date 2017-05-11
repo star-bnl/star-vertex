@@ -1,7 +1,7 @@
 #ifndef TrackData_h
 #define TrackData_h
 /***********************************************
- * $Id: TrackData.h,v 1.9 2017/03/21 15:15:01 smirnovd Exp $
+ * $Id: TrackData.h,v 1.10 2017/05/03 20:14:27 smirnovd Exp $
  ******************************************************
  */
 #include <TVector3.h>
@@ -104,6 +104,9 @@ TrackDataT<StMuTrack>::TrackDataT(const StMuTrack &motherTrack, const StDcaGeome
 
 /*
  * $Log: TrackData.h,v $
+ * Revision 1.10  2017/05/03 20:14:27  smirnovd
+ * Added overlooked TrackDataT<StMuTrack> constructor definition
+ *
  * Revision 1.9  2017/03/21 15:15:01  smirnovd
  * Revert "TrackDataT: Removed erroneous inlined definition for constructor"
  *
