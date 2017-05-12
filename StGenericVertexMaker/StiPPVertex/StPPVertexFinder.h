@@ -91,6 +91,7 @@ class StPPVertexFinder: public StGenericVertexFinder
   TH1D *hL ;      // likelyhood distribution
   TH1D *hM, *hW ; // cumulative track mult & weight distribution, for better errZ calculation
   TObjArray HList;
+  std::array<int, 7> ntrk;
 
   // params
   double mMinTrkPt;               ///< ~ pT=0.16(GeV/c) == R=2 (m )in 2001
@@ -145,5 +146,5 @@ public:
   virtual ~StPPVertexFinder() {}
   virtual int fit(StEvent*);
   virtual int fit(const StMuDst& muDst);
-  void printInfo(std::ostream& = std::cout) const;
+  void printInfo(std::ostream& os = std::cout) const;
 };
