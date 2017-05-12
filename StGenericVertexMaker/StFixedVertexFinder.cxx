@@ -1,6 +1,6 @@
 /*
  *  StFixedVertexFinder.cxx
- *  $Id: StFixedVertexFinder.cxx,v 1.6 2017/01/03 22:17:36 smirnovd Exp $
+ *  $Id: StFixedVertexFinder.cxx,v 1.7 2017/05/12 18:37:23 smirnovd Exp $
  *
  *  Author Lee Barnby (University of Birmingham) May 2006.
  *
@@ -84,6 +84,12 @@ void StFixedVertexFinder::SetVertexPosition(double x, double y, double z){
 
 /*
  * $Log: StFixedVertexFinder.cxx,v $
+ * Revision 1.7  2017/05/12 18:37:23  smirnovd
+ * Cosmetic changes
+ *
+ * Removed log messages from source files
+ * Prefixed included headers with paths to respective modules
+ *
  * Revision 1.6  2017/01/03 22:17:36  smirnovd
  * [Stylistic] Changed public addVertex() to accept references
  *

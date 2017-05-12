@@ -3,7 +3,7 @@
  * \author Jan Balewski, July 2004
  *
  *  StGenericVertexFinder implementation of PPV
- * $Id: StPPVertexFinder.h,v 1.4 2017/02/14 22:00:41 smirnovd Exp $
+ * $Id: StPPVertexFinder.h,v 1.5 2017/05/10 23:16:42 smirnovd Exp $
  *
  */
 
@@ -114,6 +114,18 @@ public:
 /***************************************************************************
  *
  * $Log: StPPVertexFinder.h,v $
+ * Revision 1.5  2017/05/10 23:16:42  smirnovd
+ * Some minor refactoring changes:
+ *
+ * See commits 6fb592df..07da3bdf on master branch
+ *
+ * StPPVertexFinder: Get rid of a temporary variable
+ *
+ * StPPVertexFinder: Get rid of extra return
+ * Zero vertices returned for unqualified event anyway
+ *
+ * StGenericVertexFinder: Removed deprecated CalibBeamLine()
+ *
  * Revision 1.4  2017/02/14 22:00:41  smirnovd
  * Squashed commit of the following clean-up changes:
  *

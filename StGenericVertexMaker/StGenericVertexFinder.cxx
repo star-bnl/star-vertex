@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: StGenericVertexFinder.cxx,v 1.50 2017/05/03 20:14:42 smirnovd Exp $
+ * $Id: StGenericVertexFinder.cxx,v 1.53 2017/05/12 18:37:23 smirnovd Exp $
  *
  * Author: Lee Barnby, April 2003
  *

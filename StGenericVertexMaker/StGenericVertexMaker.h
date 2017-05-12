@@ -5,7 +5,7 @@
  * Maker for minuit based vertex finder
  * Lee Barnby - modification, becomes StGenericVertexMaker
  *
- * $Id: StGenericVertexMaker.h,v 1.20 2017/03/04 04:49:48 smirnovd Exp $
+ * $Id: StGenericVertexMaker.h,v 1.22 2017/05/12 18:37:24 smirnovd Exp $
  *
  */
 
@@ -72,7 +72,7 @@ class StGenericVertexMaker : public StMaker
   void DoNotUsePCT()            {SetAttr("PCT"            , kFALSE);}
 
   virtual const char *GetCVS() const
-    {static const char cvs[]="Tag $Name:  $ $Id: StGenericVertexMaker.h,v 1.20 2017/03/04 04:49:48 smirnovd Exp $ built " __DATE__ " " __TIME__ ; return cvs;}
+    {static const char cvs[]="Tag $Name:  $ $Id: StGenericVertexMaker.h,v 1.22 2017/05/12 18:37:24 smirnovd Exp $ built " __DATE__ " " __TIME__ ; return cvs;}
   
   ClassDef(StGenericVertexMaker, 0)   //StAF chain virtual base class for Makers
 };
