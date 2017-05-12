@@ -6,15 +6,15 @@
  *
  */
 
-#include <StEventTypes.h>
-#include <StEnumerations.h>
-#include <StMessMgr.h>
+#include <StEvent/StEventTypes.h>
+#include <StEvent/StEnumerations.h>
+#include <St_base/StMessMgr.h>
 
 
-#include "StFixedVertexFinder.h"
-#include "StMcEvent.hh"
-#include "StMcVertex.hh"
-#include "StMaker.h"
+#include "StGenericVertexMaker/StFixedVertexFinder.h"
+#include "StMcEvent/StMcEvent.hh"
+#include "StMcEvent/StMcVertex.hh"
+#include "StChain/StMaker.h"
 
 
 StFixedVertexFinder::StFixedVertexFinder(){
@@ -84,6 +84,11 @@ void StFixedVertexFinder::SetVertexPosition(double x, double y, double z){
 
 /*
  * $Log$
+ * Revision 1.6  2017/01/03 22:17:36  smirnovd
+ * [Stylistic] Changed public addVertex() to accept references
+ *
+ * Avoid unnecessary gymnastics with pointers
+ *
  * Revision 1.5  2016/08/18 17:46:14  smirnovd
  * Squashed commit of the following refactoring changes:
  *

@@ -7,8 +7,8 @@
  */
 
 #include <vector>
-#include <StObject.h> // just to make 'vector' working, JB
-#include "St_DataSet.h"
+#include <St_base/StObject.h> // just to make 'vector' working, JB
+#include "Star2Root/St_DataSet.h"
 class StTriggerData;
 
 class StCtbUtility {
@@ -47,6 +47,9 @@ class StCtbUtility {
 
 /*
  * $Log$
+ * Revision 1.3  2005/03/11 22:23:53  balewski
+ * towards PPV
+ *
  * Revision 1.2  2005/03/09 19:24:18  balewski
  * preparation for PPV vertex finder
  *

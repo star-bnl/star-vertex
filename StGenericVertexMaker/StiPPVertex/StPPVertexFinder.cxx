@@ -9,7 +9,7 @@
  *
  ************************************************************/
    
-#include <StMessMgr.h>
+#include <St_base/StMessMgr.h>
 
 #include "TFile.h"
 #include "TH1D.h"
@@ -19,10 +19,9 @@
 
 #include <tables/St_g2t_vertex_Table.h> // tmp for Dz(vertex)
 
-#include "StPPVertexFinder.h"
-#include <StEventTypes.h>
-#include "StGenericVertexMaker.h"
-#include "St_VertexCutsC.h"
+#include "StGenericVertexMaker/StiPPVertex/StPPVertexFinder.h"
+#include "StGenericVertexMaker/StGenericVertexMaker.h"
+#include "StGenericVertexMaker/Minuit/St_VertexCutsC.h"
 #include "StEvent/StDcaGeometry.h"
 #include "StEvent/StEventTypes.h"
 #include "StEvent/StEnumerations.h"
@@ -43,13 +42,13 @@
 #include <StIOMaker/StIOMaker.h> // to save  local histos 
 #include <StBFChain/StBFChain.h>
 
-#include "BtofHitList.h"
-#include "CtbHitList.h"
-#include "BemcHitList.h"
-#include "EemcHitList.h"
+#include "StGenericVertexMaker/StiPPVertex/BtofHitList.h"
+#include "StGenericVertexMaker/StiPPVertex/CtbHitList.h"
+#include "StGenericVertexMaker/StiPPVertex/BemcHitList.h"
+#include "StGenericVertexMaker/StiPPVertex/EemcHitList.h"
 
-#include "StEmcCollection.h"
-#include "StBTofCollection.h"
+#include "StEvent/StEmcCollection.h"
+#include "StEvent/StBTofCollection.h"
 #include "StBTofUtil/StBTofGeometry.h"
 
 //==========================================================

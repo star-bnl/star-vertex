@@ -13,7 +13,7 @@
 #ifndef STAR_StGenericVertexMaker
 #define STAR_StGenericVertexMaker
 
-#include "StMaker.h"
+#include "StChain/StMaker.h"
 
 
 class StEvent;
