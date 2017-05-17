@@ -947,7 +947,8 @@ void StPPVertexFinder::exportVertices()
           float total_err_perp = std::sqrt( vertex.errPerp2() + track.dca->errMatrix()[0] ); // fully uncorrelated
           float total_err_z    = std::sqrt( vertex.errMatrix()[5] + track.dca->errMatrix()[2] );
 
-          bool is_daughter = (track.vertexID == vertex.id ||
+          bool is_daughter = (dist.mag() < 3) &&
+                             (track.vertexID == vertex.id ||
                               (std::fabs(dist.perp())/total_err_perp < 3 && std::fabs(dist.z())/total_err_z < 3) );
 
           if ( !is_daughter ) continue;
