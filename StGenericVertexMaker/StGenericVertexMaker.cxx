@@ -278,9 +278,14 @@ Int_t StGenericVertexMaker::Make()
 
   if (!externalFindUse)
   {
-    if (theFinder->fit(mEvent))
+    if (theFinder->fit(mEvent) > 0)
     {
       theFinder->printInfo();
+
+      // theFinder->size()>0 should be equivalent to theFinder->fit(mEvent) > 0
+      // MinuitVF does not fully comply...
+      theFinder->FillStEvent(mEvent);
+      nEvGood++;
     }
     else
     {
@@ -290,13 +295,6 @@ Int_t StGenericVertexMaker::Make()
 
   if (eval) MakeEvalNtuple();
 
-  if(!externalFindUse){
-    ///Only fill StEvent when successful
-    if (theFinder->size()>0){
-      theFinder->FillStEvent(mEvent);
-      nEvGood++;
-    }
-  }
   return kStOK;
 }
 
