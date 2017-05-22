@@ -43,7 +43,6 @@ class StGenericVertexMaker : public StMaker
   StPrimaryVertex* primV;
   StGenericVertexFinder *theFinder;
 
-  Bool_t DoFit(); ///Find and fit the primary vertex
   void const FillStEvent();
   void MakeEvalNtuple();
 

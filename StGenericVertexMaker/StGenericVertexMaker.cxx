@@ -251,25 +251,6 @@ Int_t StGenericVertexMaker::Finish()
   return  kStOK;
 }
 
-//_____________________________________________________________________________
-//_____________________________________________________________________________
-//_____________________________________________________________________________
-Bool_t StGenericVertexMaker::DoFit(){
-
-  if (theFinder->fit(mEvent)) {
-    theFinder->printInfo();
-  }  else {
-    LOG_ERROR << "StGenericVertexMaker::DoFit: vertex fit failed, no vertex." << endm;
-    return kFALSE;
-  }
-
-  return kTRUE;
-
-}
-//_____________________________________________________________________________
-//_____________________________________________________________________________
-//_____________________________________________________________________________
-
 
 //_____________________________________________________________________________
 Int_t StGenericVertexMaker::Make()
@@ -295,8 +276,16 @@ Int_t StGenericVertexMaker::Make()
   LOG_DEBUG << "StGenericVertexMaker::Make: StEvent pointer " << mEvent << endm;
   LOG_DEBUG << "StGenericVertexMaker::Make: external find use " << externalFindUse << endm;
 
-  if(!externalFindUse){
-    DoFit();
+  if (!externalFindUse)
+  {
+    if (theFinder->fit(mEvent))
+    {
+      theFinder->printInfo();
+    }
+    else
+    {
+      LOG_ERROR << "StGenericVertexMaker::Make: Vertex fit failed, no vertex" << endm;
+    }
   }
 
   if (eval) MakeEvalNtuple();
