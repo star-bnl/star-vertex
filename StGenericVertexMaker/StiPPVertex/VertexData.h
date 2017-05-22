@@ -23,4 +23,5 @@ class VertexData {
   VertexData(const TVector3& position);
   void print(ostream& os) const;
 };
+
 #endif

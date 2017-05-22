@@ -301,7 +301,7 @@ Int_t StGenericVertexMaker::Make()
     DoFit();
   }
 
-  if (eval)MakeEvalNtuple();
+  if (eval) MakeEvalNtuple();
 
   if(!externalFindUse){
     ///Only fill StEvent when successful

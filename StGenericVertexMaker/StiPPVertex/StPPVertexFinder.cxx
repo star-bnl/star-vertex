@@ -220,7 +220,7 @@ void StPPVertexFinder::findSeeds_PPVLikelihood()
 {
   const float par_rankOffset = 1e6; // to separate class of vertices (approximately)
 
-  int vertexID=0;
+  int vertexID = 0;
 
   while(1)
   {
@@ -266,6 +266,7 @@ void StPPVertexFinder::Clear()
 
   mTrackData.clear();
   mVertexData.clear();
+
   eveID = -1;
   nBadVertex = 0;
 
@@ -656,17 +657,18 @@ bool StPPVertexFinder::findVertexZ(VertexData &vertex)
     iLow = i;
     break;
   }
-  
+
   float zLow  = hL->GetBinCenter(iLow);
   float zHigh = hL->GetBinCenter(iHigh);
 
   float kSig = std::sqrt(2*(Lmax-Llow)/avrW);
   float sigZ = (zHigh-zLow)/2/kSig;
 
-  LOG_DEBUG << Form("PPV:: iLow/iMax/iHigh=%d/%d/%d\n",iLow,iMax,iHigh)
-            << Form(" accM=%f  accW=%f  avrW=%f\n",accM,accW,avrW)   
-            << Form("  Z low/max/high=%f %f %f, kSig=%f, sig=%f\n",zLow,z0,zHigh,kSig,sigZ)
-            << Form(" found  PPVertex(ID=%d,neve=%d) z0 =%.2f +/- %.2f\n",vertex.id,mTotEve,z0,sigZ)<<endm;
+  LOG_DEBUG << Form("PPV:: iLow/iMax/iHigh=%d/%d/%d\n", iLow, iMax, iHigh)
+            << Form(" accM=%f  accW=%f  avrW=%f\n", accM, accW, avrW)
+            << Form(" Z low/max/high=%f %f %f, kSig=%f, sig=%f\n", zLow, z0, zHigh, kSig, sigZ)
+            << Form(" found  PPVertex(ID=%d,neve=%d) z0 =%.2f +/- %.2f\n", vertex.id, mTotEve, z0, sigZ)
+            << endm;
 
   if (sigZ < 0.1) sigZ = 0.1; // tmp, make it not smaller than the bin size
 
@@ -723,10 +725,11 @@ bool  StPPVertexFinder::evalVertexZ(VertexData &vertex) // and tag used tracks
   } 
 
   vertex.isTriggered = (vertex.nAnyMatch >= mMinMatchTr) || ( (mAlgoSwitches & kSwitchOneHighPT) && nHiPt>0 );
+
   if (!vertex.isTriggered) { // discrad vertex
     //no match tracks in this vertex, tag vertex ID in tracks differently
     //vertex.print(cout);
-    LOG_DEBUG << "StPPVertexFinder::evalVertex Vid="<<vertex.id<<" rejected"<<endm;
+    LOG_DEBUG << "StPPVertexFinder::evalVertex Vid=" << vertex.id << " rejected" << endm;
     for (TrackData &track : mTrackData) {
       if(track.vertexID!=vertex.id) continue;
       track.vertexID=-vertex.id;
@@ -791,6 +794,8 @@ void StPPVertexFinder::createTrackDcas(const VertexData &vertex)
       setp[2] += alfa;
       float sete[15];
 
+      // These nested loops remove the first column (`x` is irrelevant in Sti
+      // basis) in symmetric triangular matrix errs.G() -> sete
       for (int i=1, li=1, jj=0; i<kNPars; li += ++i) {
         for (int j=1;j<=i;j++) {
            sete[jj++] = errs.G()[li+j];
@@ -1058,14 +1063,15 @@ bool StPPVertexFinder::examinTrackDca(const StiKalmanTrack* stiTrack, TrackData 
 {
   // .......... test DCA to beam .............
   StiKalmanTrackNode * bmNode = stiTrack->getInnerMostNode();
-  if (!bmNode) 		return 0;
+
+  if (!bmNode)          return 0;
   if (!bmNode->isDca()) return 0;
 
   float rxy = std::sqrt(bmNode->x_g()*bmNode->x_g() + bmNode->y_g()*bmNode->y_g());
 
-  if(rxy>mMaxTrkDcaRxy) return false;
-  if( std::fabs(bmNode->z_g())> mMaxZrange )   return false ; 
- 
+  if ( rxy > mMaxTrkDcaRxy ) return false;
+  if ( std::fabs(bmNode->z_g()) > mMaxZrange ) return false;
+
   track.zDca   = bmNode->getZ();
   track.ezDca  = std::sqrt(bmNode->getCzz());
   track.rxyDca = rxy;
@@ -1136,10 +1142,11 @@ void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData
 //==========================================================
 //==========================================================
 void  
-StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track){
-  const double Rctb=213.6; // (cm) radius of the CTB 
+StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track)
+{
+  const double Rctb = 213.6; // (cm) radius of the CTB 
 
-  StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
+  StiKalmanTrackNode* ouNode = stiTrack->getOuterMostNode();
 
   StThreeVectorD posCTB;
   float path=-1;
@@ -1166,7 +1173,7 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track
 
   // official Sti node extrapolation
   if(0){
-    StiKalmanTrack track2=*stiTrack;
+    StiKalmanTrack track2 = *stiTrack;
     StiKalmanTrackNode* ctbNode=track2.extrapolateToRadius(Rctb);
 
     if(ctbNode==0)  { 
@@ -1179,9 +1186,9 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track
     posCTB=StThreeVectorD( ctbNode->x_g(),ctbNode->y_g(),ctbNode->z_g());
   }
 
-  float phi=atan2(posCTB.y(),posCTB.x());
-  if(phi<0) phi+=2*M_PI;// now phi is [0,2Pi] as for CTB slats
-  float eta=posCTB.pseudoRapidity();
+  float phi = atan2(posCTB.y(),posCTB.x());
+  if(phi<0) phi += 2*M_PI;// now phi is [0,2Pi] as for CTB slats
+  float eta = posCTB.pseudoRapidity();
 
   int iBin=ctbList->addTrack(eta,phi);
   
@@ -1270,11 +1277,12 @@ void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StiKalmanTrack> &track)
   // droop too steep tracks
   if(stiTrack->getPseudoRapidity()<minEta) return;
 
-  StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
+  StThreeVectorD ou(ouNode->getX(), ouNode->getY(), ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
+
   StPhysicalHelixD phys_helix(std::fabs(ouNode->getCurvature()),
-		       ouNode->getDipAngle(),ouNode->getPhase(),
-		       ou,ouNode->getHelicity());
+                              ouNode->getDipAngle(), ouNode->getPhase(),
+                              ou, ouNode->getHelicity());
 
    // path length at intersection with plane
    // double       pathLength(const StThreeVectorD& r,
@@ -1303,10 +1311,10 @@ void StPPVertexFinder::matchTrack2EEMC(TrackDataT<StMuTrack> &track)
 void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, TrackData &track)
 {
   const double eemc_z_position = 288.; // middle of tower in Z
-  const double maxPath=200 ;// tmp, cut too long extrapolation
+  const double maxPath = 200 ;// tmp, cut too long extrapolation
 
-  StThreeVectorD rSmd=StThreeVectorD(0,0,eemc_z_position);
-  StThreeVectorD n=StThreeVectorD(0,0,1);
+  StThreeVectorD rSmd = StThreeVectorD(0, 0, eemc_z_position);
+  StThreeVectorD n = StThreeVectorD(0, 0, 1);
 
   double path = phys_helix.pathLength(rSmd,n);
   if(path>maxPath) return; // too long extrapolation
@@ -1331,7 +1339,6 @@ void StPPVertexFinder::matchTrack2EEMC(const StPhysicalHelixD& phys_helix, Track
   track.updateAnyMatch(eemcMatch,eemcVeto,track.mEemc);
   track.weight*=eemcW;
   track.eemcBin=iBin;
-
 }
 
 
@@ -1472,12 +1479,13 @@ void StPPVertexFinder::matchTrack2Membrane(TrackDataT<StMuTrack> &track)
  */
 bool StPPVertexFinder::isPostCrossingTrack(const StiKalmanTrack* stiTrack)
 {
-  const float RxyMin=59, RxyMax=199, zMax=200;
-  const float zMembraneDepth=1.0; 
-  const int   nWrongZHitCut=2;
+  const float RxyMin = 59, RxyMax = 199, zMax = 200;
+  const float zMembraneDepth = 1.0;
+  const int   nWrongZHitCut = 2;
   int nWrongZHit=0;
+
   StiKTNBidirectionalIterator it;
-  for (it=stiTrack->begin();it!=stiTrack->end();it++)
+  for (it=stiTrack->begin(); it!=stiTrack->end(); it++)
   {
     StiKalmanTrackNode* ktnp=& (*it);
     if(!ktnp->isValid() || ktnp->getChi2()>1000 ) continue;

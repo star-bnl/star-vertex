@@ -27,9 +27,8 @@ TrackData::TrackData(const void* motherTrack, const StDcaGeometry* motherDca) :
 
 //==========================================================
 //==========================================================
-bool 
-TrackData::matchVertex(VertexData &V, float dzMax) {
-
+bool TrackData::matchVertex(VertexData &V, float dzMax)
+{
   float dz = zDca - V.r.z();
   bool ret = fabs(dz) < dzMax + ezDca;
 
@@ -55,8 +54,8 @@ double TrackData::calcChi2DCA(const VertexData &V) const
 
 //==========================================================
 //==========================================================
-void 
-TrackData::scanNodes(vector<int> &hit, int jz0){
+void TrackData::scanNodes(vector<int> &hit, int jz0)
+{
   /* INPUT: vector of hits for active nodes
      i=[0,jz0-1] is on one side of z-Axis
      i=[jz0,mx-1] on another side
@@ -137,8 +136,8 @@ TrackData::scanNodes(vector<int> &hit, int jz0){
 
 //==========================================================
 //==========================================================
-void
-TrackData::updateAnyMatch(bool match, bool veto, int & mXXX){
+void TrackData::updateAnyMatch(bool match, bool veto, int & mXXX)
+{
   if(match) {
     anyMatch=true;
     anyVeto=false;
@@ -154,8 +153,8 @@ TrackData::updateAnyMatch(bool match, bool veto, int & mXXX){
 
 //==========================================================
 //==========================================================
-float
-TrackData:: getTpcWeight(){
+float TrackData::getTpcWeight()
+{
   const float Wdunno=1, Wmatch=5, Wveto=0.2;
   if(mTpc>0) return Wmatch;  
   if(mTpc<0) return Wveto;

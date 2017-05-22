@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <cmath>
-#include "math_constants.h"
-
-#include <St_base/StMessMgr.h>
 
 #include "StGenericVertexMaker/StiPPVertex/VertexData.h"
 //==========================================================
@@ -30,9 +27,9 @@ VertexData::VertexData(const TVector3& position) :
 {
 }
 
-//==========================================================
-//==========================================================
-void VertexData::print(ostream& os) const { // does not work ??
+
+
+void VertexData::print(ostream& os) const {
   os << " Vertex ID="<<id<< " isTriggered: " << isTriggered << " nUsedTrack="<<nUsedTrack<<" gPtSum="<< gPtSum<<" Lmax="<< Lmax << " idTruth: " << mIdTruth
      << " match: any="<<nAnyMatch<<"-"<<nAnyVeto<<" CTB="<<nCtb<<"-"<<nCtbV<<" BEMC="<<nBemc<<"-"<<nBemcV<<" EEMC="<<nEemc<<"-"<<nEemcV<<" TPC="<<nTpc<<"-"<<nTpcV << "\n"
      << Form(" xyz: (%5.3f, %5.3f, %5.3f) +/- (%5.3f, %5.3f, %5.3f)\n", r.x(), r.y(), r.z(), er.x(), er.y(), er.z() );

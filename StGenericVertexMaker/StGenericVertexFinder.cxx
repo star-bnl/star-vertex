@@ -93,10 +93,11 @@ StGenericVertexFinder::~StGenericVertexFinder()
 */
 void StGenericVertexFinder::FillStEvent(StEvent* event)
 {
-  for(UInt_t i=0;i<mVertexList.size(); i++) {
+  for (UInt_t i=0; i<mVertexList.size(); i++)
+  {
     //allocates new memory for each vertex
     StPrimaryVertex* primV = new StPrimaryVertex(mVertexList[i]); 
-    event->addPrimaryVertex(primV,mVertexOrderMethod);
+    event->addPrimaryVertex(primV, mVertexOrderMethod);
   }
 
   LOG_INFO << "StGenericVertexFinder::FillStEvent: Added " << mVertexList.size()
