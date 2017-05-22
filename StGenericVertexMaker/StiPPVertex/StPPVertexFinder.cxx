@@ -132,15 +132,6 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
     mMinAdcBemc   = 8;    // BTOW used calibration of maxt Et @ ~60Gev 
   }
 
-  // Unfortunately, forced to remove const...
-  St_db_Maker* st_db_maker = const_cast<St_db_Maker*>(db_maker);
-
-  if (mUseBtof) btofList->initRun(st_db_maker);
-  if (mUseCtb)  ctbList->initRun();
-
-  bemcList->initRun(st_db_maker);
-  eemcList->initRun(st_db_maker);
-
   LOG_INFO << "PPV::cuts "
            << "\n MinNumberOfFitPointsOnTrack = unused"
            << "\n Min/Max Z position for BTOF hit = " << mMinZBtof << " " << mMaxZBtof
@@ -154,6 +145,15 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
            << "\n Store # of UnqualifiedVertex = " << mStoreUnqualifiedVertex
            << "\n Store=" << (mAlgoSwitches & kSwitchOneHighPT)
            << " oneTrack-vertex if track PT/GeV>" << mCut_oneTrackPT << endm;
+
+  // Unfortunately, forced to remove const...
+  St_db_Maker* st_db_maker = const_cast<St_db_Maker*>(db_maker);
+
+  if (mUseBtof) btofList->initRun(st_db_maker);
+  if (mUseCtb)  ctbList->initRun();
+
+  bemcList->initRun(st_db_maker);
+  eemcList->initRun(st_db_maker);
 }
 
 
