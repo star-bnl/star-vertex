@@ -107,7 +107,6 @@ void StPPVertexFinder::Init()
 
   //get pointer to Sti toolkit
   mToolkit = StiToolkit::instance();
-  assert(mToolkit);          // internal error of Sti
   
   // BTOF and/or CTB hits can be requested after the finder is constructed but
   // before the Init() is called. In this case we need to create the
@@ -419,6 +418,7 @@ int StPPVertexFinder::fit(StEvent* event)
   }
 
   //get the Sti track container...
+  assert(mToolkit);          // internal error of Sti
   StiTrackContainer* stiTracks = mToolkit->getTrackContainer();
    if(stiTracks==0) {
      LOG_WARN << "No Sti tracks found, skipping this event" << endm;
