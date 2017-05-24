@@ -417,7 +417,7 @@ int StPPVertexFinder::fit(StEvent* event)
 
 
     // Match to various detectors
-    if (mUseBtof) matchTrack2BTOF(stiKalmanTrack, track);  // matching track to btofGeometry
+    if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
     if (mUseBTOFmatchOnly && (track.mBtof <= 0)) { ntrk[6]++; continue; }
 
     if (mUseCtb)  matchTrack2CTB(stiKalmanTrack, track);
@@ -517,6 +517,7 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
       TrackDataT<StMuTrack> track(stMuTrack, dca);
 
       // Modify track weights
+      if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
       matchTrack2BEMC(track);
       matchTrack2EEMC(track);
       matchTrack2Membrane(track);
