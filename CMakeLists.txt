@@ -47,6 +47,7 @@ add_library(StGenericVertexMaker SHARED
 	StGenericVertexMaker/StFixedVertexFinder.cxx
 	StGenericVertexMaker/StGenericVertexFinder.cxx
 	StGenericVertexMaker/StGenericVertexMaker.cxx
+	StGenericVertexMaker/VertexTrackFilter.cxx
 	StGenericVertexMaker/StppLMVVertexFinder.cxx
 	StGenericVertexMaker/VertexFinderOptions.cxx
 	StGenericVertexMaker/Minuit/StMinuitVertexFinder.cxx
