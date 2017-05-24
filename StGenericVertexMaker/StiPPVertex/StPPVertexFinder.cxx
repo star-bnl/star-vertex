@@ -540,6 +540,8 @@ void StPPVertexFinder::seed_fit_export()
 
 void StPPVertexFinder::UpdateVertexCuts(int run_number)
 {
+  StGenericVertexFinder::UpdateVertexCuts(run_number);
+
   // It is not clear why one would hard code cuts for any specific run or
   // a period since they can be set in the database. Here we'll assume that for
   // Runs 5 to 12 the PPV cuts are optimized and there is no need to access the
