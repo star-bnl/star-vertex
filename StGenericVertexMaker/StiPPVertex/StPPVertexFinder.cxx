@@ -1089,7 +1089,6 @@ void StPPVertexFinder::matchTrack2BTOF(const StiKalmanTrack* stiTrack, TrackData
 
   StiKalmanTrackNode* ouNode=stiTrack->getOuterMostNode();
 
-  StThreeVectorD posTOF;
   // helix extrapolation:
   StThreeVectorD ou(ouNode->getX(),ouNode->getY(),ouNode->getZ());
   ou.rotateZ(ouNode->getAlpha());
