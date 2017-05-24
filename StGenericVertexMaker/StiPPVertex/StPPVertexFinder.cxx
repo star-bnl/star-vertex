@@ -452,9 +452,14 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
    for (const TObject* obj : *globalTracks)
    {
-      ntrk[0]++;
-
       const StMuTrack& stMuTrack = static_cast<const StMuTrack&>(*obj);
+
+      int index2Cov = stMuTrack.index2Cov();
+      StDcaGeometry* dca = (index2Cov >= 0 ? static_cast<StDcaGeometry*>( covGlobTracks->At(index2Cov) ) : nullptr);
+
+      TrackDataT<StMuTrack> track(stMuTrack, dca);
+
+      ntrk[0]++;
 
       if (stMuTrack.pt() < mVertexCuts.MinTrackPt) { ntrk[2]++; continue; }
 
@@ -462,12 +467,9 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
       if ( (stMuTrack.flagExtension() & kPostXTrack) != 0 ) { ntrk[3]++; continue; }
 
       // Supposedly equivalent to DCA check with examinTrackDca()
-      if (stMuTrack.index2Cov() < 0) { ntrk[4]++; continue; }
-
-      StDcaGeometry* dca = static_cast<StDcaGeometry*>(covGlobTracks->At(stMuTrack.index2Cov()));
-
-      if ( dca->z() > mVertexCuts.ZMax || dca->z() < mVertexCuts.ZMin ) { ntrk[4]++; continue; }
-      if ( std::fabs(dca->impact())  > mVertexCuts.RImpactMax) { ntrk[4]++; continue; }
+      if ( !dca ||
+            dca->z() > mVertexCuts.ZMax || dca->z() < mVertexCuts.ZMin ||
+            std::fabs(dca->impact()) > mVertexCuts.RImpactMax ) { ntrk[4]++; continue; }
 
       // Condition similar to one in matchTrack2Membrane
       double fracFit2PossHits = static_cast<double>(stMuTrack.nHitsFit(kTpcId)) / stMuTrack.nHitsPoss(kTpcId);
@@ -478,7 +480,6 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
       ntrk[7]++;
 
-      TrackDataT<StMuTrack> track(stMuTrack, dca);
 
       // Modify track weights
       if (mUseBtof) matchTrack2BTOF(track);  // matching track to btofGeometry
