@@ -9,6 +9,9 @@
  ************************************************************
  *
  * $Log$
+ * Revision 1.117  2017/05/24 05:02:05  genevb
+ * Options for number of unqualified verts to store, and using only BTOF-matched tracks
+ *
  *
  ************************************************************/
    
@@ -1228,7 +1231,6 @@ StPPVertexFinder::matchTrack2CTB(const StiKalmanTrack* stiTrack,TrackData &track
   float phi=atan2(posCTB.y(),posCTB.x());
   if(phi<0) phi+=2*M_PI;// now phi is [0,2Pi] as for CTB slats
   float eta=posCTB.pseudoRapidity();
-  if(std::fabs(eta)<1) hA[10]->Fill(posCTB.z());
 
   int iBin=ctbList->addTrack(eta,phi);
   
