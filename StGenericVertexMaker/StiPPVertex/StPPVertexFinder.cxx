@@ -59,8 +59,7 @@ StPPVertexFinder::StPPVertexFinder(VertexFit_t fitMode) :
   mTrackData(), mVertexData(),
   mTotEve(0), eveID(0), nBadVertex(0),
   mAlgoSwitches(kSwitchOneHighPT),
-  hA{}, hACorr(nullptr), hL(nullptr), hM(nullptr), hW(nullptr),
-  HList(),
+  hL(nullptr), hM(nullptr), hW(nullptr),
   ntrk{},
   mMinTrkPt(0.2),
   mMaxTrkDcaRxy(3.),
@@ -189,42 +188,6 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
            << "\n Store # of UnqualifiedVertex = " << mStoreUnqualifiedVertex
            << "\n Store=" << (mAlgoSwitches & kSwitchOneHighPT)
            << " oneTrack-vertex if track PT/GeV>" << mCut_oneTrackPT << endm;
-}
-
-
-//==========================================================
-//==========================================================
-void StPPVertexFinder::initHisto()
-{
-  hA[0]=new TH1F("ppvStat","event types; 1=inp, 2=trg, 3=-, 4=w/trk, 5=anyMch, 6=Bmch 7=Emch 8=anyV, 9=mulV",10,0.5,10.5);
-  hA[1]=new TH1F("ch1","chi2/Dof, ppv pool tracks",100,0,10);
-  hA[2]=new TH1F("nP","No. of fit points, ppv pool tracks",30,-.5,59.5);
-  hA[3]=new TH1F("zV","reconstructed vertices ; Z (cm)",100,-200,200);
-  hA[4]=new TH1F("nV","No. of vertices per eve",20,-0.5,19.5);
-  
-  hA[5]=new TH1F("rxyDca","Rxy to beam @ DCA ; (cm)",40,-0.1,3.9);
-  hA[6]=new TH1F("nTpcM","No. tracks: tpcMatch /eve ",60,-.5,59.5);
-  hA[7]=new TH1F("nTpcV","No. tracks: tpcVeto /eve ",60,-.5,59.5);
-
-  hA[8]=0; // (TH1F*) new TH2F ("xyE","Y vs. X  of match  tracks in EEMC; X (cm); Y(cm)",200,-250.,250,200,-250,250);
-
-  hA[9]=new TH1F("zDca","Z DCA for all accepted tracks; Z (cm)",100,-200,200);
-  
-  hA[10]=new TH1F("zCtb","Z @CTB for all accepted tracks; Z (cm)",50,-250,250);  
-  hA[11]=new TH1F("zBemc","Z @Bemc for all accepted tracks; Z (cm)",100,-400,400);
-  hA[12]=new TH1F("dzVerTr","zVerGeant - zDca of tracks used by any vertex ; (cm)",100,-5,5);
-  hA[13]=new TH1F("dzVerVer","zVerGeant - best reco vertex ; (cm)",100,-5,5);
-
-  hA[14]=new TH1F("EzDca","Error of Z DCA for all accepted tracks; Z (cm)",100,-0.,4);
-  hA[15]=new TH1F("nTpcT","No. tracks: accepted Dca /eve ",201,-.5,200.5);
-  hA[16]=new TH1F("ptTr","pT, ppv pool tracks; pT (GeV/c) ",50,0.,10.);
-  hA[17]=new TH1F("vRL","PPV Vertex rank, 'funny' X-axis; X=Log10(rank-1e6)+offset", 150, -11,25);
-
-  hACorr=new TH2F("BTOFvsBEMC","BTOF vs BEMC", 5,-2.5,2.5,5,-2.5,2.5);
-
-  for (int i=0; i<mxH; i++) if(hA[i]) HList.Add(hA[i]);
-
-  HList.Add(hACorr);
 }
 
 
@@ -1024,17 +987,6 @@ void StPPVertexFinder::Finish()
   LOG_INFO << "StPPVertexFinder::Finish() done, seen eve=" << mTotEve << endm;
 }
 
-//-------------------------------------------------
-//-------------------------------------------------
-void StPPVertexFinder::saveHisto(TString fname)
-{
-  TString outName = fname + ".hist.root";
-  TFile f(outName, "recreate");
-  assert(f.IsOpen());
-  printf("%d histos are written  to '%s' ...\n", HList.GetEntries(), outName.Data());
-  HList.Write();
-  f.Close();
-}
 
 //==========================================================
 //==========================================================

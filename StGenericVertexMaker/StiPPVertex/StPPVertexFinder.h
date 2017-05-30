@@ -86,11 +86,8 @@ class StPPVertexFinder: public StGenericVertexFinder
                                ///< default is 0, as for 2008 pp data production
   enum {kSwitchOneHighPT=1}; 
 
-  TH1F *hA[mxH];
-  TH2F *hACorr;
   TH1D *hL ;      // likelyhood distribution
   TH1D *hM, *hW ; // cumulative track mult & weight distribution, for better errZ calculation
-  TObjArray HList;
   std::array<int, 8> ntrk;
 
   // params
@@ -127,7 +124,6 @@ class StPPVertexFinder: public StGenericVertexFinder
   const StMuDst* mStMuDst;
   
   void dumpKalmanNodes(const StiKalmanTrack *stiTrack);
-  void initHisto();
 
   /// A helper function to do common processing for StEvent and StMuDst cases
   void seed_fit_export();
