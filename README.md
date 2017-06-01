@@ -43,14 +43,40 @@ Release History
 
 Notable features of the past and future releases.
 
+__v3.2-rc__
+
+* `muDst` re-vertexing for `MinuitVF`
+* Seed finder based on `TSpectrum`
+* Consolidate track selection in `PPV` and `MinuitVF`
+* Remove dependence on StMessMgr
+
+
 __v3.1-rc__
 
-* Add primary track association when reconstruct from `muDst`
-  * Support for `MinuitVF`
-* New seed finder based on `TSpectrum`
-* Consolidate track selection in `PPV` and `MinuitVF`
-* Get rid of debugging histograms in production code
-* Remove dependence on StMessMgr
+* Primary track association when re-vertexing from `muDst`
+* For `muDst` additional cut on absolute track-to-vertex distance (&lt; 3cm)
+to match `Sti` primary track selection
+* Full covariance matrix for vertex position
+* Track weight adjustment based on BTOF matching (used for vertex ranking)
+* New type `BeamLine` enhancing `vertexSeed_st`
+
+
+__v3.0.2__
+
+* Vetted by LFS/UPC group
+* Option to save other than default number of low-rank vertices (five) in `PPV`
+* Option to exclusively select tracks pointing to BTOF detector
+
+
+__v3.0.1__
+
+* Vetted by LFS/UPC group
+* In `PPV` exclude vertex seeds which cannot be fit, i.e. require at least two
+tracks or one track + beam line
+* For `PPV` added "real" 1D fit with beam line (identical to `MinuitVF`). Not to
+be confused with the original `PPV` vertexing based on peak search in 1D
+weighted track DCA histogram
+* (Partially) Got rid of debug histograms in production code
 
 
 __v3.0__   `2017-03-16`
@@ -59,8 +85,9 @@ __v3.0__   `2017-03-16`
   * Primary track are within three sigma from the vertex in transverse and
   longitudinal directions. The sigma is defined as the total uncorrelated
   uncertainty of the track and vertex
-* Common approach to vertex fitting in `PPV` and `MinuitVF`
-* Unified selection of seeding and fitting algorithms:
+* Common fitting routines in `PPV` and `MinuitVF`
+* Universal support with extensibility in mind for user-selected seeding and
+fitting algorithms:
   * `SeedFinder: MinuitVF, PPVLikelihood, TSpectrum`
   * `VertexFit: NoBeamline, Beamline1D, Beamline3D`
 
