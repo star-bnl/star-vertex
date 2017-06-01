@@ -6,17 +6,6 @@
  ************************************************************
  *
  * Description:  does not fear any pileup
- ************************************************************
- *
- * $Log: StPPVertexFinder.cxx,v $
- * Revision 1.118  2017/05/30 18:27:19  smirnovd
- * StPPvertexFinder: Removed overlooked reference to a debug histogram
- *
- * See commit 312bb0f6 "StPPVertexFinder: Do not fill debug histograms"
- *
- * Revision 1.117  2017/05/24 05:02:05  genevb
- * Options for number of unqualified verts to store, and using only BTOF-matched tracks
- *
  *
  ************************************************************/
    
