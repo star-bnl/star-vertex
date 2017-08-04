@@ -9,6 +9,11 @@
  ************************************************************
  *
  * $Log$
+ * Revision 1.118  2017/05/30 18:27:19  smirnovd
+ * StPPvertexFinder: Removed overlooked reference to a debug histogram
+ *
+ * See commit 312bb0f6 "StPPVertexFinder: Do not fill debug histograms"
+ *
  * Revision 1.117  2017/05/24 05:02:05  genevb
  * Options for number of unqualified verts to store, and using only BTOF-matched tracks
  *
@@ -511,6 +516,8 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
    StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId);
    eemcList->build(etow, mMinAdcEemc);
+
+   delete emcC; emcC=0;
 
    // Access btof data from ... branch
    //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
