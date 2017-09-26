@@ -1,6 +1,6 @@
 /************************************************************
  *
- * $Id: StPPVertexFinder.cxx,v 1.118 2017/05/30 18:27:19 smirnovd Exp $
+ * $Id: StPPVertexFinder.cxx,v 1.119 2017/08/04 21:14:55 genevb Exp $
  *
  * Author: Jan Balewski
  ************************************************************
@@ -505,6 +505,8 @@ int StPPVertexFinder::fit(const StMuDst& muDst)
 
    StEmcDetector* etow = emcC->detector(kEndcapEmcTowerId);
    eemcList->build(etow, mMinAdcEemc);
+
+   delete emcC; emcC=0;
 
    // Access btof data from ... branch
    //TClonesArray* muBTofHits = muDst.btofArray(muBTofHit);
