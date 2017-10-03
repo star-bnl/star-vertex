@@ -9,6 +9,9 @@
  ************************************************************
  *
  * $Log$
+ * Revision 1.119  2017/08/04 21:14:55  genevb
+ * Remove memory leak of StEmcCollection (RT 3303)
+ *
  * Revision 1.118  2017/05/30 18:27:19  smirnovd
  * StPPvertexFinder: Removed overlooked reference to a debug histogram
  *
@@ -194,6 +197,7 @@ void StPPVertexFinder::InitRun(int run_number, const St_db_Maker* db_maker)
            << "\n MinAdcEemc for MIP = " << mMinAdcEemc
            << "\n bool  useCtb = " << mUseCtb
            << "\n bool useBtof = " << mUseBtof
+           << "\n bool useBTOFmatchOnly = " << mUseBTOFmatchOnly
            << "\n bool nFit/nPoss weighting = " << mFitPossWeighting
            << "\n bool DropPostCrossingTrack = " << mDropPostCrossingTrack
            << "\n Store # of UnqualifiedVertex = " << mStoreUnqualifiedVertex
@@ -360,11 +364,13 @@ void StPPVertexFinder::printInfo(ostream& os) const
       << Form("%d track@z0=%.2f +/- %.2f gPt=%.3f vertID=%d match:  bin,Fired,Track:\n",
               k,track.zDca,track.ezDca,track.gPt,track.vertexID);
 
-    if (mUseBtof) LOG_DEBUG 
+    if (mUseBtof) { LOG_DEBUG 
       << Form("    Btof %3d,%d,%d",track.btofBin,btofList->getFired(track.btofBin),btofList->getTrack(track.btofBin));
+    }
 
-    if (mUseCtb) LOG_DEBUG 
+    if (mUseCtb) { LOG_DEBUG 
       << Form("    CTB  %3d,%d,%d",track.ctbBin,ctbList->getFired(track.ctbBin),ctbList->getTrack(track.ctbBin));
+    }
 
     LOG_DEBUG 
       << Form("    Bemc %3d,%d,%d",track.bemcBin,bemcList->getFired(track.bemcBin),bemcList->getTrack(track.bemcBin))
@@ -460,7 +466,7 @@ int StPPVertexFinder::fit(StEvent* event)
 
     // Match to various detectors
     if (mUseBtof) matchTrack2BTOF(stiKalmanTrack, track);  // matching track to btofGeometry
-    if (mUseBTOFmatchOnly && (track.mBtof == 0)) { ntrk[6]++; continue; }
+    if (mUseBTOFmatchOnly && (track.mBtof <= 0)) { ntrk[6]++; continue; }
 
     if (mUseCtb)  matchTrack2CTB(stiKalmanTrack, track);
     matchTrack2BEMC(track);
