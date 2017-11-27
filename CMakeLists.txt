@@ -38,40 +38,10 @@ include_directories(
 )
 
 
-# Build StGenericVertexMaker library
-root_generate_linkdef_and_dictionary(StGenericVertexMaker HEADERS
-	StGenericVertexMaker/StGenericVertexMaker.h StGenericVertexMaker/Minuit/St_VertexCutsC.h)
-
-add_library(StGenericVertexMaker SHARED
-	StGenericVertexMaker/StCtbUtility.cxx
-	StGenericVertexMaker/StFixedVertexFinder.cxx
-	StGenericVertexMaker/StGenericVertexFinder.cxx
-	StGenericVertexMaker/StGenericVertexMaker.cxx
-	StGenericVertexMaker/StppLMVVertexFinder.cxx
-	StGenericVertexMaker/VertexFinderOptions.cxx
-	StGenericVertexMaker/Minuit/StMinuitVertexFinder.cxx
-	StGenericVertexMaker/Minuit/St_VertexCutsC.cxx
-	StGenericVertexMaker/StiPPVertex/BemcHitList.cxx
-	StGenericVertexMaker/StiPPVertex/BtofHitList.cxx
-	StGenericVertexMaker/StiPPVertex/CtbHitList.cxx
-	StGenericVertexMaker/StiPPVertex/EemcHitList.cxx
-	StGenericVertexMaker/StiPPVertex/ScintHitList.cxx
-	StGenericVertexMaker/StiPPVertex/StPPVertexFinder.cxx
-	StGenericVertexMaker/StiPPVertex/TrackData.cxx
-	StGenericVertexMaker/StiPPVertex/Vertex3D.cxx
-	StGenericVertexMaker/StiPPVertex/VertexData.cxx
-	StGenericVertexMaker/StvPPVertex/BemcHitList.cxx
-	StGenericVertexMaker/StvPPVertex/BtofHitList.cxx
-	StGenericVertexMaker/StvPPVertex/CtbHitList.cxx
-	StGenericVertexMaker/StvPPVertex/EemcHitList.cxx
-	StGenericVertexMaker/StvPPVertex/ScintHitList.cxx
-	StGenericVertexMaker/StvPPVertex/StEventToolkit.cxx
-	StGenericVertexMaker/StvPPVertex/StPPVertexFinder.cxx
-	StGenericVertexMaker/StvPPVertex/TrackData.cxx
-	StGenericVertexMaker/StvPPVertex/Vertex3D.cxx
-	StGenericVertexMaker/StvPPVertex/VertexData.cxx
-	StGenericVertexMaker_dict.cxx
-)
+star_add_library( StGenericVertexMaker )
+star_add_library( StSecondaryVertexMaker )
+star_add_library( StVertexRootIO )
+star_add_library( StZdcVertexMaker )
 
 # Build StGenericVertexMakerNoSti library
 root_generate_linkdef_and_dictionary(StGenericVertexMakerNoSti HEADERS
@@ -88,44 +58,6 @@ add_library(StGenericVertexMakerNoSti SHARED
 	StGenericVertexMaker/Minuit/St_VertexCutsC.cxx
 	StGenericVertexMakerNoSti_dict.cxx
 )
-
-
-# Build StSecondaryVertexMaker library
-root_generate_linkdef_and_dictionary(
-	StSecondaryVertexMaker
-	HEADERS
-	StSecondaryVertexMaker/StKinkMaker.h
-	StSecondaryVertexMaker/StV0FinderMaker.h
-	StSecondaryVertexMaker/StXiFinderMaker.h
-	StSecondaryVertexMaker/StKinkLocalTrack.hh
-)
-
-add_library(StSecondaryVertexMaker SHARED
-	StSecondaryVertexMaker/DecayVertexFinder.cxx
-	StSecondaryVertexMaker/StKinkLocalTrack.cc
-	StSecondaryVertexMaker/StKinkMaker.cxx
-	StSecondaryVertexMaker/StV0FinderMaker.cxx
-	StSecondaryVertexMaker/StXiFinderMaker.cxx
-	StSecondaryVertexMaker_dict.cxx
-)
-
-
-# Build StVertexRootIO library
-root_generate_linkdef_and_dictionary(
-	StVertexRootIO
-	HEADERS
-	StVertexRootIO/TPrimaryVertex.h
-	StVertexRootIO/TDecayVertex.h
-	StVertexRootIO/TDecayVertexContainers.h
-)
-
-add_library(StVertexRootIO SHARED StVertexRootIO_dict.cxx)
-
-
-# Build StZdcVertexMaker library
-root_generate_linkdef_and_dictionary(StZdcVertexMaker HEADERS StZdcVertexMaker/StZdcVertexMaker.h)
-
-add_library(StZdcVertexMaker SHARED StZdcVertexMaker/StZdcVertexMaker.cxx StZdcVertexMaker_dict.cxx)
 
 
 # A collective target to build all libraries in this project. Can be used to
