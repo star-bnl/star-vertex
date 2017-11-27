@@ -40,7 +40,7 @@ before_script:
   - git clone --depth=1 https://github.com/star-bnl/star-bfchain.git ext/star-bfchain
   - git clone --depth=1 https://github.com/star-bnl/star-muDst.git   ext/star-muDst
   - git clone --depth=1 https://github.com/star-bnl/star-stevent.git ext/star-stevent
-  - git clone --depth=1 https://github.com/star-bnl/star-stdb.git    ext/star-stdb
+  - git clone --depth=1 https://github.com/star-bnl/star-db.git      ext/star-db
   - git clone --depth=1 https://github.com/star-bnl/star-tables.git  ext/star-tables
   - git clone --depth=1 https://github.com/star-bnl/star-emc.git     ext/star-emc
   - git clone --depth=1 https://github.com/star-bnl/star-daq.git     ext/star-daq
@@ -51,7 +51,7 @@ before_script:
 
 script:
   - mkdir build/ && cd build/ && pwd
-  - cmake -D STAR_BASE_DIR=ext/star-base -D STAR_STEVENT_DIR=ext/star-stevent -D STAR_STDB_DIR=ext/star-stdb -D STAR_TABLES_DIR=ext/star-tables -D STAR_EMC_DIR=ext/star-emc -D STAR_TPC_DIR=ext/star-tpc -D STAR_DAQ_DIR=ext/star-daq -D STAR_TOF_DIR=ext/star-tof -D STAR_PAMS_DIR=ext/star-pams -D STAR_STI_DIR=ext/star-sti -D STAR_BFCHAIN_DIR=ext/star-bfchain -D STAR_MUDST_DIR=ext/star-muDst ../
+  - cmake -D STAR_BASE_DIR=ext/star-base -D STAR_STEVENT_DIR=ext/star-stevent -D STAR_DB_DIR=ext/star-db -D STAR_TABLES_DIR=ext/star-tables -D STAR_EMC_DIR=ext/star-emc -D STAR_TPC_DIR=ext/star-tpc -D STAR_DAQ_DIR=ext/star-daq -D STAR_TOF_DIR=ext/star-tof -D STAR_PAMS_DIR=ext/star-pams -D STAR_STI_DIR=ext/star-sti -D STAR_BFCHAIN_DIR=ext/star-bfchain -D STAR_MUDST_DIR=ext/star-muDst ../
   - cmake -D CMAKE_INSTALL_PREFIX=./ -D CMAKE_BUILD_TYPE=Release ../
   - make -j4 && make install && make clean
   - pwd && ls -la ./ && ls -la lib/
