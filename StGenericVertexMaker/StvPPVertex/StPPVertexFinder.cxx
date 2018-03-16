@@ -34,6 +34,8 @@
 #include "StIOMaker/StIOMaker.h" // to save  local histos 
 #include "StBFChain/StBFChain.h"
 
+#include "TGeoManager.h"
+
 #define xL(t)   (t->getX())
 #define yL(t)   (t->getY())
 #define eyL(t)  sqrt(t->getCyy())
@@ -166,8 +168,8 @@ void StPPVertexFinder::InitRun(int runnumber)
     } 
     if(btofGeom && !btofGeom->IsInitDone()) {
       LOG_INFO << " BTofGeometry initialization ... " << endm;
-      TVolume *starHall = (TVolume *)mydb->GetDataSet("HALL");
-      btofGeom->Init(mydb, starHall);
+      TVolume *starHall = gGeoManager ? nullptr : (TVolume *) (mydb->GetDataSet("HALL"));
+      btofGeom->Init(mydb, starHall, gGeoManager);
     }
   }
 
@@ -1167,6 +1169,18 @@ bool StPPVertexFinder::isPostCrossingTrack(const StGlobalTrack* track)
 /**************************************************************************
  **************************************************************************
  * $Log$
+ * Revision 1.14  2017/05/10 23:16:42  smirnovd
+ * Some minor refactoring changes:
+ *
+ * See commits 6fb592df..07da3bdf on master branch
+ *
+ * StPPVertexFinder: Get rid of a temporary variable
+ *
+ * StPPVertexFinder: Get rid of extra return
+ * Zero vertices returned for unqualified event anyway
+ *
+ * StGenericVertexFinder: Removed deprecated CalibBeamLine()
+ *
  * Revision 1.13  2017/02/14 22:00:41  smirnovd
  * Squashed commit of the following clean-up changes:
  *
