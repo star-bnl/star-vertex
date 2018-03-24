@@ -17,8 +17,15 @@
 #include "StChain/StMaker.h"
 
 
-StFixedVertexFinder::StFixedVertexFinder(){
-    mFixedX=mFixedY=mFixedZ=0.0;
+StFixedVertexFinder::StFixedVertexFinder() : 
+  StGenericVertexFinder(),
+  mFixedX(0),
+  mFixedY(0),
+  mFixedZ(0),
+  mFixedEx(0),
+  mFixedEy(0),
+  mFixedEz(0)
+{
     mMode=0;
 }
 
@@ -26,7 +33,18 @@ int StFixedVertexFinder::fit(StEvent* event)
 {
   StPrimaryVertex  prim;
   StVertexFinderId VFId;
-  Float_t cov[6] = {0.0,0.0,0.0,0.0,0.0,0.0}; // All errors are zero
+
+  // All errors are zero... by default
+  // if user has set a vertex error, we use it, regardless of mode
+
+  float s2x = mFixedEx * mFixedEx;
+  float s2y = mFixedEy * mFixedEy;
+  float s2z = mFixedEz * mFixedEz;
+
+  float   cov[6] = {s2x,
+		    0.0,s2y,
+		    0.0,0.0,s2z}; 
+
 
   if (mMode == 0){
     // Really the default which takes the SetPos() TBI
@@ -81,9 +99,20 @@ void StFixedVertexFinder::SetVertexPosition(double x, double y, double z){
     mFixedY=y;
     mFixedZ=z;
 }
+void StFixedVertexFinder::SetVertexError(double x, double y, double z){
+    mFixedEx=x;
+    mFixedEy=y;
+    mFixedEz=z;
+}
 
 /*
  * $Log$
+ * Revision 1.7  2017/05/12 18:37:23  smirnovd
+ * Cosmetic changes
+ *
+ * Removed log messages from source files
+ * Prefixed included headers with paths to respective modules
+ *
  * Revision 1.6  2017/01/03 22:17:36  smirnovd
  * [Stylistic] Changed public addVertex() to accept references
  *

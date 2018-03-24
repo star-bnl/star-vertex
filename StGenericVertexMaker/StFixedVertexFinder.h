@@ -41,12 +41,17 @@ public:
     
     // member not from base class
     void SetVertexPosition(double x, double y, double z);
+    void SetVertexError( double ex, double ey, double ez );
     int  IsFixed() const 	{return 1;}
     
 private:
     Double_t mFixedX; //!< X co-ordinate of vertex
     Double_t mFixedY; //!< Y co-ordinate of vertex
     Double_t mFixedZ; //!< Z co-ordinate of vertex
+
+  double mFixedEx;
+  double mFixedEy;
+  double mFixedEz;
 
     /**
      * Vertex constraint not useful for this VF but is part of base class so implementation just
@@ -59,6 +64,12 @@ private:
 /***************************************************************************
 *
 * $Log$
+* Revision 1.6  2017/05/12 18:37:23  smirnovd
+* Cosmetic changes
+*
+* Removed log messages from source files
+* Prefixed included headers with paths to respective modules
+*
 * Revision 1.5  2016/08/18 17:46:14  smirnovd
 * Squashed commit of the following refactoring changes:
 *
