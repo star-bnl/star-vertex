@@ -57,13 +57,20 @@ private:
      * Vertex constraint not useful for this VF but is part of base class so implementation just
      * displays warning to this effect
      */
-    virtual void UseVertexConstraint();
+  void UseVertexConstraint(double, double, double, double, double);
 
 };
 
 /***************************************************************************
 *
 * $Log$
+* Revision 1.7  2018/03/24 20:10:41  jwebb
+*
+* Added option for user to specify the uncertainties on the vertex.  Useful
+* in embedding jobs in order to get the track association with primary
+* vertex correct (especially when tracks are from precision tracking, eg
+* HFT).
+*
 * Revision 1.6  2017/05/12 18:37:23  smirnovd
 * Cosmetic changes
 *
