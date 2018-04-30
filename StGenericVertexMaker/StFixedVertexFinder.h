@@ -57,13 +57,16 @@ private:
      * Vertex constraint not useful for this VF but is part of base class so implementation just
      * displays warning to this effect
      */
-  void UseVertexConstraint(double, double, double, double, double);
+  void UseVertexConstraint();
 
 };
 
 /***************************************************************************
 *
 * $Log$
+* Revision 1.7.2.1  2018/04/13 23:59:20  didenko
+* updated for SL16d_embed
+*
 * Revision 1.7  2018/03/24 20:10:41  jwebb
 *
 * Added option for user to specify the uncertainties on the vertex.  Useful
