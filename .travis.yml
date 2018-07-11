@@ -1,9 +1,6 @@
 sudo: false
-
 language: cpp
-
-compiler:
-  - gcc
+compiler: gcc
 
 addons:
   apt:
@@ -13,16 +10,16 @@ addons:
     - gcc-4.8
     - g++-4.8
 
+git:
+  depth: 1
+
 branches:
   only:
     - master
 
-before_install:
-  - git submodule update --init --recursive
-
 # Make sure cmake picks up the compiler we want
 install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - export CXX="g++-4.8" CC="gcc-4.8"
 
 before_script:
     # Install desired version of ROOT
@@ -36,22 +33,12 @@ before_script:
     # Move some ROOT header files to common include directory
   - rsync -auv root/math/mathmore/inc/Math root/include/
     # Install dependencies
-  - git clone --depth=1 https://github.com/star-bnl/star-base.git    ext/star-base
-  - git clone --depth=1 https://github.com/star-bnl/star-bfchain.git ext/star-bfchain
-  - git clone --depth=1 https://github.com/star-bnl/star-muDst.git   ext/star-muDst
-  - git clone --depth=1 https://github.com/star-bnl/star-stevent.git ext/star-stevent
-  - git clone --depth=1 https://github.com/star-bnl/star-db.git      ext/star-db
-  - git clone --depth=1 https://github.com/star-bnl/star-tables.git  ext/star-tables
-  - git clone --depth=1 https://github.com/star-bnl/star-emc.git     ext/star-emc
-  - git clone --depth=1 https://github.com/star-bnl/star-daq.git     ext/star-daq
-  - git clone --depth=1 https://github.com/star-bnl/star-sti.git     ext/star-sti
-  - git clone --depth=1 https://github.com/star-bnl/star-tof.git     ext/star-tof
-  - git clone --depth=1 https://github.com/star-bnl/star-tpc.git     ext/star-tpc
-  - git clone --depth=1 https://github.com/star-bnl/star-pams.git    ext/star-pams
+  - wget http://star-bnl.github.io/star-vertex/star-cvs_dev_12ae8226.tgz -P /tmp/
+  - tar -xzf /tmp/star-cvs_dev_12ae8226.tgz
+  - export STAR_ROOT_DIR="$PWD/star-cvs_dev_12ae8226"
 
 script:
   - mkdir build/ && cd build/ && pwd
-  - cmake -D STAR_BASE_DIR=ext/star-base -D STAR_STEVENT_DIR=ext/star-stevent -D STAR_DB_DIR=ext/star-db -D STAR_TABLES_DIR=ext/star-tables -D STAR_EMC_DIR=ext/star-emc -D STAR_TPC_DIR=ext/star-tpc -D STAR_DAQ_DIR=ext/star-daq -D STAR_TOF_DIR=ext/star-tof -D STAR_PAMS_DIR=ext/star-pams -D STAR_STI_DIR=ext/star-sti -D STAR_BFCHAIN_DIR=ext/star-bfchain -D STAR_MUDST_DIR=ext/star-muDst ../
-  - cmake -D CMAKE_INSTALL_PREFIX=./ -D CMAKE_BUILD_TYPE=Release ../
-  - make -j4 && make install && make clean
+  - cmake -DSTAR_ROOT=$STAR_ROOT_DIR -DCMAKE_INSTALL_PREFIX=./ ../
+  - make -j && make install && make clean
   - pwd && ls -la ./ && ls -la lib/
